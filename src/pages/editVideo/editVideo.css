@@ -1,0 +1,28 @@
+.container{
+    width: 100%;
+    box-sizing: border-box;
+}
+.content-title{
+    padding-left: 20px;
+    line-height: 40px;
+    font-size: 16px;
+    background: #f1f1f1;
+}
+.in-content{
+    padding-left: 20px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    width: 800px;
+}
+.block{
+    display: block;
+}
+.el-form-item {
+    margin-bottom: 22px;
+}
+.radio{
+    margin:12px 10px 0 0 ;
+}
+.el-dialog .el-form-item{
+    margin-bottom:6px;
+}

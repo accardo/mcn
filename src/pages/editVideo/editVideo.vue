@@ -1,0 +1,143 @@
+<template>
+    <div class="container">
+        <div class="content-title">作品管理/新建视频作品</div>
+        <section class="in-content">
+            <el-form :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
+                <el-form-item label="标题" class="block">
+                    <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="一级分类">
+                     <el-select v-model="ruleForm.typeOne" @change="selectTypeOne" style="width:240px;">
+                       <el-option
+                            v-for="item in typeOptions"
+                            :key="item.key"
+                            :label="item.value"
+                            :value="item.key">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="二级分类">
+                     <el-select v-model="ruleForm.typeTwo" @change="selectTypeTwo" style="width:240px;">
+                        <el-option
+                            v-for="item in childList"
+                            :key="item.key"
+                            :label="item.value"
+                            :value="item.key">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="标签" class="block">
+                    <el-select v-model="ruleForm.tips" multiple style="width:595px;">
+                        <el-option
+                            v-for="item in tipsOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="视频封面">
+                   <el-upload  style="width:240px;"
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="视频预览">
+                    <el-upload  style="width:240px;"
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                        <img v-if="ruleForm.videoImgUrl" :src="ruleForm.videoUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="上传视频" class="block">
+                    <el-button>点击上传</el-button>    
+                </el-form-item>
+                <el-form-item label="描述" class="block">
+                    <el-input  style="width:595px;"
+                        type="textarea"
+                        placeholder="请输入内容"
+                        v-model="ruleForm.textarea">
+                    </el-input>
+                </el-form-item>
+                <el-form-item class="block" style="padding-left:100px;">
+                    <el-button @click="back()">取消</el-button>
+                    <el-button type="primary">保存</el-button>
+                    <el-button type="primary" @click="saveRelease()">保存并发布</el-button>
+                </el-form-item>
+                <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="45%">
+                    <el-form >
+                        <el-form-item style=" display: block">
+                            <el-radio v-model="ruleForm.radio" label="1" @change="radioStatus()">现在发布</el-radio>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-radio :span="6" v-model="ruleForm.radio" label="2" class="fl radio" @change="radioStatus()">定时发布</el-radio>
+                            <el-col :span="8">
+                                <el-date-picker type="date" placeholder="选择日期"  :editable="false"
+                                v-model="ruleForm.date" :disabled="disabled" style="width: 100%;" 
+                                :picker-options="pickerOptionsDate" @change="dateChange()"
+                                value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+                            </el-col>
+                            <el-col class="line" :span="1" style="text-align:center;">-</el-col>
+                            <el-col :span="8">
+                                <el-time-picker type="fixed-time" placeholder="选择时间" 
+                                v-model="ruleForm.time" :disabled="disabled" style="width: 100%;"
+                                :picker-options="timeObject" @change="timeChange()"
+                                value-format="HH:mm:ss" format="HH:mm:ss"></el-time-picker>
+                            </el-col>
+                        </el-form-item>
+
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="saveData()">确 认</el-button>
+                    </div>
+                </el-dialog>
+            </el-form>
+        </section>
+    </div>
+</template>
+<style scoped>
+    @import '../../../static/css/common.css';
+    @import './editVideo.css';
+</style>
+<style>
+.el-select-dropdown__item{
+    padding:0 20px !important;
+}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+}
+.avatar {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+</style>
+
+<script src="./editVideo.js"></script>
+

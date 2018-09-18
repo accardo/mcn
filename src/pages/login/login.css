@@ -1,0 +1,49 @@
+.container{
+    position: relative;
+    min-width: 1200px;
+    min-height: 600px;
+    overflow: auto;
+}
+header{
+    height: 60px;
+    line-height: 60px;
+    padding: 0 100px;
+    background: #fff;
+}
+header .fr{
+    cursor: pointer;
+    font-size: 16px;
+}
+header .fl{
+    font-size: 16px;
+}
+.login-area{
+    width: 100%;
+    position: relative;
+    min-width: 1200px;
+    height: 600px;
+    background: #f6f6f6;
+}
+.login-form{
+    width: 500px;
+    position: absolute;
+    left: 50%;
+    top:200px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    padding-bottom: 10px;
+}
+.el-input{
+    width: 200px;
+    margin-right: 40px;
+}
+.el-form-item {
+    margin-bottom: 22px;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background: #fff !important;
+}
+
+

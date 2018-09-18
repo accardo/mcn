@@ -1,0 +1,40 @@
+{"data":[{
+    "value":"美妆",
+    "key":1,
+    "options":[{
+        "value":"护肤",
+        "key":11
+    },{
+        "value":"彩妆",
+        "key":12
+    }]
+},{
+    "value":"时尚",
+    "key":2,
+    "options":[{
+        "value":"穿搭",
+        "key":21
+    },{
+        "value":"造型",
+        "key":22
+    },{
+        "value":"潮流地",
+        "key":23
+    }]
+},{
+    "value":"旅行",
+    "key":3,
+    "options":[{
+        "value":"旅行攻略",
+        "key":31
+    },{
+        "value":"风景",
+        "key":32
+    },{
+        "value":"人文",
+        "key":33
+    },{
+        "value":"旅行趣闻",
+        "key":34
+    }]  
+}]}

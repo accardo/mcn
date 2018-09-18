@@ -1,0 +1,42 @@
+header{
+    text-align: center;
+    font-size: 20px;
+    line-height: 60px;
+    border-bottom: 1px solid #f1f1f1;
+}
+header .inheader{
+    width: 1200px;
+    margin: 0 auto;
+}
+.inheader span{
+    display: inline-block;
+    margin: 0 20px;
+}
+.inheader .act{
+    color: #409EFF;
+}
+.inheader p{
+    font-size: 14px;
+    margin-right: 20px;
+}
+.inheader p i{
+    font-style: normal;
+    cursor: pointer;
+}
+.el-form-item {
+    margin-bottom: 22px;
+}
+.el-form-item p{
+    color: #666;
+}
+.register-area{
+    width: 600px;
+    margin: 20px auto;
+}
+.el-input{
+    width: 240px;
+    margin-right: 40px;
+}
+.el-checkbox{
+    margin: 0 0 22px 100px;
+}
