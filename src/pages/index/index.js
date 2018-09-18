@@ -14,15 +14,14 @@ export default {
     created(){
         this.list = listData.obj.rows;
         this.totalNum = listData.obj.total;
-        console.log(this.list);
+        //console.log(this.list);
         console.log(this.totalNum);
-
     },
     methods:{
         init(){
             
         },
-        getListData(){//获取
+        getListData(){//获取首页数据
 
         },
         outLine(id){//视频下线

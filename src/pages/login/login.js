@@ -96,10 +96,10 @@ export default {
       resetMailTime: function(e) {//发送验证码倒计时
         let num = 60,
         that = this;
-        that.codeText = num + "秒后重新发送";
+        that.codeText = "已发送("+ num +")s";
         let time = setInterval(function() {
             num--;
-            that.codeText = num + "秒后重新发送";
+            that.codeText = "已发送("+ num +")s";
             if (num == 0) {
                 clearInterval(time);
                 time = null;
@@ -154,9 +154,6 @@ export default {
             return false;
           }
         });
-      },
-      resetForm(formName) {//重置
-        this.$refs[formName].resetFields();
       },
       linkto(){
         //跳转到注册页
