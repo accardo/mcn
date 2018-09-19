@@ -26,13 +26,13 @@
                 用美食连接极致生活
             </div>
             <div class="bottom">
-                
+
             </div>
         </section>
     </div>
-    
+
 </template>
-<script src="./login.js"></script>  
+<script src="./login.js"></script>
 <style scoped>
     @import '../../../static/css/common.css';
 	@import './login.css';
