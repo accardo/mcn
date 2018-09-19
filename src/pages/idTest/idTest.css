@@ -1,0 +1,32 @@
+.warting,.success{
+    text-align: center;
+}
+.register-area .el-icon-circle-close{
+    color: #f56c6c;
+    margin-right: 15px;
+}
+.warting i{
+    font-size: 50px;
+    color: #409eff;
+}
+.success i{
+    font-size: 50px;
+    color:#67c23a;
+}
+.register-area .tips{
+    display: inline-block;
+}
+.tips{
+    line-height: 30px;
+    margin-bottom: 20px;
+    color: #606266;  
+}
+.warting{
+    margin-top:60px;
+}
+.success{
+    margin-top: 50px;
+}
+.warting .tips,.success .tips{
+    margin-top: 30px;
+} 
