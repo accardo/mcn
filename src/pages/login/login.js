@@ -1,50 +1,32 @@
 import util from '../../util/util';
 export default {
     data() {
-      var account = (rule, value, callback) =>{
-          if(value === ''){
-            callback(new Error('请输入账户'));
-            this.codeBtn = true;
-          }else if(value.length != 11){
-            callback(new Error('请输入正确的账户'));
-            this.codeBtn = true;
-          }else{
-            this.codeBtn = false;
-            callback();
-          }
-      }
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入验证码'));
-        } else {
-          callback();
-        }
-      }
       return {
         ruleForm: {
           pass: '',
           account: '',
         },
-        codeText:'发送验证码',
-        codeBtn:true,
+        codeText: '发送验证码',
+        codeBtn: true,
         rules: {
           pass: [
-            { validator: validatePass, trigger: 'blur' }
+            { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
           account: [
-            { validator: account, trigger: 'blur' }
+            { required: true, message: '请输入账户', trigger: 'blur' },
+            { min: 11, max: 11, message: '请输入正确的账户', trigger: 'blur' }
           ]
         }
       };
     },
     created(){
-      this.init();
+     // this.init();
     },
     methods: {
-      init(){
+      /*init(){
         //初始化
         this.isLogin();
-        
+
       },
       //获取缓存判断用户登录信息是否有效
       isLogin(){
@@ -56,19 +38,15 @@ export default {
             })
           }
         })
-      },
-      getCode(){//获取验证码
-        let _this = this;
-        _this.codeBtn = true;
-        let params = {
-          mobile: _this.ruleForm.account
-        }
-        util.$ajax(`${util.ajaxUrl}/member/smsCode`,params,'post').then(res => {
-          _this.resetMailTime();
-          if(res.code==1){
+      },*/
+      getCode() { //获取验证码
+        this.codeBtn= true;
+        util.httpAjax('/member/smsCode', { mobile: this.ruleForm.account}).then((data) => {
+          this.resetMailTime();
+          if(data.code==1){
             console.log('发送验证码成功')
           }else{
-            switch(res.code){
+            switch(data.code){
               case 0:
                 this.$message({message: '报错',type: 'error'});
                 break;
@@ -91,43 +69,40 @@ export default {
                 this.$message({message: '未知错误',type: 'error'});
             }
           }
-        })  
+        })
       },
-      resetMailTime: function(e) {//发送验证码倒计时
-        let num = 60,
-        that = this;
-        that.codeText = "已发送("+ num +")s";
-        let time = setInterval(function() {
+      resetMailTime(e) {//发送验证码倒计时
+        let num = 60;
+        this.codeText = `已发送(${num})s`;
+        let time = setInterval(() => {
             num--;
-            that.codeText = "已发送("+ num +")s";
+            this.codeText = `已发送(${num})s`;
             if (num == 0) {
                 clearInterval(time);
                 time = null;
-                that.codeText = "重发验证码";
-                that.codeBtn = false;
+                this.codeText = "重发验证码";
+                this.codeBtn = false;
             }
         }, 1000);
       },
-      submitForm(formName) {//登录
+      submitForm(formName) { //登录
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let _this = this; 
             let params = {
-              mobile: _this.ruleForm.account,
-              smsCode: _this.ruleForm.pass
+              mobile: this.ruleForm.account,
+              smsCode: this.ruleForm.pass
             }
-            util.$ajax(`${util.ajaxUrl}/member/login`,params,'post').then(res => {//验证验证码并登陆
-              if(res.code==1){
+            util.httpAjax('/member/login', params).then((res) => {
+              if (res.code === 1) {
                 localStorage.setItem('sessionId',res.data.session);
                 localStorage.setItem('name',res.data.name);
-                //跳转到首页
-                _this.$router.push({
-                  name:'layout',
-                  query:{
-                    name:1
+                this.$router.push({
+                  name: 'index',
+                  params: {
+                    name: 1
                   }
                 })
-              }else{
+              } else {
                 switch(res.code){
                   case 0:
                     this.$message({message: '报错',type: 'error'});
@@ -148,7 +123,7 @@ export default {
                     this.$message({message: '未知错误',type: 'error'});
                 }
               }
-            }) 
+            })
           } else {
             //console.log('error submit!!');
             return false;
@@ -160,6 +135,13 @@ export default {
         this.$router.push({
             name:'register'
         })
+      }
+    },
+    watch: {
+      'ruleForm.account' (val) {
+        if (val.length == 11) {
+          this.codeBtn = false
+        }
       }
     }
   }
