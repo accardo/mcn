@@ -1,4 +1,3 @@
-import classifyData from '../editVideo/a.json';
 import { quillEditor } from 'vue-quill-editor'
 export default {
     data() {
@@ -19,7 +18,7 @@ export default {
                     toolbar:[
                         ['bold', 'italic', 'underline', 'strike', 'color','align', 'image', 'video','link'],        // toggled buttons
                         ['blockquote', 'code-block'],
-                        [{ 'color': [] }, { 'background': [] }], 
+                        [{ 'color': [] }, { 'background': [] }],
                         // [{'size':['smale',false,'large','huge']}],
                         // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                     ]
@@ -43,7 +42,6 @@ export default {
                 value: '选项5',
                 label: '4444'
             }],
-            typeOptions:classifyData.data,
         };
     },
     created() {
@@ -54,13 +52,13 @@ export default {
             //console.log(classifyData)
         },
         selectTypeOne(value){
-            let self = this;
+            /*let self = this;
             self.typeOptions.map(item => {
                 if(item.key == value){
                     self.ruleForm.typeTwo = '';
                     self.childList = item.options;
                 }
-            })
+            })*/
         },
         selectTypeTwo(value){
             let self = this;

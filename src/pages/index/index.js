@@ -1,63 +1,95 @@
+import tableList from '@/components/tableList'
 import listData from './list.json';
+import util from '@/util/util';
+
 export default {
     data(){
         return {
-            title:'标题标题标题标题标题标题',
-            type:'视频',
-            currentPage:1,
-            list:[],    //获取到的列表
-            totalNum:0, //数据总条数
+          recentList: [], // 最新编辑 只取一条
         }
     },
     components:{
+      tableList
     },
-    created(){
-        this.list = listData.obj.rows;
-        this.totalNum = listData.obj.total;
-        //console.log(this.list);
-        console.log(this.totalNum);
+
+    mounted(){
+      this.getRecentList();
     },
     methods:{
-        init(){
-            
-        },
-        getListData(){//获取首页数据
-
-        },
-        outLine(id){//视频下线
-            const h = this.$createElement;
-            this.$msgbox({
-                title: '下线作品',
-                message: h('p', null, [
-                    h('span', null, '下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？ '),
-                ]),
-                showCancelButton: true,
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                beforeClose: (action, instance, done) => {
-                    if(action === 'confirm'){
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = '执行中...';
-                        done();//done用于关闭提示弹窗，请求成功后执行
-                    }else{
-                        done();
-                    }
-                }   
-            }).then(action => {
-                this.$message({
-                    type: 'info',
-                    message: '操作成功'
-                });
-            });
-        },
-        handleSizeChange(val) {//分页
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {//分页
-            console.log(`当前页: ${val}`);
-        },
-        latelyEdit(){
-            console.log('继续编辑');
+      /*
+       * Description: 最新编辑 只要一条数据
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/20
+       */
+      getRecentList() {
+        let params = {
+          state: 2,
+          pageIndex: 1,
+          pageSize: 1,
         }
+        util.httpAjaxU('/kol/works/list', params).then((res) => {
+          res.data.rows.forEach((item) => {
+            item.signs = util.stringSplit(item.signs)
+          })
+          this.recentList = res.data.rows;
+        })
+      },
+      outLine(id){//视频下线
+          const h = this.$createElement;
+          this.$msgbox({
+              title: '下线作品',
+              message: h('p', null, [
+                  h('span', null, '下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？ '),
+              ]),
+              showCancelButton: true,
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              beforeClose: (action, instance, done) => {
+                  if(action === 'confirm'){
+                      instance.confirmButtonLoading = true;
+                      instance.confirmButtonText = '执行中...';
+                      done();//done用于关闭提示弹窗，请求成功后执行
+                  }else{
+                      done();
+                  }
+              }
+          }).then(() => {
+              this.$message({
+                  type: 'info',
+                  message: '操作成功'
+              });
+          });
+      },
+      /*
+       * Description: 编辑跳转 id -> 作品id; workType -> 1、图文类型 2、视频类型
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/21
+       */
+      latelyEdit(id, workType){
+        let name = ''
+        if (workType == 1) {
+          name = 'editPic'
+        } else if (workType == 2) {
+          name = 'editVideo'
+        }
+        this.$router.push({
+          name,
+          params: {
+            id,
+            workType
+          }
+        })
+      }
+    },
+    filters: {
+      formatLabel(str) {
+        let tempStr = ''
+        if (str == 1) {
+          tempStr = '图文';
+        } else if (str == 2) {
+          tempStr = '视频';
+        }
+        return tempStr
+      }
     }
 }

@@ -3,6 +3,7 @@
 let domainUrl;
 let domainMurl;
 const isSwitch = 1;
+//const url1 = 'http://192.168.18.53:8090'
 const url1 = 'http://10.23.116.187:8090';
 const urlM1 = 'https://uc-api-d.daydaycook.com.cn';
 

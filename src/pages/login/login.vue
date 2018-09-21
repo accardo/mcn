@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <header>
-            <span class="fl"><img class="logo" src="../../../static/img/logo1.png" alt=""></span>
+            <span class="fl"><img class="logo" src="static/img/logo1.png" alt=""></span>
             <span class="fr register" @click="linkto()">立即注册</span>
         </header>
 

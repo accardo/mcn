@@ -24,7 +24,7 @@ Vue.use(VueQuillEditor)
  * Author: yanlichen <lichen.yan@daydaycook.com.cn>
  * Date: 2018/9/19
  */
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   if (to.meta.power) {
     util.httpAjax('/member/islogin').then((res) => {
       if(res.code == 1) {
@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
     })
   }
   next();
-})
+})*/
 
 /* eslint-disable no-new */
 new Vue({

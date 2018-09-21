@@ -2,44 +2,35 @@
     <div class="container">
         <div class="content-title">作品管理/新建视频作品</div>
         <section class="in-content">
-            <el-form :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
+            <el-form v-if="ruleForm" :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
                 <el-form-item label="标题" class="block">
                     <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类">
-                     <el-select v-model="ruleForm.typeOne" @change="selectTypeOne" style="width:240px;">
+                     <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" @change="selectTypeOne" style="width:240px;" placeholder="请选择">
                        <el-option
-                            v-for="item in typeOptions"
-                            :key="item.key"
-                            :label="item.value"
-                            :value="item.key">
-                        </el-option>
+                         v-for="(item, index) in levelFirst"
+                         :key="index"
+                         :label="item.detailName"
+                         :value="item.detailCode">
+                       </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级分类">
-                     <el-select v-model="ruleForm.typeTwo" @change="selectTypeTwo" style="width:240px;">
+                     <el-select v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" placeholder="请选择">
                         <el-option
-                            v-for="item in childList"
-                            :key="item.key"
-                            :label="item.value"
-                            :value="item.key">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="标签" class="block">
-                    <el-select v-model="ruleForm.tips" multiple style="width:595px;">
-                        <el-option
-                            v-for="item in tipsOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                          v-if="levelSecond"
+                          v-for="(item, index) in levelSecond"
+                          :key="index"
+                          :label="item.detailName"
+                          :value="item.detailCode">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="视频封面">
                    <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
@@ -59,7 +50,7 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="上传视频" class="block">
-                    <el-button>点击上传</el-button>    
+                    <el-button>点击上传</el-button>
                 </el-form-item>
                 <el-form-item label="描述" class="block">
                     <el-input  style="width:595px;"
@@ -82,13 +73,13 @@
                             <el-radio :span="6" v-model="ruleForm.radio" label="2" class="fl radio" @change="radioStatus()">定时发布</el-radio>
                             <el-col :span="8">
                                 <el-date-picker type="date" placeholder="选择日期"  :editable="false"
-                                v-model="ruleForm.date" :disabled="disabled" style="width: 100%;" 
+                                v-model="ruleForm.date" :disabled="disabled" style="width: 100%;"
                                 :picker-options="pickerOptionsDate" @change="dateChange()"
                                 value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
                             </el-col>
                             <el-col class="line" :span="1" style="text-align:center;">-</el-col>
                             <el-col :span="8">
-                                <el-time-picker type="fixed-time" placeholder="选择时间" 
+                                <el-time-picker type="fixed-time" placeholder="选择时间"
                                 v-model="ruleForm.time" :disabled="disabled" style="width: 100%;"
                                 :picker-options="timeObject" @change="timeChange()"
                                 value-format="HH:mm:ss" format="HH:mm:ss"></el-time-picker>

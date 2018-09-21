@@ -93,7 +93,7 @@ export default {
               smsCode: this.ruleForm.pass
             }
             util.httpAjax('/member/login', params).then((res) => {
-              if (res.code === 1) {
+              if (res.code == 1) {
                 localStorage.setItem('sessionId',res.data.session);
                 localStorage.setItem('name',res.data.name);
                 this.$router.push({

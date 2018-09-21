@@ -1,80 +1,77 @@
 import util from '../../util/util';
-import classifyData from './a.json';
-
 export default {
     data() {
         return {
-            ruleForm:{
-                title:'',
-                typeOne:'',
-                typeTwo:'',
-                tips:[],
-                imageUrl:'https://mobile.daydaycook.com.cn/activity/2018/09/kitchen/images/share.jpg',
-                videoImgUrl:'',
-                videoUrl:'',
-                textarea:'',
-                radio:'1',   //发布类型：现在发布、规定时间发布
-                date:'',    //发布日期
-                time:'',    //发布日期
-            },
-            selectValue:'',
-            childList:[],
-            tipsOptions:[{
-                value: '选项1',
-                label: '111'
-              }, {
-                value: '选项2',
-                label: '222'
-              }, {
-                value: '选项3',
-                label: '333'
-              }, {
-                value: '选项4',
-                label: '444'
-              }, {
-                value: '选项5',
-                label: '4444'
-            }],
-            typeOptions:classifyData.data,
-            dialogFormVisible:false,   //弹窗默认关闭
-            disabled:true,   // 弹窗日期选择默认禁止
-            pickerOptionsDate:{//日期选择今天以及之后的日期
-                disabledDate(time) {
-                    let afterTime = new Date().setHours(17, 0, 0, 0);
-                    let nowTime = new Date().getTime();
-                    if(nowTime>afterTime){//可选日期从明日
-                        return time.getTime() < Date.now();
-                    }else{//可选日期从当日
-                        return time.getTime() < Date.now() - 8.64e7;
-                    }
-                }
-            },
-            timeObject:{
-                selectableRange: ''
-            }
+          ruleForm: {
+            cateCode1: '',
+            cateCode2: ''
+          },
+          levelFirst: null, // 一级分类
+          levelSecond: null, // 二级分类
+          selectValue:'',
+          childList:[],
+          dialogFormVisible:false,   //弹窗默认关闭
+          disabled:true,   // 弹窗日期选择默认禁止
+          pickerOptionsDate:{//日期选择今天以及之后的日期
+              disabledDate(time) {
+                  let afterTime = new Date().setHours(17, 0, 0, 0);
+                  let nowTime = new Date().getTime();
+                  if(nowTime>afterTime){//可选日期从明日
+                      return time.getTime() < Date.now();
+                  }else{//可选日期从当日
+                      return time.getTime() < Date.now() - 8.64e7;
+                  }
+              }
+          },
+          timeObject:{
+              selectableRange: ''
+          }
+
         };
     },
-    created() {
-        this.init();
-        this.timeRange();
-        this.timeObject.selectableRange =  this.timeRange();
+    mounted() {
+      this.getVideo();
+      this.getLevel();
+
+        //this.timeRange();
+       // this.timeObject.selectableRange =  this.timeRange();
     },
     methods: {
-        init(){
-            //console.log(classifyData)
-        },
-        selectTypeOne(value){
-            let self = this;
-            self.typeOptions.map(item => {
-                if(item.key == value){
-                    self.ruleForm.typeTwo = '';
-                    self.childList = item.options;
-                }
-            })
-        },
+      /*
+			 * Description: 获取视频详情信息
+			 * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+			 * Date: 2018/9/21
+			 */
+      getVideo() {
+        util.httpAjaxU('/kol/works/findOne', {id: this.$route.params.id}).then((res) => {
+          this.ruleForm = res.data;
+          console.log(res, '视频信息')
+        })
+      },
+      /*
+       * Description: 一级分类
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/21
+       */
+      getLevel() {
+        util.httpAjaxU('/kol/works/getCodeLevel', {levelCode: ''}).then((res) => {
+          this.levelFirst = res.data;
+        })
+      },
+      /*
+       * Description: 手动 获取二级分类
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/21
+       */
+      selectTypeOne(value){
+        util.httpAjaxU('/kol/works/getCodeLevel', {levelCode: value}).then((res) => {
+          this.levelSecond = res.data;
+          this.ruleForm.cateCode2 = null
+        })
+      },
         selectTypeTwo(value){
-            let self = this;
-            console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)
+           /* let self = this;
+            console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)*/
         },
         handleAvatarSuccess(res, file) {
             this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
@@ -107,12 +104,12 @@ export default {
             if(b>a){
                 c = '00:00:00-23:59:59';
             }else{
-                let NowgetHours = new Date().getHours(); 
+                let NowgetHours = new Date().getHours();
                 if(NowgetHours>=0 && NowgetHours<9){
                     c = '16:00:00-23:59:59';
                 }else{
                     c = this.timeRange();
-                }  
+                }
             }
             this.timeObject.selectableRange = c;
         },

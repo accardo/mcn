@@ -30,19 +30,22 @@
     height: 120px;
     position: relative;
     margin-left: 0;
-} 
+}
 .lately .img img{
     width: 100%;
     height: 100%;
-} 
+}
 .lately div{
+    max-width: 650px;
     margin-left: 10px;
     float: left;
 }
 .lately div p{
-    line-height: 20px;
-    margin-top: 26px;
+    overflow: hidden;
+    padding-bottom: 10px;
     font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .lately div .type{
     background: #409EFF;
@@ -54,6 +57,9 @@
     margin-top: 20px;
     color: #fff;
     display: inline-block;
+}
+.lately div span {
+  margin-right: 10px;
 }
 .lately .lately-btn{
     width: 100px;
@@ -67,7 +73,7 @@
 
 /* 已发布作品 */
 .list{
-    overflow: hidden;   
+    overflow: hidden;
     box-sizing: border-box;
 }
 .index .list{
@@ -79,74 +85,4 @@
 }
 .list p{
     margin-bottom: 10px;
-}
-.list-item{
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-.list-item .time-area{
-    width: 100px;
-    margin-right: 10px;
-    font-size: 14px;
-}
-.list-item .time{
-    font-size: 14px;
-}
-.list-item .img{
-    width: 200px;
-    height: 120px;
-    position: relative;
-    overflow: hidden;
-}
-.list-item .img img{
-    width: 100%;
-    height: 100%;
-}
-.list-item .detail {
-    margin-left: 10px;
-}
-.list-item .detail p{
-    margin: 0；
-}
-.detail p{
-    margin-bottom: 15px;
-}
-.detail .type{
-    background: #409EFF;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    padding: 0 8px;
-    font-size: 14px;
-    margin-right: 10px;
-    color: #fff;
-    display: inline-block;
-}
-.detail .title{
-    font-size: 14px;
-}
-.detail .tag{
-    display: inline-block;
-    height: 22px;
-    line-height: 22px;
-    padding: 0 8px;
-    border: #ccc solid 1px;
-}
-.detail em{
-    height: 26px;
-    line-height: 26px;
-    font-style: normal;
-    margin-right: 10px;
-}
-.out-btn{
-    width: 60px;
-    text-align: center;
-    line-height: 120px;
-    cursor: pointer;
-    color: red;
-    font-size: 16px;
-}
-.block{
-    display: block;
-    margin-top: 10px;
 }
