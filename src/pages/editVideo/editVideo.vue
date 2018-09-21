@@ -33,6 +33,7 @@
                         action="/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
+                        :data="{session}"
                         :before-upload="beforeAvatarUpload">
                         <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>

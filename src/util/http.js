@@ -23,6 +23,7 @@ instance.requestCount = 0
 
 instance.interceptors.request.use((config) => {
   instance.requestCount++;
+  console.log(config, 'config')
   return config
 }, (error) => {
   return Promise.reject(error)
