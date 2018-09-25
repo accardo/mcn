@@ -85,7 +85,7 @@ export default {
        * Date: 2018/9/25
        */
       handleVideoSuccess() {
-
+        this.qiniuUpload(res.data, file);
       },
       //七牛文件上传
       qiniuUpload(token, file){
