@@ -77,13 +77,13 @@
         * */
        getTableData() {
          this.loading = true;
-         util.httpAjaxU(this.url, this.searchData).then((res) => {
-           res.data.rows.forEach((item) => {
+         this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
+           res.data.data.rows.forEach((item) => {
              item.signs = util.stringSplit(item.signs)
            })
-           this.amount = res.data.total;
+           this.amount = res.data.data.total;
            this.internalPageSize = this.searchData.pageSize;
-           this.tableData = res.data.rows;
+           this.tableData = res.data.data.rows;
            this.loading = false;
          })
        },

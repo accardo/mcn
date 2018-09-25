@@ -1,5 +1,5 @@
 'use strict'
-// 配置4种环境 1、url1 -> 开发环境 urlM1 -> 登陆验证 1、url2 -> 测试环境 3、url3 -> 预生产环境 url4 -> 生产环境
+// 配置4种环境 1、url1 -> 开发环境 urlM1 -> 登陆验证 1、url2 -> 测试环境 3、url3 -> 预生产环境 url4 -> 生产环境 // 废弃 保留
 let domainUrl;
 let domainMurl;
 const isSwitch = 1;

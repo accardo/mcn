@@ -37,9 +37,13 @@ export function httpAjaxU(url, data) {
 export function stringSplit(data) {
   return data.split(',')
 }
+export function imgUrl() {
+  return 'https://mcn-video.daydaycook.com.cn/'
+}
 export default {
   delay,
   httpAjax,
   httpAjaxU,
   stringSplit,
+  imgUrl,
 }
