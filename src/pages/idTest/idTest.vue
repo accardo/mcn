@@ -7,6 +7,8 @@
             </div>
         </header>
         <section class="register-area">
+            <!-- 认证不通过显示 -->
+            <i class="el-icon-circle-close"></i><p class="tips">认证不通过。原因：</p>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
                 <el-form-item label="身份证姓名" prop="name">
                     <el-input  v-model="ruleForm.name" auto-complete="off"></el-input>
@@ -32,6 +34,14 @@
                     <el-button @click="skip()">跳过</el-button>
                 </el-form-item>
             </el-form>
+        </section>
+        <!-- 等待后台审核状态 -->
+        <section class="warting">
+            <i class="el-icon-edit-outline"></i><p class="tips">已提交审核，请耐心等待</p>
+        </section>
+        <!-- 认证通过 -->
+        <section class="success">
+            <i class="el-icon-circle-check"></i><p class="tips">认证通过，您可以发表作品了！</p>
         </section>
     </div>
 </template>
@@ -66,4 +76,5 @@
   height: 178px;
   display: block;
 }
+
 </style>

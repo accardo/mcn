@@ -198,7 +198,7 @@
     text-align: center;
     line-height: 120px;
     cursor: pointer;
-    color: red;
+    color: #f56c6c;
     font-size: 16px;
   }
   .block{

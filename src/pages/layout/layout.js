@@ -2,7 +2,8 @@ import navList from '@/components/navlist.vue';
 export default {
     data(){
         return {
-            useraccount:'18516061111',
+            // useraccount:'18516061111',
+            useraccount:localStorage.getItem('name'),
         }
     },
     components:{

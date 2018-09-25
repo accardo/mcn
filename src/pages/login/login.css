@@ -55,21 +55,21 @@ header .fl{
     font-size: 12px;
     font-weight: normal;
 }
-.el-button.is-disabled:hover{
+.login-area .el-button.is-disabled:hover{
     background: none;
     border: none;
 }
-.el-input{
+.login-area .el-input{
     width: 280px;
     margin-right: 0;
     border-radius: 100px;
 }
-.el-form-item {
+.login-area .el-form-item {
     margin-bottom: 22px;
     position: relative;
 }
 
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+.login-area input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     background: #fff !important;
 }
 .footer{
