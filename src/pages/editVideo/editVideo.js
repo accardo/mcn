@@ -1,4 +1,5 @@
 import util from '../../util/util';
+import * as qiniu from 'qiniu-js'
 export default {
     data() {
         return {
@@ -74,9 +75,55 @@ export default {
           console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)*/
       },
       handleAvatarSuccess(res, file) {
+        this.qiniuUpload(res.data, file);
         console.log(res, file, 1111)
-          this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
-          console.log(this.ruleForm.dataimageUrl)
+        //  this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
+        //  console.log(this.ruleForm.dataimageUrl)
+      },
+      //七牛文件上传
+      qiniuUpload(token, file){
+
+      //  let self = this;
+        /*let { name } =file;
+        if(name == 'image.jpg'){
+          let d =name.split('.');
+          let t = new Date().getTime();
+          name = `${d[0]}${t}.${d[1]}`;
+        }*/
+        let qiniuPutExtra = {
+          fname: "",
+          params: {},
+          mimeType: ["image/png", "image/jpeg", "image/gif", "image/jpg"]
+        };
+        let qiniuConfig = {
+          useCdnDomain: true,
+          region: qiniu.region.z0
+        };
+        let observable = qiniu.upload(file, file.name, token, qiniuPutExtra, qiniuConfig);
+        console.log(observable, 'observable')
+        return false
+        let subscription = observable.subscribe({
+          error(err){
+            console.log(err, 'err')
+          /*  this.toast = {
+              show:true,   //是否显示toast
+              icon:'waring',   // loading   waring   success
+              msg:'图片上传失败，请稍后再试',
+              duration:1500
+            }*/
+          },
+          complete(res){
+            console.log(res, '上传成功');
+            /*let arr = [];
+            let imgPath = `${this.imgSrcPath}/${res.key}`;
+            this.pics.push(imgPath);
+            this.pics.map(item =>{
+              typeof item =='string' ? arr.push(item) : null
+            })
+            arr.length>3 ? (this.isShowFile =false) : null;
+            this.pics = arr;*/
+          }
+        })
       },
       beforeAvatarUpload(file) {
         console.log(file, 2222)
