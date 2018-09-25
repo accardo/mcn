@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
-import { Message } from 'element-ui'
 import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as http from '@/util/http';
@@ -12,12 +11,11 @@ import  VueQuillEditor from 'vue-quill-editor';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import util from "./util/util";
-
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$http = http
 Vue.use(VueQuillEditor)
+
 
 /*
  * Description: 判断session是否过期 0 -> 未登录 ， 1 -> 已登陆

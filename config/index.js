@@ -12,7 +12,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
+    proxyTable: { // 废弃 保留
       '/kol': {
         target: `${host}`,
         changeOrigin: true,

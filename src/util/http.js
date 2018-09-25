@@ -1,91 +1,41 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
-import { delay } from '@/util/util'
 import querystring from 'querystring';
+import { Message } from 'element-ui'
 
-// axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/sys' : '/newfib.php'
-//axios.defaults.baseURL = '/member'
-// axios.defaults.timeout = process.env.TIMEOUT || 10000 // 响应时间
-axios.defaults.headers['Content-Type'] = 'application/json'
-//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
-// axios.defaults.sessionid = localStorage.getItem('sessionId');
+let _url = window.location.href;
+// 0开发环境  1测试环境  2stagng环境  3生产环境
+let status = (_url.indexOf('127') > -1 || _url.indexOf('localhost') > -1) ?
+  0 : _url.indexOf('mobile-test') > -1 ?
+    1 : _url.indexOf('mobile-staging') > -1 ?
+      2 : 3;
+    status = 0;		//手动干扰
 
-const instance = axios.create({
-  // withCredentials: true, // 允许跨域 cookie
-  validateStatus (status) {
-    return (status >= 200 && status < 300) || (status > 400 && status < 500) // 获取服务端异常
-  }
-})
-const Promise = require('es6-promise').Promise
+// web 端地址 http://10.23.116.187:8090 http://192.168.18.53:8090
+export const ajaxUrl  = status == 0 ? 'http://10.23.116.187:8090' : status == 1 ?
+  '-' : status == 2 ?
+    '-' : '-';
 
-instance.requestCount = 0
+// app 端地址
+export const ajaxUrl1 = status == 0 ? 'https://uc-api-d.daydaycook.com.cn' : status == 1 ?
+  '-' : status== 2 ?
+    '-' : '-';
 
-instance.interceptors.request.use((config) => {
-  instance.requestCount++;
-  console.log(config, 'config')
-  return config
-}, (error) => {
-  return Promise.reject(error)
-})
-
-instance.interceptors.response.use((response) => {
-  console.log(response, 'response');
-  // app 0 -> 请求错误, 2 -> 参数错误, 1-> 成功
-  // web 1097 ->  登陆超时，请重新登陆, 1098 -> 信息不存在,授权失败, 1099 -> session不能为空，9999 -> 未知错误, 0000 -> 成功
-  if (response.data.code == '0') {
-    Message.error('请求错误')
-  } else if (response.data.code == '2') {
-    Message.error('参数错误')
-  }
-  if (response.data.code != '0000' && response.data.code != '0' && response.data.code != '1' && response.data.code != '2' &&
-    response.data.code != '10001' && response.data.code != '10004' && response.data.code != '10005' &&
-    response.data.code != '10013' && response.data.code != '10014') {
-    Message.error(response.data.message)
-    if (response.data.code == '1097') {
-      location.href = '/login'
-    }
-   // return Promise.reject(response)
-  }
-
-  instance.requestCount--
-  if (instance.requestCount === 0) {
-   //  window.loading.close()
-  }
-  return response.data
-}, (error) => {
-  Message.error('网络异常')
-  // window.loading.close()
-  return Promise.reject(error)
-})
-
-export default instance
-// get
-export const _get = (req) => {
-  if (typeof req === 'string') {
-    return instance.get(req)
-  }
-  return instance.get(req.url, { params: req.data })
-}
-// put
-export const _put = req => instance.put(req.url, req.data, req.config || {})
-
-// app post
-export const _post = (req) => {
+// web端请求封装 querystring.stringify 序列化 from data 形式
+export const httpAjax = function (url, data) {
   const sessionid = localStorage.getItem('sessionId');
-  let data = Object.assign({session: sessionid}, req.data)
-  console.log(data, req.url, 'app 请求地址')
-  return instance.post(req.url,data, req.config || {} )
+  let params = Object.assign({session: sessionid || ''}, data)
+  return new Promise((resolve, reject) => {
+    axios.post(url, querystring.stringify(params)).then((res)=> {
+      if (res.data.code == '0000') {
+        resolve(res)
+      } else {
+        Message.error(res.data.message)
+        if (res.data.code == '1097') {
+          location.href = '/login'
+        }
+      }
+    }).catch((error)=> {
+      reject(error);
+    })
+  })
 }
-
-// 坑爹的后端 web post
-export const _postU = (req) => {
-  const sessionid = localStorage.getItem('sessionId');
-  let data = Object.assign({session: sessionid}, req.data)
-  console.log(data, req.url, 'web 请求地址')
-  return instance.post(req.url,querystring.stringify(data), {headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'} } )
-}
-
-// delete
-export const _delete = req => instance.delete(req.url, req.config || {})
-

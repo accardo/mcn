@@ -32,20 +32,21 @@
                         class="avatar-uploader"
                         action="/kol/works/getQiniuToken"
                         :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :data="{session}"
-                        :before-upload="beforeAvatarUpload">
-                        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+                        :on-success="handlePicSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :data="{session}">
+                        <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="视频预览">
                     <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="/kol/works/getQiniuToken"
                         :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
+                        :on-success="handleVideoSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :data="{session}">
                         <img v-if="ruleForm.videoImgUrl" :src="ruleForm.videoUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>

@@ -5,7 +5,8 @@ export default {
         return {
           ruleForm: {
             cateCode1: '',
-            cateCode2: ''
+            cateCode2: '',
+            homePicture: '',
           },
           session: localStorage.getItem('sessionId'),
           levelFirst: null, // 一级分类
@@ -33,9 +34,6 @@ export default {
     mounted() {
       this.getVideo();
       this.getLevel();
-
-        //this.timeRange();
-       // this.timeObject.selectableRange =  this.timeRange();
     },
     methods: {
       /*
@@ -44,9 +42,8 @@ export default {
 			 * Date: 2018/9/21
 			 */
       getVideo() {
-        util.httpAjaxU('/kol/works/findOne', {id: this.$route.params.id}).then((res) => {
-          this.ruleForm = res.data;
-          console.log(res, '视频信息')
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/findOne`, {id: this.$route.params.id}).then(({data}) => {
+          this.ruleForm = data.data;
         })
       },
       /*
@@ -55,8 +52,8 @@ export default {
        * Date: 2018/9/21
        */
       getLevel() {
-        util.httpAjaxU('/kol/works/getCodeLevel', {levelCode: ''}).then((res) => {
-          this.levelFirst = res.data;
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: ''}).then(({data}) => {
+          this.levelFirst = data.data;
         })
       },
       /*
@@ -65,8 +62,8 @@ export default {
        * Date: 2018/9/21
        */
       selectTypeOne(value){
-        util.httpAjaxU('/kol/works/getCodeLevel', {levelCode: value}).then((res) => {
-          this.levelSecond = res.data;
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
+          this.levelSecond = data.data;
           this.ruleForm.cateCode2 = null
         })
       },
@@ -74,54 +71,45 @@ export default {
          /* let self = this;
           console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)*/
       },
-      handleAvatarSuccess(res, file) {
+      /*
+       * Description: 图片上传
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/25
+       */
+      handlePicSuccess(res, file) {
         this.qiniuUpload(res.data, file);
-        console.log(res, file, 1111)
-        //  this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
-        //  console.log(this.ruleForm.dataimageUrl)
+      },
+      /*
+       * Description: 视频上传
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/25
+       */
+      handleVideoSuccess() {
+
       },
       //七牛文件上传
       qiniuUpload(token, file){
-
-      //  let self = this;
-        /*let { name } =file;
-        if(name == 'image.jpg'){
-          let d =name.split('.');
-          let t = new Date().getTime();
-          name = `${d[0]}${t}.${d[1]}`;
-        }*/
+        let self = this;
+        let { name } =file;
+        let d =name.split('.');
+        let t = new Date().getTime();
+        name = `${d[0]}${t}.${d[1]}`;
         let qiniuPutExtra = {
           fname: "",
           params: {},
-          mimeType: ["image/png", "image/jpeg", "image/gif", "image/jpg"]
+          mimeType: ["image/png", "image/jpeg", "image/gif"]
         };
         let qiniuConfig = {
           useCdnDomain: true,
-          region: qiniu.region.z0
+          region: qiniu.region.z2
         };
-        let observable = qiniu.upload(file, file.name, token, qiniuPutExtra, qiniuConfig);
-        console.log(observable, 'observable')
-        return false
-        let subscription = observable.subscribe({
-          error(err){
-            console.log(err, 'err')
-          /*  this.toast = {
-              show:true,   //是否显示toast
-              icon:'waring',   // loading   waring   success
-              msg:'图片上传失败，请稍后再试',
-              duration:1500
-            }*/
+        let observable = qiniu.upload(file.raw, name, token, qiniuPutExtra, qiniuConfig);
+        observable.subscribe({
+          error(){
+            self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
           },
           complete(res){
-            console.log(res, '上传成功');
-            /*let arr = [];
-            let imgPath = `${this.imgSrcPath}/${res.key}`;
-            this.pics.push(imgPath);
-            this.pics.map(item =>{
-              typeof item =='string' ? arr.push(item) : null
-            })
-            arr.length>3 ? (this.isShowFile =false) : null;
-            this.pics = arr;*/
+            self.ruleForm.homePicture = util.imgUrl() + res.key
           }
         })
       },

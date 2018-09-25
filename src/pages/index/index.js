@@ -1,5 +1,4 @@
 import tableList from '@/components/tableList'
-import listData from './list.json';
 import util from '@/util/util';
 
 export default {
@@ -27,11 +26,11 @@ export default {
           pageIndex: 1,
           pageSize: 1,
         }
-        util.httpAjaxU('/kol/works/list', params).then((res) => {
-          res.data.rows.forEach((item) => {
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/list`,params).then((res) => {
+          res.data.data.rows.forEach((item) => {
             item.signs = util.stringSplit(item.signs)
           })
-          this.recentList = res.data.rows;
+          this.recentList = res.data.data.rows;
         })
       },
       outLine(id){//视频下线

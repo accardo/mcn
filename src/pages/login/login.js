@@ -41,12 +41,15 @@ export default {
       },*/
       getCode() { //获取验证码
         this.codeBtn= true;
-        util.httpAjax('/member/smsCode', { mobile: this.ruleForm.account}).then((data) => {
+        console.log(this.$url.ajaxUrl1);
+        this.$axios.post(`${this.$url.ajaxUrl1}/member/smsCode`, {
+          mobile: this.ruleForm.account
+        }).then((res) => {
           this.resetMailTime();
-          if(data.code==1){
+          if(res.data.code==1){
             console.log('发送验证码成功')
           }else{
-            switch(data.code){
+            switch(res.data.code){
               case 0:
                 this.$message({message: '报错',type: 'error'});
                 break;
@@ -88,14 +91,14 @@ export default {
       submitForm(formName) { //登录
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let params = {
+            this.$axios.post(`${this.$url.ajaxUrl1}/member/login`, {
               mobile: this.ruleForm.account,
               smsCode: this.ruleForm.pass
-            }
-            util.httpAjax('/member/login', params).then((res) => {
-              if (res.code == 1) {
-                localStorage.setItem('sessionId',res.data.session);
-                localStorage.setItem('name',res.data.name);
+            }).then((res) => {
+              console.log(res)
+              if (res.data.code == 1) {
+                localStorage.setItem('sessionId',res.data.data.session);
+                localStorage.setItem('name',res.data.data.name);
                 this.$router.push({
                   name: 'index',
                   params: {
@@ -103,7 +106,7 @@ export default {
                   }
                 })
               } else {
-                switch(res.code){
+                switch(res.data.code){
                   case 0:
                     this.$message({message: '报错',type: 'error'});
                     break;
