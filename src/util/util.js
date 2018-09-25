@@ -9,14 +9,37 @@ export function httpAjax(url, data) {
     Vue.prototype.$http._post({
       url,
       data
-    }).then((xhr) => {
-      resolve(xhr)
+    }).then((data) => {
+      resolve(data)
     }).catch((error) => {
       reject(error)
     })
   })
 }
+export function httpAjaxU(url, data) {
+  return new Promise((resolve, reject) => {
+    Vue.prototype.$http._postU({
+      url,
+      data
+    }).then((data) => {
+      resolve(data)
+    }).catch((error) => {
+      reject(error)
+    })
+  })
+}
+
+/*
+ * Description: 字符串转数组 逗号形式
+ * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+ * Date: 2018/9/20
+ */
+export function stringSplit(data) {
+  return data.split(',')
+}
 export default {
   delay,
-  httpAjax
+  httpAjax,
+  httpAjaxU,
+  stringSplit,
 }

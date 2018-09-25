@@ -1,3 +1,4 @@
+import tableList from '@/components/tableListTwo'
 export default {
     data() {
         return {
@@ -5,13 +6,10 @@ export default {
             currentPage:1,
         };
     },
+    components:{
+        tableList
+    },
     methods: {
-        handleSizeChange(val) {//分页
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {//分页
-            console.log(`当前页: ${val}`);
-        },
         addNew(){//新建视频
             //跳转到新建页面
             this.$router.push({

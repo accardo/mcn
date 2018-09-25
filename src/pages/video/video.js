@@ -1,9 +1,14 @@
+import tableList from '@/components/tableListTwo'
+import util from '@/util/util';
 export default {
     data() {
         return {
             tabPosition: 'top',
             currentPage:1,
         };
+    },
+    components:{
+        tableList
     },
     methods: {
         outLine(id){//视频下线
@@ -57,12 +62,6 @@ export default {
                     message: '操作成功'
                 });
             });
-        },
-        handleSizeChange(val) {//分页
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {//分页
-            console.log(`当前页: ${val}`);
         },
         addNew(){//新建视频
             //跳转到新建页面
