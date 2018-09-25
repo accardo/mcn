@@ -1,4 +1,5 @@
 import util from '../../util/util';
+import axios from 'axios'
 export default {
     data() {
       return {
@@ -41,8 +42,7 @@ export default {
       },*/
       getCode() { //获取验证码
         this.codeBtn= true;
-        console.log(this.$url.ajaxUrl1);
-        this.$axios.post(`${this.$url.ajaxUrl1}/member/smsCode`, {
+        axios.post(`${this.$http.ajaxUrl1}/member/smsCode`, {
           mobile: this.ruleForm.account
         }).then((res) => {
           this.resetMailTime();
@@ -91,7 +91,7 @@ export default {
       submitForm(formName) { //登录
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$axios.post(`${this.$url.ajaxUrl1}/member/login`, {
+            axios.post(`${this.$http.ajaxUrl1}/member/login`, {
               mobile: this.ruleForm.account,
               smsCode: this.ruleForm.pass
             }).then((res) => {
