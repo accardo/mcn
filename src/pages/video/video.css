@@ -118,7 +118,7 @@
     margin-right: 10px;
 }
 .video .red-font{
-    color: red;
+    color: #f56c6c;
 }
 .video .blue-btn{
     color:#409EFF;
@@ -131,7 +131,7 @@
     display: inline-block;
     text-align: center;
     cursor: pointer;
-    color: red;
+    color: #f56c6c;
 }
 .video .block{
     display: block;
