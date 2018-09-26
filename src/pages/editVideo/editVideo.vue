@@ -7,7 +7,7 @@
                     <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类">
-                     <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" @change="selectTypeOne" style="width:240px;" placeholder="请选择">
+                     <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" @change="selectLevel" style="width:240px;" placeholder="请选择">
                        <el-option
                          v-for="(item, index) in levelFirst"
                          :key="index"
@@ -17,9 +17,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级分类">
-                     <el-select v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" placeholder="请选择">
+                     <el-select  v-if="levelSecond" v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" placeholder="请选择">
                         <el-option
-                          v-if="levelSecond"
                           v-for="(item, index) in levelSecond"
                           :key="index"
                           :label="item.detailName"
@@ -47,24 +46,25 @@
                         :on-success="handleVideoSuccess"
                         :before-upload="beforeAvatarUpload"
                         :data="{session}">
-                        <img v-if="ruleForm.videoImgUrl" :src="ruleForm.videoUrl" class="avatar">
+                      <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref" controls="controls">
+                        Your browser does not support the video tag.
+                      </video>
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="上传视频" class="block">
-                    <el-button>点击上传</el-button>
-                </el-form-item>
                 <el-form-item label="描述" class="block">
-                    <el-input  style="width:595px;"
+                    <el-input
+                        style="width: 590px;"
+                        rows="4"
                         type="textarea"
                         placeholder="请输入内容"
-                        v-model="ruleForm.textarea">
+                        v-model="ruleForm.remark">
                     </el-input>
                 </el-form-item>
                 <el-form-item class="block" style="padding-left:100px;">
                     <el-button @click="back()">取消</el-button>
-                    <el-button type="primary">保存</el-button>
-                    <el-button type="primary" @click="saveRelease()">保存并发布</el-button>
+                    <el-button type="primary" @click="saveRelease(1)">保存</el-button>
+                    <el-button type="primary" @click="saveRelease(2)">保存并发布</el-button>
                 </el-form-item>
                 <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="45%">
                     <el-form >
