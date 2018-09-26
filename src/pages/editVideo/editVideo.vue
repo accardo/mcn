@@ -96,6 +96,13 @@
                 </el-dialog>
             </el-form>
         </section>
+        <div class="shadow" v-if="shadow">
+            <div class="video-window">
+                <video class="watch-video" :src="ruleForm.videoHref" controls="controls"></video>
+                <i @click="closeShadow()" class="el-icon-circle-close-outline close-icon"></i>
+            </div>
+            
+        </div>
     </div>
 </template>
 <style scoped>
@@ -125,11 +132,10 @@
     text-align: center;
 }
 .avatar {
-    width: 150px;
+    width: 240px;
     height: 150px;
     display: block;
 }
-
 </style>
 
 <script src="./editVideo.js"></script>

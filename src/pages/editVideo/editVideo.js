@@ -13,6 +13,7 @@ export default {
           levelSecond: null, // 二级分类
           selectValue:'',
           childList:[],
+          shadow:false, //弹窗遮罩
           dialogFormVisible:false,   //弹窗默认关闭
           disabled:true,   // 弹窗日期选择默认禁止
           pickerOptionsDate:{//日期选择今天以及之后的日期
@@ -34,6 +35,7 @@ export default {
     mounted() {
       this.getVideo();
       this.getLevel();
+    //   this.watchVideo();
     },
     methods: {
       /*
@@ -44,6 +46,7 @@ export default {
       getVideo() {
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/findOne`, {id: this.$route.params.id}).then(({data}) => {
           this.ruleForm = data.data;
+          this.watchVideo();
         })
       },
       /*
@@ -141,6 +144,24 @@ export default {
           }
           return isJPG && isLt2M;*/
       },
+      //预览视频
+      watchVideo(){
+        let _this = this;
+        this.$nextTick(() => {
+            let videoDom = document.getElementsByTagName('video')[0];
+            videoDom.onplay=function(){
+                videoDom.pause();
+                _this.shadow = true;
+            }
+        })
+      },
+      //关闭视频预览
+      closeShadow(){
+        let _this = this;
+        _this.shadow = false;
+        let videoDom = document.getElementsByTagName('video')[1];
+        videoDom.pause();
+      },
       radioStatus(){
           let that = this;
           if(that.ruleForm.radio == 2){
@@ -208,9 +229,9 @@ export default {
        */
       saveRelease(type){//保存并发布按钮
         console.log(this.ruleForm, 'ruleForm')
-        if (type == 1) {
+        if (type == 1) {//保存
           this.ruleForm.state = 'A'
-        } else if (type == 2) {
+        } else if (type == 2) {//保存并发布
           this.ruleForm.state = 'W'
         }
         delete this.ruleForm.createTime;
@@ -224,9 +245,6 @@ export default {
           console.log(data, '更新成功')
         })
         //  this.dialogFormVisible = true;
-      },
-      saveData(){
-          console.log(this.ruleForm.date);
       }
     },
     watch: {

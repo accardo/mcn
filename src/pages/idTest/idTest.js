@@ -1,3 +1,5 @@
+import util from '../../util/util';
+import * as qiniu from 'qiniu-js'
 export default {
     data() {
       var checkName = (rule, value, callback) => {
@@ -27,7 +29,8 @@ export default {
         ruleForm: {
           name:'',
           num:'',
-          imageUrl:''
+          imageUrl:'',
+          session: localStorage.getItem('sessionId'),
         },
         rules: {
             name: [

@@ -341,6 +341,7 @@
 .remark-font{
     color: #606266;
     font-size: 12px;
+    margin-top: 10px;
 }
 .blue-btn{
     color:#409EFF;
