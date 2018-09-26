@@ -26,16 +26,15 @@ export const httpAjax = function (url, data) {
   let params = Object.assign({session: sessionid || ''}, data)
   return new Promise((resolve, reject) => {
     axios.post(url, querystring.stringify(params)).then((res)=> {
-      if (res.data.code == '0000') {
         resolve(res)
-      } else {
-        Message.error(res.data.message)
-        if (res.data.code == '1097') {
+        if (res.data.code == '1097' || res.data.code == '1098' || res.data.code == '1099') {
           location.href = '/login'
+          Message.error(res.data.message)
+        } else if(res.data.code == '9999'){
+          Message.error(res.data.message)
         }
-      }
+      })
     }).catch((error)=> {
       reject(error);
     })
-  })
 }

@@ -228,11 +228,14 @@ export default {
        * Date: 2018/9/26
        */
       saveRelease(type){//保存并发布按钮
-        console.log(this.ruleForm, 'ruleForm')
+        console.log(this.ruleForm, 'ruleForm');
+        let message = '';
         if (type == 1) {//保存
-          this.ruleForm.state = 'A'
+          this.ruleForm.state = 'A';
+          message = '保存成功';
         } else if (type == 2) {//保存并发布
-          this.ruleForm.state = 'W'
+          this.ruleForm.state = 'W';
+          message = '发布成功'
         }
         delete this.ruleForm.createTime;
         delete this.ruleForm.publishTime;
@@ -242,9 +245,10 @@ export default {
         delete this.ruleForm.timeTo2;
         delete this.ruleForm.updateTime;
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(({data}) => {
-          console.log(data, '更新成功')
+          //console.log(data, '更新成功')
+          this.$message({ message: message,type: 'success'});
         })
-        //  this.dialogFormVisible = true;
+        //this.dialogFormVisible = true;
       }
     },
     watch: {
