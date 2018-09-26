@@ -175,11 +175,16 @@ export default {
       timeChange(){//用户选取时间
           console.log(this.ruleForm.time)
       },
-      back(){
-          //取消
-          this.$router.push({
-              name:'video'
-          })
+      back(){//取消
+        if(this.$route.params.index){
+            this.$router.push({
+                name:'index'
+            })
+        }else{
+            this.$router.push({
+                name:'video'
+            })
+        }
       },
       saveRelease(){//保存并发布按钮
           this.dialogFormVisible = true;

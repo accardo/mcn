@@ -64,7 +64,7 @@ export default {
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/21
        */
-      latelyEdit(id, workType){
+      latelyEdit(id, workType, index){
         let name = ''
         if (workType == 1) {
           name = 'editPic'
@@ -75,7 +75,8 @@ export default {
           name,
           params: {
             id,
-            workType
+            workType,
+            index
           }
         })
       }

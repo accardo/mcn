@@ -134,7 +134,7 @@
   @import '../../static/css/common.css';
   @import '../../static/css/iconfont.css';
   .list-item{
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     overflow: hidden;
   }
   .list-item .time-area{
@@ -149,7 +149,7 @@
   }
   .list-item .img{
     width: 200px;
-    height: 120px;
+    /* height: 120px; */
     position: relative;
     overflow: hidden;
   }
@@ -188,18 +188,18 @@
     border: #ccc solid 1px;
   }
   .detail em{
-    height: 26px;
-    line-height: 26px;
+    height: 16px;
+    line-height: 16px;
     font-style: normal;
+    font-size: 12px;
     margin-right: 10px;
   }
   .out-btn{
     width: 60px;
     text-align: center;
-    line-height: 120px;
     cursor: pointer;
     color: #f56c6c;
-    font-size: 16px;
+    font-size: 14px;
   }
   .block{
     display: block;
