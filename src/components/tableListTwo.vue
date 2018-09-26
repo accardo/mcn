@@ -28,8 +28,8 @@
           </div>
        </div>
       <div class="module two" >
-        <p>{{item.state | formatState}}</p>
-        <!-- <p class="red-font">原因：含有暴力内容</p> -->
+        <el-tag :type="item.state==='S'?'success':item.state==='F'?'danger':item.state==='Z'?'info':''">{{item.state | formatState}}</el-tag>
+        <p v-if="item.state==='F'" class="remark-font">原因：{{item.remark}}</p>
       </div>
       <div class="module two">
           <span>{{item.publishTimeLong | formatTimeOne}}</span>
@@ -278,7 +278,7 @@
 }
 .list-item .img{
     width: 200px;
-    height: 120px;
+    /* height: 115px; */
     position: relative;
     overflow: hidden;
 }
@@ -311,6 +311,7 @@
     width: 192px;
     overflow: hidden;
     display: inline-block;
+    font-size: 14px;
 }
 .detail .type{
     background: #409EFF;
@@ -331,12 +332,15 @@
     border: #ccc solid 1px;
 }
 .detail em{
-    height: 26px;
-    line-height: 26px;
+    height: 16px;
+    line-height: 16px;
     font-style: normal;
+    font-size: 12px;
+    margin-right: 5px;
 }
-.red-font{
-    color: #f56c6c;
+.remark-font{
+    color: #606266;
+    font-size: 12px;
 }
 .blue-btn{
     color:#409EFF;

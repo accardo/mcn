@@ -9,17 +9,18 @@
 
 .iconfont {
   font-family:"iconfont" !important;
-  font-size:26px;
+  font-size:16px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #f56c6c;
 }
 
-.icon-browse:before { content: "\e6e4"; }
+.icon-browse:before { content: "\e6e4";}
 
-.icon-like:before { content: "\e707"; }
+.icon-like:before { content: "\e707";}
 
-.icon-message:before { content: "\e70c"; }
+.icon-message:before { content: "\e70c";}
 
-.icon-share:before { content: "\e729"; }
+.icon-share:before { content: "\e729";}
 

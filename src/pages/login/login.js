@@ -99,6 +99,7 @@ export default {
               if (res.data.code == 1) {
                 localStorage.setItem('sessionId',res.data.data.session);
                 localStorage.setItem('name',res.data.data.name);
+                localStorage.setItem('navindex','1');
                 this.$router.push({
                   name: 'index',
                   params: {
