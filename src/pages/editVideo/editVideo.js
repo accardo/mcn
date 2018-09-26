@@ -61,10 +61,17 @@ export default {
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/21
        */
-      selectTypeOne(value){
+      selectLevel(value){
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
-          this.levelSecond = data.data;
           this.ruleForm.cateCode2 = null
+          let name = data.data.map((item) => {
+            console.log(item.detailCode, value)
+            if (item.detailCode == value) {
+              return item
+            }
+          })
+          this.ruleForm.cateCode2 = name.detailCode
+          this.levelSecond = data.data;
         })
       },
       selectTypeTwo(value){
@@ -77,18 +84,18 @@ export default {
        * Date: 2018/9/25
        */
       handlePicSuccess(res, file) {
-        this.qiniuUpload(res.data, file);
+        this.qiniuUpload(res.data, file, 1);
       },
       /*
        * Description: 视频上传
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/25
        */
-      handleVideoSuccess() {
-        this.qiniuUpload(res.data, file);
+      handleVideoSuccess(res, file) {
+        this.qiniuUpload(res.data, file, 2);
       },
       //七牛文件上传
-      qiniuUpload(token, file){
+      qiniuUpload(token, file, type){
         let self = this;
         let { name } =file;
         let d =name.split('.');
@@ -97,7 +104,7 @@ export default {
         let qiniuPutExtra = {
           fname: "",
           params: {},
-          mimeType: ["image/png", "image/jpeg", "image/gif"]
+          mimeType: ''
         };
         let qiniuConfig = {
           useCdnDomain: true,
@@ -106,15 +113,23 @@ export default {
         let observable = qiniu.upload(file.raw, name, token, qiniuPutExtra, qiniuConfig);
         observable.subscribe({
           error(){
-            self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
+            if (type == 1) {
+              self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
+            } else if(type ==2) {
+              self.$message({message: '视频上传失败，请稍后再试',type: 'error'});
+            }
           },
           complete(res){
-            self.ruleForm.homePicture = util.imgUrl() + res.key
+            if (type ==1) {
+              self.ruleForm.homePicture = util.imgUrl() + res.key
+            } else if (type == 2) {
+              self.ruleForm.videoHref = util.imgUrl() + res.key
+            }
           }
         })
       },
       beforeAvatarUpload(file) {
-        console.log(file, 2222)
+       /* console.log(file, 2222)
           const isJPG = file.type === 'image/jpeg';//规定图片格式
           const isLt2M = file.size / 1024 / 1024 < 2;//规定图片大小
 
@@ -124,7 +139,7 @@ export default {
           if (!isLt2M) {
               this.$message.error('上传图片大小不能超过 2MB!');
           }
-          return isJPG && isLt2M;
+          return isJPG && isLt2M;*/
       },
       radioStatus(){
           let that = this;
@@ -181,11 +196,38 @@ export default {
               name:'video'
           })
       },
-      saveRelease(){//保存并发布按钮
-          this.dialogFormVisible = true;
+      /*
+       * Description: type -> 1 保存草稿, type -> 2 发布审核
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/26
+       */
+      saveRelease(type){//保存并发布按钮
+        console.log(this.ruleForm, 'ruleForm')
+        if (type == 1) {
+          this.ruleForm.state = 'A'
+        } else if (type == 2) {
+          this.ruleForm.state = 'W'
+        }
+        delete this.ruleForm.createTime;
+        delete this.ruleForm.publishTime;
+        delete this.ruleForm.timeFrom1;
+        delete this.ruleForm.timeFrom2;
+        delete this.ruleForm.timeTo1;
+        delete this.ruleForm.timeTo2;
+        delete this.ruleForm.updateTime;
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(({data}) => {
+          console.log(data, '更新成功')
+        })
+        //  this.dialogFormVisible = true;
       },
       saveData(){
           console.log(this.ruleForm.date);
+      }
+    },
+    watch: {
+      'ruleForm.cateCode1' (value) {
+        this.selectLevel(value)
+        console.log(value, '监听')
       }
     }
 };
