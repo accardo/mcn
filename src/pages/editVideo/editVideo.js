@@ -28,7 +28,11 @@ export default {
           },
           timeObject:{
               selectableRange: ''
-          }
+          },
+          isLevel: true,
+          isSave: false,
+          saveText: '保存',
+          saveReleaseText: '保存并发布'
         };
     },
     mounted() {
@@ -63,14 +67,11 @@ export default {
        */
       selectLevel(value){
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
-          this.ruleForm.cateCode2 = null
-          let name = data.data.map((item) => {
-            console.log(item.detailCode, value)
-            if (item.detailCode == value) {
-              return item
-            }
-          })
-          this.ruleForm.cateCode2 = name.detailCode
+          if (this.isLevel) {
+            this.isLevel = false
+          } else {
+            this.ruleForm.cateCode2 = data.data[0].detailCode
+          }
           this.levelSecond = data.data;
         })
       },
@@ -104,7 +105,7 @@ export default {
         let qiniuPutExtra = {
           fname: "",
           params: {},
-          mimeType: ''
+          mimeType: null
         };
         let qiniuConfig = {
           useCdnDomain: true,
@@ -115,12 +116,12 @@ export default {
           error(){
             if (type == 1) {
               self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
-            } else if(type ==2) {
+            } else if(type === 2) {
               self.$message({message: '视频上传失败，请稍后再试',type: 'error'});
             }
           },
           complete(res){
-            if (type ==1) {
+            if (type == 1) {
               self.ruleForm.homePicture = util.imgUrl() + res.key
             } else if (type == 2) {
               self.ruleForm.videoHref = util.imgUrl() + res.key
@@ -128,18 +129,31 @@ export default {
           }
         })
       },
-      beforeAvatarUpload(file) {
-       /* console.log(file, 2222)
-          const isJPG = file.type === 'image/jpeg';//规定图片格式
-          const isLt2M = file.size / 1024 / 1024 < 2;//规定图片大小
-
-          if (!isJPG) {
-              this.$message.error('上传图片只能是 JPG 格式!');
-          }
-          if (!isLt2M) {
-              this.$message.error('上传图片大小不能超过 2MB!');
-          }
-          return isJPG && isLt2M;*/
+      /*
+       * Description: 图片格式限制
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/27
+       */
+      beforeUploadPic(file) {
+        const isJpg = file.type === 'image/jpeg';
+        const isPng = file.type === 'image/png';
+        const isGif = file.type === 'image/gif';
+        if (!isJpg && !isPng && !isGif) {
+          this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+        }
+        return isJpg || isPng || isGif
+      },
+      /*
+       * Description: 视频格式限制
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/27
+       */
+      beforeUploadVideo(file) {
+        const isMp4 = file.type === 'video/mp4';
+        if (!isMp4) {
+          this.$message.error('视频格式为MP4格式');
+        }
+        return isMp4
       },
       radioStatus(){
           let that = this;
@@ -202,12 +216,6 @@ export default {
        * Date: 2018/9/26
        */
       saveRelease(type){//保存并发布按钮
-        console.log(this.ruleForm, 'ruleForm')
-        if (type == 1) {
-          this.ruleForm.state = 'A'
-        } else if (type == 2) {
-          this.ruleForm.state = 'W'
-        }
         delete this.ruleForm.createTime;
         delete this.ruleForm.publishTime;
         delete this.ruleForm.timeFrom1;
@@ -215,10 +223,32 @@ export default {
         delete this.ruleForm.timeTo1;
         delete this.ruleForm.timeTo2;
         delete this.ruleForm.updateTime;
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(({data}) => {
-          console.log(data, '更新成功')
-        })
-        //  this.dialogFormVisible = true;
+        this.$confirm('确认保存?', '确认消息', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          if (type == 1) {
+            this.ruleForm.state = 'A';
+            this.saveText = '保存中...'
+          } else if (type == 2) {
+            this.ruleForm.state = 'W';
+            this.saveReleaseText = '保存并发布中...'
+          }
+          this.isSave = true;
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(() => {
+            if (type == 1) {
+              this.saveText = '保存'
+              this.$message({type: 'success', message: '保存草稿成功'});
+            } else if(type == 2) {
+              this.saveReleaseText = '保存并发布';
+              this.$message({type: 'success', message: '保存并发布成功'});
+            }
+            this.isSave = false;
+          })
+        }).catch(action => {
+
+        });
       },
       saveData(){
           console.log(this.ruleForm.date);
@@ -228,6 +258,11 @@ export default {
       'ruleForm.cateCode1' (value) {
         this.selectLevel(value)
         console.log(value, '监听')
+      },
+      'ruleForm.cateCode2' (value) {
+        /*console.log(value)
+          this.ruleForm.cateCode2 = null
+          this.ruleForm.cateCode2 = this.levelSecond[0].detailCode*/
       }
     }
 };
