@@ -30,7 +30,8 @@ export default {
           idCardName:'',
           idCardNum:'',
           idCardPhoto:'',
-          remark:''
+          remark:'',
+          checkState:'W'
         },
         session: localStorage.getItem('sessionId'),
         formShow: false, //表单显示   1002尚未认证 1001 审核未通过
@@ -75,13 +76,17 @@ export default {
             this.$refs[formName].validate((valid) => {
             if (valid) {
               this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/updatePersonal`, this.ruleForm).then(({data}) => {
-                this.$message({ message: '身份证信息提交成功',type: 'success',duration:1500});
-                //成功后跳转到首页
-                setTimeout(()=>{
-                  this.$router.push({
-                    name:'index'
-                  })
-                },1500)
+                if(data.code = '0000'){
+                  this.$message({ message: '身份证信息提交成功',type: 'success',duration:1500});
+                  //成功后跳转到首页
+                  setTimeout(()=>{
+                    this.$router.push({
+                      name:'index'
+                    })
+                  },1500)
+                }else if(data.code = '1001'){
+                  this.$message({ message: data.message, type: 'error', duration:1500});
+                } 
               })
             } else {
                 return false;
