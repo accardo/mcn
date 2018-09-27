@@ -27,11 +27,16 @@ export default {
       };
       return {
         ruleForm: {
-          name:'',
-          num:'',
-          imageUrl:'',
+          idCardName:'',
+          idCardNum:'',
+          idCardPhoto:'',
+          remark:''
         },
         session: localStorage.getItem('sessionId'),
+        formShow: false, //表单显示   1002尚未认证 1001 审核未通过
+        remarkShow: false, //1001审核未通过 显示原因
+        loadingStatus:false,   //等待审核状态
+        successStatus: false,  //审核成功状态
         rules: {
             name: [
               { validator: checkName, trigger: 'blur' }
@@ -52,7 +57,18 @@ export default {
        //获取用户状态
         getStatus(){
           this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`, this.ruleForm).then(({data}) => {
-            
+            let _this = this;
+            if(data.code=="0000"){//审核通过
+              _this.successStatus = true;
+            }else if(data.code=="1001"){//审核未通过
+              _this.formShow = true;
+              _this.remarkShow = true;
+              this.ruleForm = data.data;
+            }else if(data.code=="1003"){//资料审核中
+              _this.loadingStatus = true;
+            }else{//尚未认证
+              _this.formShow = true;
+            }
           })
         },
         submitForm(formName) {
@@ -94,7 +110,7 @@ export default {
               self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
             },
             complete(res){
-              self.ruleForm.imageUrl = util.imgUrl() + res.key
+              self.ruleForm.idCardPhoto = util.imgUrl() + res.key
             }
           })
         },

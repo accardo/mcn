@@ -6,15 +6,17 @@
                 <p class="fr">已有账号？<i class="act" @click="linkto()">立即登录</i></p>
             </div>
         </header>
-        <section class="register-area">
+        <section class="register-area" v-if="formShow">
             <!-- 认证不通过显示 -->
-            <i class="el-icon-circle-close"></i><p class="tips">认证不通过。原因：</p>
+            <div v-if="remarkShow">
+                <i class="el-icon-circle-close"></i><p class="tips">认证不通过。原因：{{ruleForm.remark}}</p>
+            </div>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
                 <el-form-item label="身份证姓名" prop="name">
-                    <el-input  v-model="ruleForm.name" auto-complete="off"></el-input>
+                    <el-input  v-model="ruleForm.idCardName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号码" prop="num">
-                    <el-input  v-model="ruleForm.num" auto-complete="off"></el-input>
+                    <el-input  v-model="ruleForm.idCardNum" auto-complete="off"></el-input>
                 </el-form-item>
                  <el-form-item label="身份证照片" prop="imageUrl">
                    <el-upload
@@ -24,7 +26,7 @@
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload"
                         :data="{session}">
-                        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+                        <img v-if="ruleForm.idCardPhoto" :src="ruleForm.idCardPhoto" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                     <p>手持身份证照片</p>
@@ -37,11 +39,11 @@
             </el-form>
         </section>
         <!-- 等待后台审核状态 -->
-        <section class="warting">
+        <section class="warting" v-if="loadingStatus">
             <i class="el-icon-edit-outline"></i><p class="tips">已提交审核，请耐心等待</p>
         </section>
         <!-- 认证通过 -->
-        <section class="success">
+        <section class="success" v-if="successStatus">
             <i class="el-icon-circle-check"></i><p class="tips">认证通过，您可以发表作品了！</p>
         </section>
     </div>
