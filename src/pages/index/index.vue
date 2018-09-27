@@ -14,7 +14,7 @@
                </p>
                <el-tag type="success" size="small" v-for="(itemSigns, index) in item.signs" :key="index">{{itemSigns}}</el-tag>
              </div>
-             <el-button class="fr" size="small" type="primary" @click="latelyEdit(item.id, item.workType)">继续编辑</el-button>
+             <el-button class="fr" size="small" type="primary" @click="latelyEdit(item.id, item.workType,'1')">继续编辑</el-button>
            </div>
        </div>
        <div class="list">

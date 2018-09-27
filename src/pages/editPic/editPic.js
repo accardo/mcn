@@ -86,11 +86,16 @@ export default {
         },
         onEditorChange(){//内容改变事件
         },
-        back(){
-            //取消
-            this.$router.push({
-                name:'pic'
-            })
+        back(){//取消
+            if(this.$route.params.index){
+                this.$router.push({
+                    name:'index'
+                })
+            }else{
+                this.$router.push({
+                    name:'video'
+                })
+            }
         }
     }
 };

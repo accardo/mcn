@@ -23,7 +23,7 @@
           <i class="iconfont icon-share fl"></i><em class="fl">{{item.shareNum}}</em>
         </p>
       </div>
-      <span class="out-btn fr" @click="outLine()">下线</span>
+      <el-button class="fr" size="mini" @click="outLine(item.id)" type="danger">下线</el-button>
     </div>
     <div class="block fr">
       <el-pagination
@@ -73,8 +73,10 @@
      },
      methods: {
        /*
-        * 请求数据实现翻页
-        * */
+        * Description: 请求数据翻页
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        getTableData() {
          this.loading = true;
          this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
@@ -88,18 +90,45 @@
          })
        },
        /*
-        * pageSize 改变时会触发
-        * */
+        * Description: pageSize 改变时会触发
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        handleSizeChange(size) {
          this.searchData.pageSize = size
          this.getTableData();
        },
        /*
-        * currentPage 改变时会触发
-        * */
+        * Description: currentPage 改变时会触发
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        handleCurrentChange(currentPage) {
          this.searchData.pageIndex = currentPage
          this.getTableData();
+       },
+       /*
+        * Description: 视频下线
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
+       outLine(id){
+         let params = {
+           id,
+           state: 'Z'
+         }
+         this.$confirm('下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？', '下线作品', {
+           distinguishCancelAndClose: true,
+           confirmButtonText: '确定',
+           cancelButtonText: '取消'
+         }).then(() => {
+           this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+             this.$message({type: 'success', message: '下线成功'});
+             this.getTableData();
+           })
+         }).catch(action => {
+
+         });
        },
      },
     filters:{
@@ -134,7 +163,7 @@
   @import '../../static/css/common.css';
   @import '../../static/css/iconfont.css';
   .list-item{
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     overflow: hidden;
   }
   .list-item .time-area{
@@ -149,7 +178,7 @@
   }
   .list-item .img{
     width: 200px;
-    height: 120px;
+    /* height: 120px; */
     position: relative;
     overflow: hidden;
   }
@@ -188,18 +217,18 @@
     border: #ccc solid 1px;
   }
   .detail em{
-    height: 26px;
-    line-height: 26px;
+    height: 16px;
+    line-height: 16px;
     font-style: normal;
+    font-size: 12px;
     margin-right: 10px;
   }
   .out-btn{
     width: 60px;
     text-align: center;
-    line-height: 120px;
     cursor: pointer;
     color: #f56c6c;
-    font-size: 16px;
+    font-size: 14px;
   }
   .block{
     display: block;

@@ -33,38 +33,12 @@ export default {
           this.recentList = res.data.data.rows;
         })
       },
-      outLine(id){//视频下线
-          const h = this.$createElement;
-          this.$msgbox({
-              title: '下线作品',
-              message: h('p', null, [
-                  h('span', null, '下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？ '),
-              ]),
-              showCancelButton: true,
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              beforeClose: (action, instance, done) => {
-                  if(action === 'confirm'){
-                      instance.confirmButtonLoading = true;
-                      instance.confirmButtonText = '执行中...';
-                      done();//done用于关闭提示弹窗，请求成功后执行
-                  }else{
-                      done();
-                  }
-              }
-          }).then(() => {
-              this.$message({
-                  type: 'info',
-                  message: '操作成功'
-              });
-          });
-      },
       /*
        * Description: 编辑跳转 id -> 作品id; workType -> 1、图文类型 2、视频类型
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/21
        */
-      latelyEdit(id, workType){
+      latelyEdit(id, workType, index){
         let name = ''
         if (workType == 1) {
           name = 'editPic'
@@ -75,7 +49,8 @@ export default {
           name,
           params: {
             id,
-            workType
+            workType,
+            index
           }
         })
       }

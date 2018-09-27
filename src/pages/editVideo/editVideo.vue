@@ -7,7 +7,7 @@
                     <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类">
-                     <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" @change="selectLevel" style="width:240px;" placeholder="请选择">
+                     <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;" placeholder="请选择">
                        <el-option
                          v-for="(item, index) in levelFirst"
                          :key="index"
@@ -17,7 +17,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级分类">
-                     <el-select  v-if="levelSecond" v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" >
+                     <el-select v-model="ruleForm.cateCode2" style="width:240px;" >
                         <el-option
                           v-for="(item, index) in levelSecond"
                           :key="index"
@@ -96,6 +96,13 @@
                 </el-dialog>
             </el-form>
         </section>
+        <div class="shadow" v-if="shadow">
+            <div class="video-window">
+                <video class="watch-video" :src="ruleForm.videoHref" controls="controls"></video>
+                <i @click="closeShadow()" class="el-icon-circle-close-outline close-icon"></i>
+            </div>
+
+        </div>
     </div>
 </template>
 <style scoped>
@@ -125,11 +132,10 @@
     text-align: center;
 }
 .avatar {
-    width: 150px;
+    width: 240px;
     height: 150px;
     display: block;
 }
-
 </style>
 
 <script src="./editVideo.js"></script>

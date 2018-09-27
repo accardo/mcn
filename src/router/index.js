@@ -24,7 +24,8 @@ export default new Router({
       children:[
         { path: '/index',              name: 'index',              component: Index,meta: {power: true, } },
         { path: '/video',              name: 'video',              component: Video,meta: {power: true, } },
-        { path: '/editVideo/:id',          name: 'editVideo',          component: EditVideo,meta: {power: true, }  },
+        { path: '/create',             name: 'create',          component: EditVideo,meta: {power: true, }  },
+        { path: '/editVideo/:id',      name: 'editVideo',          component: EditVideo,meta: {power: true, }  },
         { path: '/pic',                name: 'pic',                component: Pic,meta: {power: true, } },
         { path: '/editPic',            name: 'editPic',            component: EditPic,meta: {power: true, } },
       ]

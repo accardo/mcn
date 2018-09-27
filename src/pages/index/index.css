@@ -20,6 +20,7 @@
 }
 .top-title{
     font-size: 16px;
+    color: #409EFF;
 }
 .lately{
     overflow: hidden;
@@ -85,4 +86,8 @@
 }
 .list p{
     margin-bottom: 10px;
+}
+.top-title{
+    font-size: 16px;
+    color: #409EFF;
 }

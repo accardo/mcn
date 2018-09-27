@@ -19,10 +19,11 @@
                  <el-form-item label="身份证照片" prop="imageUrl">
                    <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
+                        :before-upload="beforeAvatarUpload"
+                        :data="{session}">
                         <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
