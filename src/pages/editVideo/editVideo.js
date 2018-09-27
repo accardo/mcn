@@ -4,15 +4,16 @@ export default {
     data() {
         return {
           ruleForm: {
+            title: '',
             cateCode1: '',
             cateCode2: '',
             homePicture: '',
+            videoHref: '',
+            remark: ''
           },
           session: localStorage.getItem('sessionId'),
           levelFirst: null, // 一级分类
           levelSecond: null, // 二级分类
-          selectValue:'',
-          childList:[],
           shadow:false, //弹窗遮罩
           dialogFormVisible:false,   //弹窗默认关闭
           disabled:true,   // 弹窗日期选择默认禁止
@@ -30,16 +31,19 @@ export default {
           timeObject:{
               selectableRange: ''
           },
+          videoFlag:false,//视频上传进度条
+          picFlag:false,//图片上传进度条
           isLevel: true,
           isSave: false,
           saveText: '保存',
-          saveReleaseText: '保存并发布'
+          saveReleaseText: '保存并发布',
         };
     },
     mounted() {
-      this.getVideo();
+      if (this.$route.name !== 'create') {
+        this.getVideo();
+      }
       this.getLevel();
-    //   this.watchVideo();
     },
     methods: {
       /*
@@ -64,23 +68,23 @@ export default {
         })
       },
       /*
-       * Description: 手动 获取二级分类
+       * Description: 二级分类
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
-       * Date: 2018/9/21
+       * Date: 2018/9/27
        */
-      selectLevel(value){
+      getLevelTwo(value) {
+        console.log(123)
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
           if (this.isLevel) {
             this.isLevel = false
           } else {
             this.ruleForm.cateCode2 = data.data[0].detailCode
           }
+          if (this.$route.name == 'create') {
+            this.ruleForm.cateCode2 = data.data[0].detailCode
+          }
           this.levelSecond = data.data;
         })
-      },
-      selectTypeTwo(value){
-         /* let self = this;
-          console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)*/
       },
       /*
        * Description: 图片上传
@@ -88,7 +92,11 @@ export default {
        * Date: 2018/9/25
        */
       handlePicSuccess(res, file) {
+        this.picFlag = false;
         this.qiniuUpload(res.data, file, 1);
+      },
+      picPercent(event, file, fileList){
+        this.picFlag = true;
       },
       /*
        * Description: 视频上传
@@ -96,7 +104,11 @@ export default {
        * Date: 2018/9/25
        */
       handleVideoSuccess(res, file) {
+        this.videoFlag = false;
         this.qiniuUpload(res.data, file, 2);
+      },
+      videoPercent(event, file, fileList){
+        this.videoFlag = true;
       },
       //七牛文件上传
       qiniuUpload(token, file, type){
@@ -237,7 +249,7 @@ export default {
         }
       },
       /*
-       * Description: type -> 1 保存草稿, type -> 2 发布审核
+       * Description: type -> 1 保存草稿, type -> 2 发布审核 更新保存
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/26
        */
@@ -262,6 +274,47 @@ export default {
             this.saveReleaseText = '保存并发布中...'
           }
           this.isSave = true;
+          if (this.$route.name === 'create') {
+            this.ruleForm.workType = 2
+            this.ruleForm.publishTask = 1
+          }
+          let urlSaveUpdate = this.$route.name !== 'create' ? '/kol/works/update' : '/kol/works/save'
+          this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(() => {
+            if (type == 1) {
+              this.saveText = '保存'
+              this.$message({type: 'success', message: '保存草稿成功'});
+            } else if(type == 2) {
+              this.saveReleaseText = '保存并发布';
+              this.$message({type: 'success', message: '保存并发布成功'});
+            }
+            this.isSave = false;
+            this.$router.push({
+              name: 'video'
+            })
+          })
+        }).catch(action => {
+        });
+      },
+      /*
+       * Description: 创建 保存 create
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/27
+       */
+      createSave(type){
+        console.log(type, '创建保存')
+        this.$confirm('确认保存?', '确认消息', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          if (type == 1) {
+            this.ruleForm.state = 'A';
+            this.saveText = '保存中...'
+          } else if (type == 2) {
+            this.ruleForm.state = 'W';
+            this.saveReleaseText = '保存并发布中...'
+          }
+          this.isSave = true;
           this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(() => {
             if (type == 1) {
               this.saveText = '保存'
@@ -273,22 +326,20 @@ export default {
             this.isSave = false;
           })
         }).catch(action => {
-
         });
-      },
-      saveData(){
-          console.log(this.ruleForm.date);
       }
     },
     watch: {
+      /*
+      * Description: 监听 获取二级分类
+      * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+      * Date: 2018/9/21
+      */
       'ruleForm.cateCode1' (value) {
-        this.selectLevel(value)
+        if (value) {
+          this.getLevelTwo(value)
+        }
         console.log(value, '监听')
       },
-      'ruleForm.cateCode2' (value) {
-        /*console.log(value)
-          this.ruleForm.cateCode2 = null
-          this.ruleForm.cateCode2 = this.levelSecond[0].detailCode*/
-      }
     }
 };

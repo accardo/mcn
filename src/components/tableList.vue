@@ -23,7 +23,7 @@
           <i class="iconfont icon-share fl"></i><em class="fl">{{item.shareNum}}</em>
         </p>
       </div>
-      <span class="out-btn fr" @click="outLine()">下线</span>
+      <el-button class="fr" size="mini" @click="outLine(item.id)" type="danger">下线</el-button>
     </div>
      <div v-if="tableData.length == 0" style="text-align:center;line-height:60px;">
       <i class="iconfont icon-wushuju"></i>暂无数据
@@ -76,8 +76,10 @@
      },
      methods: {
        /*
-        * 请求数据实现翻页
-        * */
+        * Description: 请求数据翻页
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        getTableData() {
          this.loading = true;
          this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
@@ -91,18 +93,45 @@
          })
        },
        /*
-        * pageSize 改变时会触发
-        * */
+        * Description: pageSize 改变时会触发
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        handleSizeChange(size) {
          this.searchData.pageSize = size
          this.getTableData();
        },
        /*
-        * currentPage 改变时会触发
-        * */
+        * Description: currentPage 改变时会触发
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
        handleCurrentChange(currentPage) {
          this.searchData.pageIndex = currentPage
          this.getTableData();
+       },
+       /*
+        * Description: 视频下线
+        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+        * Date: 2018/9/27
+        */
+       outLine(id){
+         let params = {
+           id,
+           state: 'Z'
+         }
+         this.$confirm('下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？', '下线作品', {
+           distinguishCancelAndClose: true,
+           confirmButtonText: '确定',
+           cancelButtonText: '取消'
+         }).then(() => {
+           this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+             this.$message({type: 'success', message: '下线成功'});
+             this.getTableData();
+           })
+         }).catch(action => {
+
+         });
        },
      },
     filters:{

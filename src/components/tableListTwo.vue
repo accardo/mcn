@@ -9,8 +9,8 @@
     <div class="list-item" v-if="tableData.length != 0" v-for="(item, index) in tableData" :key="index">
       <div class="module one">
           <div class="img fl">
-              <img :src="item.homePicture" alt="">  
-          </div> 
+              <img :src="item.homePicture" alt="">
+          </div>
             <div class="detail fl">
               <p>
                   <span class="type fl">{{item.workType | formatLabel}}</span>
@@ -32,8 +32,8 @@
         <p v-if="item.state==='F'" class="remark-font">原因：{{item.remark}}</p>
       </div>
       <div class="module two">
-          <span>{{item.publishTimeLong | formatTimeOne}}</span>
-          <span>{{item.publishTimeLong | formatTimeTwo}}</span>
+          <span>{{item.updateTime | formatTimeOne}}</span>
+          <span>{{item.updateTime | formatTimeTwo}}</span>
       </div>
       <div class="module two">
         <!-- A草稿 -->
@@ -60,7 +60,7 @@
         <!-- Z已下线 -->
         <div v-if="item.state=='Z'">
           <span class="blue-btn" @click="edit(item.id, item.workType)">编辑</span>
-          <span class="red-btn" @click="del(item.id)">删除</span>
+          <!--<span class="red-btn" @click="del(item.id)">删除</span>-->
         </div>
       </div>
     </div>
@@ -120,9 +120,11 @@
        getTableData() {
          this.loading = true;
          this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
-           res.data.data.rows.forEach((item) => {
-             item.signs = util.stringSplit(item.signs)
-           })
+           if (res.data.data.rows.length > 0 ) {
+             res.data.data.rows.forEach((item) => {
+               item.signs = util.stringSplit(item.signs)
+             })
+           }
            this.amount = res.data.data.total;
            this.internalPageSize = this.searchData.pageSize;
            this.tableData = res.data.data.rows;
@@ -161,37 +163,59 @@
       },
       // 发布
       publish(id) {
-        console.log(id)
+        let params = {
+          id,
+          state: 'W'
+        }
+        this.$confirm('确认发布信息？', '视频发布', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+            this.$message({type: 'success', message: '发布成功'});
+            this.getTableData();
+          })
+        }).catch(action => {
+
+        });
       },
       // 撤销
       backout(id) {
+        let params = {
+          id,
+          state: 'A'
+        }
+        this.$confirm('确认撤销发布？', '视频发布', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+            this.$message({type: 'success', message: '撤销成功'});
+            this.getTableData();
+          })
+        }).catch(action => {
 
+        });
       },
       // 下线
       outLine(id) {
-        const h = this.$createElement;
-        this.$msgbox({
-            title: '下线作品',
-            message: h('p', null, [
-                h('span', null, '下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？ '),
-            ]),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            beforeClose: (action, instance, done) => {
-                if(action === 'confirm'){
-                    instance.confirmButtonLoading = true;
-                    instance.confirmButtonText = '执行中...';
-                    done();//done用于关闭提示弹窗，请求成功后执行
-                }else{
-                    done();
-                }
-            }   
-        }).then(action => {
-            this.$message({
-                type: 'info',
-                message: '操作成功'
-            });
+        let params = {
+          id,
+          state: 'Z'
+        }
+        this.$confirm('下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？', '下线作品', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+            this.$message({type: 'success', message: '下线成功'});
+            this.getTableData();
+          })
+        }).catch(action => {
+
         });
       },
       // 删除
@@ -248,7 +272,7 @@
     width: 100%;
     font-size: 0;
     line-height: 30px;
-   
+
 }
 .item-title .module{
     font-size: 14px;

@@ -35,7 +35,7 @@ export function httpAjaxU(url, data) {
  * Date: 2018/9/20
  */
 export function stringSplit(data) {
-  return data.split(',')
+  return data && data.split(',')
 }
 export function imgUrl() {
   return 'https://mcn-video.daydaycook.com.cn/'

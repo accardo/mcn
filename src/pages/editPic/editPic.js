@@ -1,3 +1,5 @@
+import util from '../../util/util';
+import * as qiniu from 'qiniu-js'
 import { quillEditor } from 'vue-quill-editor'
 export default {
     data() {
@@ -12,6 +14,7 @@ export default {
                 videoUrl:'',
                 textarea:'',
             },
+            session: localStorage.getItem('sessionId'),
             content:null,
             editorOption:{
                 modules:{
@@ -42,6 +45,7 @@ export default {
                 value: '选项5',
                 label: '4444'
             }],
+            picFlag:false,//图片上传进度条
         };
     },
     created() {
@@ -64,21 +68,55 @@ export default {
             let self = this;
             console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)
         },
-        handleAvatarSuccess(res, file) {
-            this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
-            console.log(this.ruleForm.dataimageUrl)
+        beforeUploadPic(file) {
+            const isJpg = file.type === 'image/jpeg';
+            const isPng = file.type === 'image/png';
+            const isGif = file.type === 'image/gif';
+            if (!isJpg && !isPng && !isGif) {
+              this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+            }
+            return isJpg || isPng || isGif
         },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';//规定图片格式
-            const isLt2M = file.size / 1024 / 1024 < 2;//规定图片大小
-
-            if (!isJPG) {
-                this.$message.error('上传图片只能是 JPG 格式!');
+        handlePicSuccess(res, file) {
+            this.picFlag = false;
+            this.qiniuUpload(res.data, file, 1);
+        },
+        picPercent(event, file, fileList){
+            this.picFlag = true;
+        },
+        //七牛文件上传
+        qiniuUpload(token, file, type){
+            let self = this;
+            let { name } =file;
+            let d =name.split('.');
+            let t = new Date().getTime();
+            name = `${d[0]}${t}.${d[1]}`;
+            let qiniuPutExtra = {
+            fname: "",
+            params: {},
+            mimeType: null
+            };
+            let qiniuConfig = {
+            useCdnDomain: true,
+            region: qiniu.region.z2
+            };
+            let observable = qiniu.upload(file.raw, name, token, qiniuPutExtra, qiniuConfig);
+            observable.subscribe({
+            error(){
+                if (type == 1) {
+                self.$message({message: '图片上传失败，请稍后再试',type: 'error'});
+                } else if(type === 2) {
+                self.$message({message: '视频上传失败，请稍后再试',type: 'error'});
+                }
+            },
+            complete(res){
+                if (type == 1) {
+                self.ruleForm.homePicture = util.imgUrl() + res.key
+                } else if (type == 2) {
+                self.ruleForm.videoHref = util.imgUrl() + res.key
+                }
             }
-            if (!isLt2M) {
-                this.$message.error('上传图片大小不能超过 2MB!');
-            }
-            return isJPG && isLt2M;
+            })
         },
         onEditorBlur(){//失去焦点事件
         },
