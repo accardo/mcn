@@ -41,10 +41,12 @@
         <!-- 等待后台审核状态 -->
         <section class="warting" v-if="loadingStatus">
             <i class="el-icon-edit-outline"></i><p class="tips">已提交审核，请耐心等待</p>
+            <el-button type="primary" @click="skip()">返回</el-button>
         </section>
         <!-- 认证通过 -->
         <section class="success" v-if="successStatus">
             <i class="el-icon-circle-check"></i><p class="tips">认证通过，您可以发表作品了！</p>
+            <el-button type="primary" @click="skip()">返回</el-button>
         </section>
     </div>
 </template>

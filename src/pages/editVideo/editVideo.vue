@@ -17,7 +17,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级分类">
-                     <el-select  v-if="levelSecond" v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" placeholder="请选择">
+                     <el-select  v-if="levelSecond" v-model="ruleForm.cateCode2" @change="selectTypeTwo" style="width:240px;" >
                         <el-option
                           v-for="(item, index) in levelSecond"
                           :key="index"
@@ -32,7 +32,7 @@
                         action="/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handlePicSuccess"
-                        :before-upload="beforeAvatarUpload"
+                        :before-upload="beforeUploadPic"
                         :data="{session}">
                         <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -44,7 +44,7 @@
                         action="/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleVideoSuccess"
-                        :before-upload="beforeAvatarUpload"
+                        :before-upload="beforeUploadVideo"
                         :data="{session}">
                       <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref" controls="controls">
                         Your browser does not support the video tag.
@@ -63,8 +63,8 @@
                 </el-form-item>
                 <el-form-item class="block" style="padding-left:100px;">
                     <el-button @click="back()">取消</el-button>
-                    <el-button type="primary" @click="saveRelease(1)">保存</el-button>
-                    <el-button type="primary" @click="saveRelease(2)">保存并发布</el-button>
+                    <el-button type="primary" @click="saveRelease(1)" :loading="isSave">{{saveText}}</el-button>
+                    <el-button type="primary" @click="saveRelease(2)" :loading="isSave">{{saveReleaseText}}</el-button>
                 </el-form-item>
                 <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="45%">
                     <el-form >

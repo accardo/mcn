@@ -1,7 +1,7 @@
 <template>
    <div class="container index">
        <div class="content-title">首页 </div>
-       <div class="top-area">
+       <div class="top-area"  v-if="recentList.length != 0">
            <p class="top-title">最近编辑</p>
            <div class="lately" v-for="(item, index) in recentList" :key="index">
              <div class="img fl">
