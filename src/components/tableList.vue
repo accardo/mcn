@@ -181,7 +181,7 @@
   }
   .list-item .img{
     width: 200px;
-    /* height: 120px; */
+    height: 115px;
     position: relative;
     overflow: hidden;
   }
