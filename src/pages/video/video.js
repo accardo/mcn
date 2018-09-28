@@ -3,45 +3,63 @@ import util from '@/util/util';
 export default {
     data() {
         return {
-            tabPosition: 'top',
-            currentPage:1,
+          activeName: '1',
+          listData: {
+            state: 1,
+            workType: 2,
+            pageIndex: 1,
+            pageSize: 10
+          },
+          isRefresh: false
         };
     },
     components:{
         tableList
     },
+    mounted(){
+      /*
+       * 初始化数据
+       * */
+      this.$nextTick(function () {
+        this.isRefresh = true
+      });
+    },
     methods: {
-        del(id){//视频删除
-            const h = this.$createElement;
-            this.$msgbox({
-                title: '删除作品',
-                message: h('p', null, [
-                    h('span', null, '删除后，作品就再也找不到了，真的要删除吗？'),
-                ]),
-                showCancelButton: true,
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                beforeClose: (action, instance, done) => {
-                    if(action === 'confirm'){
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = '执行中...';
-                        done();//done用于关闭提示弹窗，请求成功后执行
-                    }else{
-                        done();
-                    }
-                }
-            }).then(action => {
-                this.$message({
-                    type: 'info',
-                    message: '操作成功'
-                });
-            });
-        },
-        addNew(){//新建视频
-            //跳转到新建页面
-            this.$router.push({
-                name:'editVideo'
-            })
+      /*
+       * Description: 切换tab
+       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
+       * Date: 2018/9/27
+       */
+      handleClick(tab) {
+        this.listData = {
+          workType: 2,
+          pageIndex: 1,
+          pageSize: 10
         }
+        switch(Number(tab.name)){
+          case 1:
+            this.listData.state = 1;
+            break;
+          case 2:
+            this.listData.state = 2
+            break;
+          case 3:
+            this.listData.state = 3;
+            break;
+          case 4:
+            this.listData.state = 4;
+            break;
+          case 5:
+            this.listData.state = 5;
+            break;
+          case 6:
+            this.listData.state = 6
+            break;
+          default:
+            this.$message({message: '未知错误',type: 'error'});
+        }
+        this.isRefresh = true
+        console.log(tab.name, this.listData, '123')
+      }
     }
 };

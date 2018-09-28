@@ -38,7 +38,7 @@ export default {
         };
     },
     mounted() {
-      if (this.$route.name !== 'create') {
+      if (this.$route.name !== 'createVideo') {
         this.getVideo();
       }
       this.getLevel();
@@ -78,7 +78,7 @@ export default {
           } else {
             this.ruleForm.cateCode2 = data.data[0].detailCode
           }
-          if (this.$route.name == 'create') {
+          if (this.$route.name == 'createVideo') {
             this.ruleForm.cateCode2 = data.data[0].detailCode
           }
           this.levelSecond = data.data;
@@ -265,11 +265,11 @@ export default {
             this.saveReleaseText = '保存并发布中...'
           }
           this.isSave = true;
-          if (this.$route.name === 'create') {
+          if (this.$route.name === 'createVideo') {
             this.ruleForm.workType = 2
             this.ruleForm.publishTask = 1
           }
-          let urlSaveUpdate = this.$route.name !== 'create' ? '/kol/works/update' : '/kol/works/save'
+          let urlSaveUpdate = this.$route.name !== 'createVideo' ? '/kol/works/update' : '/kol/works/save'
           this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(() => {
             if (type == 1) {
               this.saveText = '保存'
@@ -282,39 +282,6 @@ export default {
             this.$router.push({
               name: 'video'
             })
-          })
-        }).catch(action => {
-        });
-      },
-      /*
-       * Description: 创建 保存 create
-       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
-       * Date: 2018/9/27
-       */
-      createSave(type){
-        console.log(type, '创建保存')
-        this.$confirm('确认保存?', '确认消息', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消'
-        }).then(() => {
-          if (type == 1) {
-            this.ruleForm.state = 'A';
-            this.saveText = '保存中...'
-          } else if (type == 2) {
-            this.ruleForm.state = 'W';
-            this.saveReleaseText = '保存并发布中...'
-          }
-          this.isSave = true;
-          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, this.ruleForm).then(() => {
-            if (type == 1) {
-              this.saveText = '保存'
-              this.$message({type: 'success', message: '保存草稿成功'});
-            } else if(type == 2) {
-              this.saveReleaseText = '保存并发布';
-              this.$message({type: 'success', message: '保存并发布成功'});
-            }
-            this.isSave = false;
           })
         }).catch(action => {
         });

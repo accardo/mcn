@@ -1,43 +1,45 @@
 <template>
     <div class="container video">
         <div class="content-title">图文作品管理 </div>
-        <el-tabs :tab-position="tabPosition"  class="in-content">
-            <el-tab-pane label="全部">
+        <el-tabs v-model="activeName" class="in-content" @tab-click="handleClick">
+            <el-tab-pane label="全部" name="1">
                 <el-row>
-                    <el-button type="primary" size="medium" round @click="addNew()">新建图文作品</el-button>
+                  <router-link :to="{ name: 'createPic'}">
+                    <el-button type="primary" round size="medium">新建图文作品</el-button>
+                  </router-link>
                     <!-- <span class="fr" style="line-height:36px">共2条</span> -->
                 </el-row>
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 1, pageIndex: 1, pageSize: 10}"></table-list>
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 1" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="草稿">
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 2, pageIndex: 1, pageSize: 10}"></table-list>
+            <el-tab-pane label="草稿" name="2">
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 2" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="审核中">
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 3, pageIndex: 1, pageSize: 10}"></table-list>
+            <el-tab-pane label="审核中" name="3">
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 3" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="已发布">
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 4, pageIndex: 1, pageSize: 10}"></table-list>
+            <el-tab-pane label="已发布" name="4">
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 4" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="未过审">
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 5, pageIndex: 1, pageSize: 10}"></table-list>
+            <el-tab-pane label="未过审" name="5">
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 5" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="已下线">
-                <div class="list">   
-                    <table-list url="/kol/works/list" :search-data="{workType: 1, state: 6, pageIndex: 1, pageSize: 10}"></table-list>
+            <el-tab-pane label="已下线" name="6">
+                <div class="list">
+                  <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 6" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
         </el-tabs>
-         
+
     </div>
 </template>
 <style scoped>

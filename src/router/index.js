@@ -14,6 +14,7 @@ const EditPic = () => import('@/pages/editPic/editPic.vue');   //添加、修改
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     { path: '/',                  name: 'login',              component: Login, meta: { power: false, } },
     {
@@ -24,9 +25,10 @@ export default new Router({
       children:[
         { path: '/index',              name: 'index',              component: Index,meta: {power: true, } },
         { path: '/video',              name: 'video',              component: Video,meta: {power: true, } },
-        { path: '/create',             name: 'create',          component: EditVideo,meta: {power: true, }  },
+        { path: '/createVideo',        name: 'createVideo',        component: EditVideo,meta: {power: true, }  },
         { path: '/editVideo/:id',      name: 'editVideo',          component: EditVideo,meta: {power: true, }  },
         { path: '/pic',                name: 'pic',                component: Pic,meta: {power: true, } },
+        { path: '/createPic',          name: 'createPic',          component: EditPic,meta: {power: true, } },
         { path: '/editPic',            name: 'editPic',            component: EditPic,meta: {power: true, } },
       ]
     },

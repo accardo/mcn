@@ -38,28 +38,28 @@
       <div class="module two">
         <!-- A草稿 -->
         <div v-if="item.state=='A'">
-          <span class="blue-btn" @click="edit(item.id, item.workType)">编辑</span>
-          <span class="blue-btn" @click="publish(item.id)">发布</span>
+          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
+          <el-button size="mini" @click="publish(item.id)" type="primary">发布</el-button>
         </div>
         <!-- W审核中 -->
         <div v-if="item.state=='W'">
-          <span class="blue-btn" @click="backout(item.id)">撤销</span>
+          <el-button size="mini" @click="backout(item.id)" type="warning">撤销</el-button>
         </div>
         <!-- S已发布 -->
         <div v-if="item.state=='S'">
-           <span class="red-btn" @click="outLine(item.id)">下线</span>
+          <el-button size="mini"  @click="outLine(item.id)" type="danger">下线</el-button>
         </div>
         <!-- F未过审 -->
         <div v-if="item.state=='F'">
-          <span class="blue-btn" @click="edit(item.id, item.workType)">编辑</span>
+          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
         </div>
         <!-- T定时发布 -->
         <div v-if="item.state=='T'">
-           <span class="blue-btn" @click="edit(item.id, item.workType)">编辑</span>
+          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
         </div>
         <!-- Z已下线 -->
         <div v-if="item.state=='Z'">
-          <span class="blue-btn" @click="edit(item.id, item.workType)">编辑</span>
+          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
           <!--<span class="red-btn" @click="del(item.id)">删除</span>-->
         </div>
       </div>
@@ -95,6 +95,10 @@
            return {};
          },
        },
+       isRefresh: {
+         type: Boolean,
+         default: false
+       }
      },
      data(){
           return {
@@ -120,6 +124,7 @@
        getTableData() {
          this.loading = true;
          this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
+           this.$emit('update:isRefresh', false);
            if (res.data.data.rows.length > 0 ) {
              res.data.data.rows.forEach((item) => {
                item.signs = util.stringSplit(item.signs)
