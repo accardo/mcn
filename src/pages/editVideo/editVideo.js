@@ -261,23 +261,21 @@ export default {
         delete this.ruleForm.timeTo1;
         delete this.ruleForm.timeTo2;
         delete this.ruleForm.updateTime;
-        if(type == 2){
-          if(!this.ruleForm.title){
-              this.$message({type: 'warning', message: '请填写标题'});
-              return
-          }else if(!this.ruleForm.cateCode1){
-              this.$message({type: 'warning', message: '请选择分类'});
-              return
-          }else if(!this.ruleForm.homePicture){
-              this.$message({type: 'warning', message: '请上传封面图片'});
-              return
-          }else if(!this.ruleForm.videoHref){
-              this.$message({type: 'warning', message: '请上传视频'});
-              return
-          }else if(!this.ruleForm.remark){
-              this.$message({type: 'warning', message: '请填写描述'});
-              return
-          }
+        if(!this.ruleForm.title){
+            this.$message({type: 'warning', message: '请填写标题'});
+            return
+        }else if(!this.ruleForm.cateCode1){
+            this.$message({type: 'warning', message: '请选择分类'});
+            return
+        }else if(!this.ruleForm.homePicture){
+            this.$message({type: 'warning', message: '请上传封面图片'});
+            return
+        }else if(!this.ruleForm.videoHref){
+            this.$message({type: 'warning', message: '请上传视频'});
+            return
+        }else if(!this.ruleForm.remark){
+            this.$message({type: 'warning', message: '请填写描述'});
+            return
         }
         this.$confirm('确认保存?', '确认消息', {
           distinguishCancelAndClose: true,
