@@ -10,13 +10,15 @@ export default {
             pageIndex: 1,
             pageSize: 10
           },
-          isRefresh: false
+          isRefresh: false,
+          session: localStorage.getItem('sessionId'),
         };
     },
     components:{
         tableList
     },
     mounted(){
+      this.getStatus();
       /*
        * 初始化数据
        * */
@@ -25,6 +27,16 @@ export default {
       });
     },
     methods: {
+      //获取用户状态
+      getStatus(){
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+          if(data.code!="0000"){
+            this.$router.push({
+              name:'idTest'
+            })
+          }
+        })
+      },
       /*
        * Description: 切换tab
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>

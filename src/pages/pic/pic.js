@@ -15,7 +15,20 @@ export default {
     components:{
         tableList
     },
+    mounted(){
+      this.getStatus();
+    },
     methods: {
+      //获取用户状态
+      getStatus(){
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+          if(data.code!="0000"){
+            this.$router.push({
+              name:'idTest'
+            })
+          }
+        })
+      },
       /*
        * Description: 切换tab
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
@@ -50,7 +63,7 @@ export default {
             this.$message({message: '未知错误',type: 'error'});
         }
         this.isRefresh = true
-        console.log(tab.name, this.listData, '123')
+        //console.log(tab.name, this.listData, '123')
       }
     }
 };
