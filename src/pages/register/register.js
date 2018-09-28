@@ -1,78 +1,61 @@
 import util from '../../util/util';
+import axios from "axios/index";
 export default {
     data() {
-      var checkPhone = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入手机号'));
-          this.codeBtn = true;
-        } else if(value.length != 11){
-          callback(new Error('请输入正确的手机号'));
-          this.codeBtn = true;
-        }else {
-          this.codeBtn = false;
-          callback();
-        }
-      };
-      var checkVcode = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入验证码'));
-        } else {
-          callback();
-        }
-      };
       return {
         ruleForm: {
           phone:'',
           vcode:'',
         },
         codeText:'发送验证码',
-        checked:true,
-        codeBtn:true,
+        checked: false,
+        codeBtn: true,
         rules: {
-            phone: [
-                { validator: checkPhone, trigger: 'blur' }
-              ],
-            vcode: [
-                { validator: checkVcode, trigger: 'blur' }
-            ]
+          vcode: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+          ],
+          phone: [
+            { required: true, message: '请输入账户', trigger: 'blur' },
+            { min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          ]
         }
       };
     },
     methods: {
-        getCode(){//获取验证码
-            let that = this;
-            that.codeBtn = true;
-            let params = {
-              mobile: that.ruleForm.phone
+      getCode() { //获取验证码
+        this.codeBtn= true;
+        axios.post(`${this.$http.ajaxUrl1}/member/smsCode`, {
+          mobile: this.ruleForm.phone
+        }).then((res) => {
+          this.resetMailTime();
+          if(res.data.code==1){
+            console.log('发送验证码成功')
+          }else{
+            switch(res.data.code){
+              case 0:
+                this.$message({message: '报错',type: 'error'});
+                break;
+              case 2:
+                this.$message({message: '请求参数错误',type: 'error'});
+                break;
+              case 10004:
+                this.$message({message: '短信验证码验证失败',type: 'error'});
+                break;
+              case 10005:
+                this.$message({message: '短信发送异常',type: 'error'});
+                break;
+              case 10013:
+                this.$message({message: '1分钟内只能发送一次',type: 'error'});
+                break;
+              case 10014:
+                this.$message({message: '短信验证码过期',type: 'error'});
+                break;
+              default:
+                this.$message({message: '未知错误',type: 'error'});
             }
-            util.$ajax(`${util.ajaxUrl}/member/smsCode`,params,'post').then(res => {
-               if(res.code != 1){
-                switch(res.code){
-                  case 0:
-                    this.$message({message: '报错',type: 'error'});
-                    break;
-                  case 2:
-                    this.$message({message: '请求参数错误',type: 'error'});
-                    break;
-                  case 10004:
-                    this.$message({message: '短信验证码验证失败',type: 'error'});
-                    break;
-                  case 10005:
-                    this.$message({message: '短信发送异常',type: 'error'});
-                    break;
-                  case 10013:
-                    this.$message({message: '1分钟内只能发送一次',type: 'error'});
-                    break;
-                  case 10014:
-                    this.$message({message: '短信验证码过期',type: 'error'});
-                    break;
-                  default:
-                    this.$message({message: '未知错误',type: 'error'});
-                }
-               }
-            })
-            that.resetMailTime();
-        },
+          }
+        })
+      },
         resetMailTime: function(e) {//发送验证码倒计时
           let num = 60,
           that = this;
@@ -89,57 +72,56 @@ export default {
           }, 1000);
         },
         submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
+          this.$refs[formName].validate((valid) => {
             if (valid) {
-                if(this.checked==true){
-                  let that = this;
-                  let params = {
-                    mobile: that.ruleForm.phone,
-                    smsCode: that.ruleForm.vcode
+              axios.post(`${this.$http.ajaxUrl1}/member/login`, {
+                mobile: this.ruleForm.phone,
+                smsCode: this.ruleForm.vcode
+              }).then((res) => {
+                console.log(res)
+                if (res.data.code == 1) {
+                  localStorage.setItem('sessionId',res.data.data.session);
+                  localStorage.setItem('name',res.data.data.name);
+                  localStorage.setItem('navindex','1');
+                  this.$router.push({
+                    name:'idTest'
+                  })
+                } else {
+                  switch(res.data.code){
+                    case 0:
+                      this.$message({message: '报错',type: 'error'});
+                      break;
+                    case 2:
+                      this.$message({message: '请求参数错误',type: 'error'});
+                      break;
+                    case 10004:
+                      this.$message({message: '验证码错误',type: 'error'});
+                      break;
+                    case 10009:
+                      this.$message({message: '手机号注册失败',type: 'error'});
+                      break;
+                    case 10008:
+                      this.$message({message: '用户已被锁定',type: 'error'});
+                      break;
+                    default:
+                      this.$message({message: '未知错误',type: 'error'});
                   }
-                  //提交注册信息
-                  util.$ajax(`${util.ajaxUrl}/member/register`,params,'post').then(res => {
-                    if(res.code==1){
-                      localStorage.setItem('sessionId',res.data.session);
-                      localStorage.setItem('name',res.data.name);
-                      this.$router.push({
-                        name:'idTest'
-                      })
-                    }else{
-                      switch(res.code){
-                        case 0:
-                          this.$message({message: '报错',type: 'error'});
-                          break;
-                        case 2:
-                          this.$message({message: '请求参数错误',type: 'error'});
-                          break;
-                        case 10004:
-                          this.$message({message: '验证码错误',type: 'error'});
-                          break;
-                        case 10001:
-                          this.$message({message: '手机号已被注册',type: 'error'});
-                          break;
-                        case 10013:
-                          this.$message({message: '注册失败',type: 'error'});
-                          break;
-                        default:
-                          this.$message({message: '未知错误',type: 'error'});
-                      }
-                    }
-                  }) 
-                }else{
-                  this.$message({message: '需要同意协议',type: 'warning'});
                 }
+              })
             } else {
-                return false;
+              //console.log('error submit!!');
+              return false;
             }
-            });
+          });
         },
-        linkto() {
-            //跳转到登录页
-            this.$router.push({
-                name:'login'
-            })
+    },
+    watch: {
+      'ruleForm.phone'(val) {
+        if (val.length == 11) {
+          this.codeBtn = false
+        }else {
+          this.codeBtn = true
         }
+      }
     }
-  }
+}

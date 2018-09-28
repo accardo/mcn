@@ -43,6 +43,7 @@
                             :show-file-list="false"
                             :on-success="handlePicSuccess"
                             :before-upload="beforeUploadPic"
+                            :on-progress="picPercent"
                             :data="{session}">
                   <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
