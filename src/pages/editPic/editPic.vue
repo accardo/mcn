@@ -37,16 +37,19 @@
                     </el-select>
                 </el-form-item>-->
                 <el-form-item label="封面">
-                  <el-upload  style="width:240px;"
-                              class="avatar-uploader"
-                              action="/kol/works/getQiniuToken"
-                              :show-file-list="false"
-                              :on-success="handlePicSuccess"
-                              :before-upload="beforeUploadPic"
-                              :data="{session}">
-                    <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
+                <el-upload  style="width:240px;"
+                            class="avatar-uploader"
+                            action="/kol/works/getQiniuToken"
+                            :show-file-list="false"
+                            :on-success="handlePicSuccess"
+                            :before-upload="beforeUploadPic"
+                            :data="{session}">
+                  <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <div class="progress"  v-if="picFlag == true" >
+                    <i class="el-icon-loading"></i>
+                  </div>
+                </el-upload>
                 </el-form-item>
                 <div class="form-item">
                     <span class="label fl">正文</span>
@@ -87,13 +90,13 @@
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 150px;
+    width: 240px;
     height: 150px;
     line-height: 150px;
     text-align: center;
 }
 .avatar {
-    width: 150px;
+    width: 240px;
     height: 150px;
     display: block;
 }
@@ -121,6 +124,24 @@
     padding: 0 12px 0 0;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+.progress{
+    width:100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    border-radius: 6px;
+    background:#fff;
+}
+.progress i{
+    font-size:40px;
+    color:#409EFF;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    margin-left:-20px;
+    margin-top:-20px;
 }
 </style>
 

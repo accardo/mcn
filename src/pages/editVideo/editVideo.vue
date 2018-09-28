@@ -33,9 +33,13 @@
                         :show-file-list="false"
                         :on-success="handlePicSuccess"
                         :before-upload="beforeUploadPic"
-                        :data="{session}">
+                        :data="{session}"
+                        :on-progress="picPercent">
                         <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="progress"  v-if="picFlag == true" >
+                            <i class="el-icon-loading"></i>
+                        </div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="视频预览">
@@ -45,11 +49,15 @@
                         :show-file-list="false"
                         :on-success="handleVideoSuccess"
                         :before-upload="beforeUploadVideo"
-                        :data="{session}">
+                        :data="{session}"
+                        :on-progress="videoPercent">
                       <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref" controls="controls">
                         Your browser does not support the video tag.
                       </video>
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <div class="progress"  v-if="videoFlag == true" >
+                            <i class="el-icon-loading"></i>
+                        </div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="描述" class="block">
@@ -113,6 +121,10 @@
 .el-select-dropdown__item{
     padding:0 20px !important;
 }
+.avatar-uploader{
+    position: relative;
+    width: 240px;
+}
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -126,7 +138,7 @@
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 150px;
+    width: 240px;
     height: 150px;
     line-height: 150px;
     text-align: center;
@@ -135,6 +147,24 @@
     width: 240px;
     height: 150px;
     display: block;
+}
+.progress{
+    width:100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    border-radius: 6px;
+    background:#fff;
+}
+.progress i{
+    font-size:40px;
+    color:#409EFF;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    margin-left:-20px;
+    margin-top:-20px;
 }
 </style>
 

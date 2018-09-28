@@ -28,7 +28,8 @@ export default {
           isLevel: true,
           isSave: false,
           saveText: '保存',
-          saveReleaseText: '保存并发布'
+          saveReleaseText: '保存并发布',
+          picFlag:false,//图片上传进度条
         };
     },
     created() {
@@ -117,6 +118,7 @@ export default {
             } else if (type == 2) {
               self.ruleForm.videoHref = util.imgUrl() + res.key
             }
+            this.picFlag = false;
           }
         })
       },
@@ -126,6 +128,7 @@ export default {
        * Date: 2018/9/27
        */
       beforeUploadPic(file) {
+        this.picFlag = true;
         const isJpg = file.type === 'image/jpeg';
         const isPng = file.type === 'image/png';
         const isGif = file.type === 'image/gif';

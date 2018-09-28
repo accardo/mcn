@@ -64,8 +64,8 @@
         </div>
       </div>
     </div>
-    <div v-if="tableData.length == 0" style="text-align:center;line-height:60px;">
-      暂无数据
+    <div v-if="tableData.length == 0" style="text-align:center;line-height:80px;">
+      <i class="iconfont icon-wushuju"></i>暂无数据
     </div>
     <div class="block fr">
       <el-pagination
@@ -307,7 +307,7 @@
 }
 .list-item .img{
     width: 200px;
-    /* height: 115px; */
+    height: 115px;
     position: relative;
     overflow: hidden;
 }
@@ -393,6 +393,10 @@
 }
 .tag-signs {
   margin-right: 10px;
+}
+.icon-wushuju{
+  font-size: 26px;
+  color: #333;
 }
 </style>
 

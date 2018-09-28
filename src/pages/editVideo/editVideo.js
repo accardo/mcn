@@ -31,10 +31,12 @@ export default {
           timeObject:{
               selectableRange: ''
           },
+          videoFlag:false,//视频上传进度条
+          picFlag:false,//图片上传进度条
           isLevel: true,
           isSave: false,
           saveText: '保存',
-          saveReleaseText: '保存并发布'
+          saveReleaseText: '保存并发布',
         };
     },
     mounted() {
@@ -90,7 +92,11 @@ export default {
        * Date: 2018/9/25
        */
       handlePicSuccess(res, file) {
+        this.picFlag = false;
         this.qiniuUpload(res.data, file, 1);
+      },
+      picPercent(event, file, fileList){
+        this.picFlag = true;
       },
       /*
        * Description: 视频上传
@@ -98,7 +104,11 @@ export default {
        * Date: 2018/9/25
        */
       handleVideoSuccess(res, file) {
+        this.videoFlag = false;
         this.qiniuUpload(res.data, file, 2);
+      },
+      videoPercent(event, file, fileList){
+        this.videoFlag = true;
       },
       //七牛文件上传
       qiniuUpload(token, file, type){
@@ -251,7 +261,6 @@ export default {
         delete this.ruleForm.timeTo1;
         delete this.ruleForm.timeTo2;
         delete this.ruleForm.updateTime;
-
         this.$confirm('确认保存?', '确认消息', {
           distinguishCancelAndClose: true,
           confirmButtonText: '确定',

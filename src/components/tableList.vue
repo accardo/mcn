@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" element-loading-text="拼命加载中">
-    <div class="list-item" v-for="(item, index) in tableData" :key="index">
+    <div class="list-item" v-if="tableData.length != 0" v-for="(item, index) in tableData" :key="index">
       <p class="time-area fl" >
         <span>{{item.publishTimeLong | formatTimeOne}}</span>
         <span>{{item.publishTimeLong | formatTimeTwo}}</span>
@@ -24,6 +24,9 @@
         </p>
       </div>
       <el-button class="fr" size="mini" @click="outLine(item.id)" type="danger">下线</el-button>
+    </div>
+     <div v-if="tableData.length == 0" style="text-align:center;line-height:60px;">
+      <i class="iconfont icon-wushuju"></i>暂无数据
     </div>
     <div class="block fr">
       <el-pagination
@@ -60,7 +63,7 @@
             amount: null,
             internalPageSize: 10,
             internalCurrentPage: 1,
-            tableData: null,
+            tableData:  [],
           }
      },
      mounted(){
@@ -180,7 +183,7 @@
   }
   .list-item .img{
     width: 200px;
-    /* height: 120px; */
+    height: 115px;
     position: relative;
     overflow: hidden;
   }
@@ -238,6 +241,10 @@
   }
   .tag-signs {
     margin-right: 10px;
+  }
+  .icon-wushuju{
+    font-size: 26px;
+    color: #333;
   }
 </style>
 
