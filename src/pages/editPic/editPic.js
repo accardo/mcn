@@ -85,6 +85,7 @@ export default {
       * Date: 2018/9/25
       */
       handlePicSuccess(res, file) {
+        this.picFlag = false;
         this.qiniuUpload(res.data, file, 1);
       },
       //七牛文件上传
@@ -161,7 +162,21 @@ export default {
         delete this.ruleForm.timeTo1;
         delete this.ruleForm.timeTo2;
         delete this.ruleForm.updateTime;
-
+        if(type == 2){
+            if(!this.ruleForm.title){
+                this.$message({type: 'warning', message: '请填写标题'});
+                return
+            }else if(!this.ruleForm.cateCode1){
+                this.$message({type: 'warning', message: '请选择分类'});
+                return
+            }else if(!this.ruleForm.homePicture){
+                this.$message({type: 'warning', message: '请上传封面图片'});
+                return
+            }else if(!this.ruleForm.workContext){
+                this.$message({type: 'warning', message: '请填写正文'});
+                return
+            }
+        }
         this.$confirm('确认保存?', '确认消息', {
           distinguishCancelAndClose: true,
           confirmButtonText: '确定',

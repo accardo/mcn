@@ -4,7 +4,7 @@
         <section class="in-content">
             <el-form :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
                 <el-form-item label="标题" class="block">
-                    <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
+                    <el-input style="width:595px;" v-model.trim="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类">
                      <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;">

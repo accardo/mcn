@@ -50,7 +50,7 @@
         font-size:16px;
         font-weight:normal;
     }
-    .el-input__inner{
+    .login-area .el-input__inner{
         border-radius:100px;
     }
 </style>

@@ -42,7 +42,7 @@
                         </div>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="视频预览">
+                <el-form-item label="视频">
                     <el-upload  style="width:240px;"
                         class="avatar-uploader"
                         action="/kol/works/getQiniuToken"
