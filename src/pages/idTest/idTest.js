@@ -1,5 +1,4 @@
 import util from '../../util/util';
-import * as qiniu from 'qiniu-js'
 export default {
     data() {
       return {
