@@ -2,11 +2,11 @@
     <div class="container">
         <div class="content-title">作品管理/新建视频作品</div>
         <section class="in-content">
-            <el-form :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
-                <el-form-item label="标题" class="block">
+            <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
+                <el-form-item label="标题" class="block" prop="title">
                     <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="一级分类">
+                <el-form-item label="一级分类"  prop="cateCode1">
                      <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;">
                        <el-option
                          v-for="(item, index) in levelFirst"
@@ -16,7 +16,7 @@
                        </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="二级分类">
+                <el-form-item label="二级分类" prop="cateCode2">
                   <el-select v-model="ruleForm.cateCode2" style="width:240px;" >
                     <el-option
                       v-for="(item, index) in levelSecond"
@@ -36,35 +36,36 @@
                         </el-option>
                     </el-select>
                 </el-form-item>-->
-                <el-form-item label="封面">
-                <el-upload  style="width:240px;"
-                            class="avatar-uploader"
-                            action="/kol/works/getQiniuToken"
-                            :show-file-list="false"
-                            :on-success="handlePicSuccess"
-                            :before-upload="beforeUploadPic"
-                            :on-progress="picPercent"
-                            :data="{session}">
-                  <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  <div class="progress"  v-if="picFlag == true" >
-                    <i class="el-icon-loading"></i>
-                  </div>
-                </el-upload>
+                <el-form-item label="封面" prop="homePicture">
+                  <el-upload  style="width:240px;"
+                              class="avatar-uploader"
+                              action="/kol/works/getQiniuToken"
+                              :show-file-list="false"
+                              :on-success="handlePicSuccess"
+                              :before-upload="beforeUploadPic"
+                              :on-progress="picPercent"
+                              :data="{session}">
+                    <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <div class="progress"  v-if="picFlag == true" >
+                      <i class="el-icon-loading"></i>
+                    </div>
+                  </el-upload>
                 </el-form-item>
+              <el-form-item  label="正文" prop="workContext">
                 <div class="form-item">
-                    <span class="label fl">正文</span>
-                    <quill-editor  style="width:595px;display:inline-block;float:left"
-                        v-model="ruleForm.workContext"
-                        ref="myQuillEditor"
-                        :options="editorOption"
-                        >
-                    </quill-editor>
+                  <quill-editor  style="width:595px;display:inline-block;float:left"
+                                 v-model="ruleForm.workContext"
+                                 ref="myQuillEditor"
+                                 :options="editorOption"
+                  >
+                  </quill-editor>
                 </div>
+              </el-form-item>
               <el-form-item class="block" style="padding-left:100px;">
                 <el-button @click="back()">取消</el-button>
-                <el-button type="primary" @click="saveRelease(1)" :loading="isSave">{{saveText}}</el-button>
-                <el-button type="primary" @click="saveRelease(2)" :loading="isSave">{{saveReleaseText}}</el-button>
+                <el-button type="primary" @click="saveRelease(1, 'ruleForm')" :loading="isSave">{{saveText}}</el-button>
+                <el-button type="primary" @click="saveRelease(2, 'ruleForm')" :loading="isSave">{{saveReleaseText}}</el-button>
               </el-form-item>
             </el-form>
         </section>
