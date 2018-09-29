@@ -2,18 +2,20 @@
     <div class="container">
         <header>
             <span class="fl"><img class="logo" src="static/img/logo1.png" alt=""></span>
-            <span class="fr register" @click="linkto()">立即注册</span>
+            <span class="fr register" @click="linkto()">
+              <router-link :to="{name: 'register'}">立即注册</router-link>
+            </span>
         </header>
 
         <section class="login-area">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="login-form">
                 <h2>登录</h2>
-                <el-form-item prop="account">
-                    <el-input type="text" v-model="ruleForm.account" auto-complete="off" maxLength="11" placeholder="请输入手机号" :clearable="false"></el-input>
+                <el-form-item prop="phone">
+                    <el-input type="text" v-model="ruleForm.phone" auto-complete="off" maxLength="11" placeholder="请输入手机号" :clearable="false"></el-input>
                     <el-button class="code-btn" @click.prevent="getCode()" :disabled="codeBtn">{{ codeText }}</el-button>
                 </el-form-item>
-                <el-form-item prop="pass">
-                    <el-input type="text" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入验证码"  :clearable="false"></el-input>
+                <el-form-item prop="vcode">
+                    <el-input type="text" v-model="ruleForm.vcode" auto-complete="off" placeholder="请输入验证码"  :clearable="false"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button class="login-btn" type="primary" @click="submitForm('ruleForm')">登录</el-button>

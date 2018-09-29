@@ -1,5 +1,4 @@
 import util from "../../util/util";
-import * as qiniu from "qiniu-js";
 
 const edit = {
   data() {
@@ -64,7 +63,7 @@ const edit = {
         } else {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
-        if (this.$route.name == 'createPic') {
+        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo') {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
         this.levelSecond = data.data;
@@ -141,11 +140,11 @@ const edit = {
             this.$message({type: 'success', message: '保存并发布成功'});
           }
           this.isSave = false;
-          if (this.$route.name === 'createPic') {
+          if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
             this.$router.push({
               name: 'pic'
             })
-          } else if (this.$route.name === 'createVideo') {
+          } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
             this.$router.push({
               name: 'video'
             })

@@ -38,7 +38,6 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
-
     </div>
 </template>
 <style scoped>
