@@ -2,11 +2,11 @@
     <div class="container">
         <div class="content-title">作品管理/新建视频作品</div>
         <section class="in-content">
-            <el-form v-if="ruleForm" :inline="true" :model="ruleForm" status-icon ref="ruleForm" label-width="100px">
-                <el-form-item label="标题" class="block">
-                    <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
+            <el-form v-if="ruleForm" :inline="true" :model="ruleForm" :rules="rules" status-icon ref="ruleForm" label-width="100px">
+                <el-form-item label="标题" class="block" prop="title">
+                    <el-input style="width:595px;" v-model="ruleForm.title"></el-input>
                 </el-form-item>
-                <el-form-item label="一级分类">
+                <el-form-item label="一级分类" prop="cateCode1">
                      <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;" placeholder="请选择">
                        <el-option
                          v-for="(item, index) in levelFirst"
@@ -16,7 +16,7 @@
                        </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="二级分类">
+                <el-form-item label="二级分类" prop="cateCode2">
                      <el-select v-model="ruleForm.cateCode2" style="width:240px;" >
                         <el-option
                           v-for="(item, index) in levelSecond"
@@ -26,7 +26,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="视频封面">
+                <el-form-item label="视频封面" prop="homePicture">
                    <el-upload  style="width:240px;"
                         class="avatar-uploader"
                         action="/kol/works/getQiniuToken"
@@ -42,7 +42,7 @@
                         </div>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="视频">
+                <el-form-item label="视频预览" prop="videoHref">
                     <el-upload  style="width:240px;"
                         class="avatar-uploader"
                         action="/kol/works/getQiniuToken"
@@ -60,7 +60,7 @@
                         </div>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="描述" class="block">
+                <el-form-item label="描述" class="block" prop="remark">
                     <el-input
                         style="width: 590px;"
                         rows="4"
@@ -71,8 +71,8 @@
                 </el-form-item>
                 <el-form-item class="block" style="padding-left:100px;">
                     <el-button @click="back()">取消</el-button>
-                    <el-button type="primary" @click="saveRelease(1)" :loading="isSave">{{saveText}}</el-button>
-                    <el-button type="primary" @click="saveRelease(2)" :loading="isSave">{{saveReleaseText}}</el-button>
+                    <el-button type="primary" @click="saveRelease(1, 'ruleForm')" :loading="isSave">{{saveText}}</el-button>
+                    <el-button type="primary" @click="saveRelease(2, 'ruleForm')" :loading="isSave">{{saveReleaseText}}</el-button>
                 </el-form-item>
                 <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="45%">
                     <el-form >

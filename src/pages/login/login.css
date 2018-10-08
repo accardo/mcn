@@ -54,6 +54,7 @@ header .fl{
     color: #F47575;
     font-size: 12px;
     font-weight: normal;
+    margin-right: 10px;
 }
 .login-area .el-button.is-disabled:hover{
     background: none;

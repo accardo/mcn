@@ -54,16 +54,5 @@ export default {
           }
         })
       }
-    },
-    filters: {
-      formatLabel(str) {
-        let tempStr = ''
-        if (str == 1) {
-          tempStr = '图文';
-        } else if (str == 2) {
-          tempStr = '视频';
-        }
-        return tempStr
-      }
     }
 }

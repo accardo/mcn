@@ -1,5 +1,4 @@
 import util from "../../util/util";
-import * as qiniu from "qiniu-js";
 
 const edit = {
   data() {
@@ -21,7 +20,7 @@ const edit = {
       isLevel: true,
       isSave: false,
       saveText: '保存',
-      saveReleaseText: '保存并发布',
+      saveReleaseText: '保存并发布'
     }
   },
   mounted() {
@@ -64,7 +63,7 @@ const edit = {
         } else {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
-        if (this.$route.name == 'createPic') {
+        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo') {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
         this.levelSecond = data.data;
@@ -98,7 +97,7 @@ const edit = {
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
        * Date: 2018/9/26
        */
-    saveRelease(type){
+    saveRelease(type, formName){
       delete this.ruleForm.createTime;
       delete this.ruleForm.publishTime;
       delete this.ruleForm.timeFrom1;
@@ -106,91 +105,57 @@ const edit = {
       delete this.ruleForm.timeTo1;
       delete this.ruleForm.timeTo2;
       delete this.ruleForm.updateTime;
-      if(this.$route.name === 'createPic' ){
-        if(!this.ruleForm.title){
-          this.$message({type: 'warning', message: '请填写标题'});
-          return
-        }else if(!this.ruleForm.cateCode1){
-            this.$message({type: 'warning', message: '请选择分类'});
-            return
-        }else if(!this.ruleForm.cateCode2){
-          this.$message({type: 'warning', message: '请选择分类'});
-          return
-        }else if(!this.ruleForm.homePicture){
-            this.$message({type: 'warning', message: '请上传封面图片'});
-            return
-        }else if(!this.ruleForm.workContext){
-            this.$message({type: 'warning', message: '请填写正文'});
-            return
-        }
-      }else if(this.$route.name === 'createVideo'){
-        if(!this.ruleForm.title){
-          this.$message({type: 'warning', message: '请填写标题'});
-          return
-        }else if(!this.ruleForm.cateCode1){
-            this.$message({type: 'warning', message: '请选择分类'});
-            return
-        }else if(!this.ruleForm.cateCode2){
-          this.$message({type: 'warning', message: '请选择分类'});
-          return
-        }else if(!this.ruleForm.homePicture){
-            this.$message({type: 'warning', message: '请上传封面图片'});
-            return
-        }else if(!this.ruleForm.videoHref){
-            this.$message({type: 'warning', message: '请上传视频'});
-            return
-        }else if(!this.ruleForm.remark){
-            this.$message({type: 'warning', message: '请填写描述'});
-            return
-        }
-      }
-      this.$confirm('确认保存?', '确认消息', {
-        distinguishCancelAndClose: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(() => {
-        let urlSaveUpdate = ''
-        if (type == 1) {
-          this.ruleForm.state = 'A';
-          this.saveText = '保存中...'
-        } else if (type == 2) {
-          this.ruleForm.state = 'W';
-          this.saveReleaseText = '保存并发布中...'
-        }
-        this.isSave = true;
-        if (this.$route.name === 'createPic') {
-          this.ruleForm.workType = 1
-          this.ruleForm.publishTask = 1
-        } else if (this.$route.name === 'createVideo') {
-          this.ruleForm.workType = 2
-          this.ruleForm.publishTask = 1
-        }
-        if(this.$route.name === 'createPic' || this.$route.name === 'createVideo') {
-          urlSaveUpdate = '/kol/works/save'
-        } else {
-          urlSaveUpdate = '/kol/works/update'
-        }
-        this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(() => {
-          if (type == 1) {
-            this.saveText = '保存'
-            this.$message({type: 'success', message: '保存草稿成功'});
-          } else if(type == 2) {
-            this.saveReleaseText = '保存并发布';
-            this.$message({type: 'success', message: '保存并发布成功'});
-          }
-          this.isSave = false;
-          if (this.$route.name === 'createPic') {
-            this.$router.push({
-              name: 'pic'
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$confirm('确认保存?', '确认消息', {
+            distinguishCancelAndClose: true,
+            confirmButtonText: '确定',
+            cancelButtonText: '取消'
+          }).then(() => {
+            let urlSaveUpdate = ''
+            if (type == 1) {
+              this.ruleForm.state = 'A';
+              this.saveText = '保存中...'
+            } else if (type == 2) {
+              this.ruleForm.state = 'W';
+              this.saveReleaseText = '保存并发布中...'
+            }
+            this.isSave = true;
+            if (this.$route.name === 'createPic') {
+              this.ruleForm.workType = 1
+              this.ruleForm.publishTask = 1
+            } else if (this.$route.name === 'createVideo') {
+              this.ruleForm.workType = 2
+              this.ruleForm.publishTask = 1
+            }
+            if(this.$route.name === 'createPic' || this.$route.name === 'createVideo') {
+              urlSaveUpdate = '/kol/works/save'
+            } else {
+              urlSaveUpdate = '/kol/works/update'
+            }
+            this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(() => {
+              if (type == 1) {
+                this.saveText = '保存'
+                this.$message({type: 'success', message: '保存草稿成功'});
+              } else if(type == 2) {
+                this.saveReleaseText = '保存并发布';
+                this.$message({type: 'success', message: '保存并发布成功'});
+              }
+              this.isSave = false;
+              if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
+                this.$router.push({
+                  name: 'pic'
+                })
+              } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
+                this.$router.push({
+                  name: 'video'
+                })
+              }
             })
-          } else if (this.$route.name === 'createVideo') {
-            this.$router.push({
-              name: 'video'
-            })
-          }
-        })
-      }).catch(action => {
-      });
+          }).catch(action => {
+          });
+        }
+      })
     }
   },
   watch: {

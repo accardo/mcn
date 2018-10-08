@@ -20,6 +20,26 @@ export default {
           timeObject:{
               selectableRange: ''
           },
+          rules: {
+            title: [
+              { required: true, message: '请输入标题', trigger: 'blur' },
+            ],
+            cateCode1: [
+              { required: true, message: '请选择一级分类', trigger: 'change' },
+            ],
+            cateCode2: [
+              { required: true, message: '请选择二级分类', trigger: 'change' },
+            ],
+            homePicture: [
+              { required: true, message: '请上传视频封面', trigger: 'blur' },
+            ],
+            videoHref: [
+              { required: true, message: '请上传视频', trigger: 'blur' },
+            ],
+            remark: [
+              { required: true, message: '请输入描述', trigger: 'blur' },
+            ],
+          }
         };
     },
     mounted() {},

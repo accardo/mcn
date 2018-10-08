@@ -23,6 +23,7 @@ export default {
       getStatus(){
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
           if(data.code!="0000"){
+            localStorage.setItem('navindex','1');
             this.$router.push({
               name:'idTest'
             })

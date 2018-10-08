@@ -7,7 +7,6 @@
                   <router-link :to="{ name: 'createPic'}">
                     <el-button type="primary" round size="medium">新建图文作品</el-button>
                   </router-link>
-                    <!-- <span class="fr" style="line-height:36px">共2条</span> -->
                 </el-row>
                 <div class="list">
                   <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 1" :search-data="listData"></table-list>
@@ -39,7 +38,6 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
-
     </div>
 </template>
 <style scoped>

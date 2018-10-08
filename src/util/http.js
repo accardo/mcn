@@ -18,8 +18,8 @@ export const ajaxUrl  = status == 0 ? 'http://10.23.116.187:8090' : status == 1 
 
 // app 端地址
 export const ajaxUrl1 = status == 0 ? 'https://uc-api-d.daydaycook.com.cn' : status == 1 ?
-  '-' : status== 2 ?
-    '-' : '-';
+  'https://uc-api-t.daydaycook.com.cn' : status== 2 ?
+    'https://uc-api-s.daydaycook.com.cn' : 'https://uc-api.daydaycook.com.cn';
 
 // web端请求封装 querystring.stringify 序列化 from data 形式
 export const httpAjax = function (url, data) {
