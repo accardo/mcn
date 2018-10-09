@@ -14,7 +14,7 @@ const EditPic = () => import('@/pages/editPic/editPic.vue');   //添加、修改
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     { path: '/',                  name: 'login',              component: Login, meta: { power: false, } },
     {
