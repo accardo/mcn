@@ -21,7 +21,7 @@
                  <el-form-item label="身份证照片" prop="idCardPhoto">
                    <el-upload
                         class="avatar-uploader"
-                        action="/kol/works/getQiniuToken"
+                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeUploadPic"
@@ -57,18 +57,18 @@
     @import '../register/register.css';
 	@import 'idTest.css';
 </style>
-<style>
-.avatar-uploader .el-upload {
+<style >
+.register-area .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+.register-area .avatar-uploader .el-upload:hover {
   border-color: #409EFF;
 }
-.avatar-uploader-icon {
+.register-area .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
   width: 178px;
@@ -76,7 +76,7 @@
   line-height: 178px;
   text-align: center;
 }
-.avatar {
+.register-area .avatar {
   width: 178px;
   height: 178px;
   display: block;

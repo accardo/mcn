@@ -2,7 +2,7 @@
     <div class="container">
         <header>
             <span class="fl"><img class="logo" src="static/img/logo1.png" alt=""></span>
-            <span class="fr register" @click="linkto()">
+            <span class="fr register">
               <router-link :to="{name: 'register'}">立即注册</router-link>
             </span>
         </header>

@@ -39,7 +39,7 @@
                 <el-form-item label="封面" prop="homePicture">
                   <el-upload  style="width:240px;"
                               class="avatar-uploader"
-                              action="/kol/works/getQiniuToken"
+                              action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
                               :show-file-list="false"
                               :on-success="handlePicSuccess"
                               :before-upload="beforeUploadPic"
@@ -79,17 +79,17 @@
 .el-select-dropdown__item{
     padding:0 20px !important;
 }
-.avatar-uploader .el-upload {
+.in-content .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+.in-content .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
 }
-.avatar-uploader-icon {
+.in-content .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 240px;
@@ -97,7 +97,7 @@
     line-height: 150px;
     text-align: center;
 }
-.avatar {
+.in-content .avatar {
     width: 240px;
     height: 150px;
     display: block;

@@ -1,3 +1,4 @@
+import edit from '@/pages/mixins/edit';
 import util from '../../util/util';
 export default {
     data() {
@@ -50,6 +51,7 @@ export default {
           })
         },
         submitForm(formName) {
+          delete this.ruleForm.remark;
             this.$refs[formName].validate((valid) => {
             if (valid) {
               this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/updatePersonal`, this.ruleForm).then(({data}) => {

@@ -29,7 +29,7 @@
                 <el-form-item label="视频封面" prop="homePicture">
                    <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="/kol/works/getQiniuToken"
+                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handlePicSuccess"
                         :before-upload="beforeUploadPic"
@@ -45,7 +45,7 @@
                 <el-form-item label="视频预览" prop="videoHref">
                     <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="/kol/works/getQiniuToken"
+                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
                         :show-file-list="false"
                         :on-success="handleVideoSuccess"
                         :before-upload="beforeUploadVideo"
@@ -121,21 +121,21 @@
 .el-select-dropdown__item{
     padding:0 20px !important;
 }
-.avatar-uploader{
+.in-content .avatar-uploader{
     position: relative;
     width: 240px;
 }
-.avatar-uploader .el-upload {
+.in-content .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+.in-content .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
 }
-.avatar-uploader-icon {
+.in-content .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 240px;
@@ -143,12 +143,12 @@
     line-height: 150px;
     text-align: center;
 }
-.avatar {
+.in-content .avatar {
     width: 240px;
     height: 150px;
     display: block;
 }
-.progress{
+.in-content .progress{
     width:100%;
     height: 100%;
     position: absolute;
@@ -157,7 +157,7 @@
     border-radius: 6px;
     background:#fff;
 }
-.progress i{
+.in-content .progress i{
     font-size:40px;
     color:#409EFF;
     position: absolute;
