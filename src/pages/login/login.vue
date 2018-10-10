@@ -2,9 +2,9 @@
     <div class="container">
         <header>
             <span class="fl"><img class="logo" src="static/img/logo1.png" alt=""></span>
-            <span class="fr register">
+            <!-- <span class="fr register">
               <router-link :to="{name: 'register'}">立即注册</router-link>
-            </span>
+            </span> -->
         </header>
 
         <section class="login-area">

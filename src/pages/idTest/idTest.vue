@@ -2,8 +2,8 @@
     <div class="container">
         <header>
             <div class="inheader">
-                <span>1.基本信息</span>————<span class="act">2.身份认证</span>
-                <p class="fr">已有账号？<router-link :to="{name: 'login'}">立即登录</router-link></p>
+                <span class="act">身份认证</span>
+                <!-- <p class="fr">已有账号？<router-link :to="{name: 'login'}">立即登录</router-link></p> -->
             </div>
         </header>
         <section class="register-area" v-if="formShow">
@@ -12,7 +12,7 @@
                 <i class="el-icon-circle-close"></i><p class="tips">认证不通过。原因：{{ruleForm.remark}}</p>
             </div>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
-                <el-form-item label="身份证姓名" prop="idCardName">
+                <el-form-item label="姓名" prop="idCardName">
                     <el-input  v-model="ruleForm.idCardName"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号码" prop="idCardNum">
