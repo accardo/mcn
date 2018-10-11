@@ -38,7 +38,9 @@ const edit = {
     getDetails() {
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/findOne`, {id: this.$route.params.id}).then(({data}) => {
         this.ruleForm = data.data;
-        this.watchVideo();
+        if(this.$route.name == 'editVideo' || this.$route.name == 'createVideo'){
+          this.watchVideo();
+        }
       })
     },
     /*
