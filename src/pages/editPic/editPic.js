@@ -1,6 +1,6 @@
 import { quillEditor } from 'vue-quill-editor'
 import edit from '@/pages/mixins/edit';
-
+import * as httpUrl from '../../util/http'
 export default {
     data() {
         return {
@@ -34,8 +34,29 @@ export default {
           }
         };
     },
-    mounted() {},
+    mounted() {
+      this.getStatus();
+    },
+    computed: {
+      ajaxUrl() {
+        return httpUrl.ajaxUrl
+      }
+    },
     methods: {
+      //获取用户状态
+      getStatus(){
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+          if(data.code!="0000"){
+            localStorage.setItem('navindex','1');
+            this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
+            setTimeout(()=>{
+              this.$router.push({
+                name:'idTest'
+              })
+            },1500)
+          }
+        })
+      },
       back() {//取消
         if(this.$route.params.index){
           this.$router.push({

@@ -21,7 +21,7 @@
                  <el-form-item label="身份证照片" prop="idCardPhoto">
                    <el-upload
                         class="avatar-uploader"
-                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
+                        :action = "ajaxUrl + '/kol/works/getQiniuToken'"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeUploadPic"

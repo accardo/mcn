@@ -7,6 +7,7 @@ const loginReg = {
         vcode: '',
         phone: '',
       },
+      session:'',
       codeText: '发送验证码',
       codeBtn: true,
       rules: {
@@ -94,23 +95,12 @@ const loginReg = {
             mobile: this.ruleForm.phone,
             smsCode: this.ruleForm.vcode
           }).then((res) => {
-            console.log(res)
             if (res.data.code == 1) {
               localStorage.setItem('sessionId',res.data.data.session);
               localStorage.setItem('name',res.data.data.name);
               localStorage.setItem('navindex','1');
-              if (this.$route.name === 'register') {
-                this.$router.push({
-                  name:'idTest'
-                })
-              } else {
-                this.$router.push({
-                  name: 'index',
-                  params: {
-                    name: 1
-                  }
-                })
-              }
+              this.session = res.data.data.session;
+              this.getStatus();
             } else {
               switch(res.data.code){
                 case 0:
@@ -134,10 +124,29 @@ const loginReg = {
             }
           })
         } else {
-          //console.log('error submit!!');
           return false;
         }
       });
+    },
+    //获取用户状态
+    getStatus(){
+      this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+        if(data.code == '1002'){//尚未认证，先去填写身份信息
+          this.$message({ message: '您需要先通过身份认证',type: 'warning',duration:1500});
+          setTimeout(()=>{
+            this.$router.push({
+              name:'idTest'
+            })
+          },1500)
+        }else{//其他情况跳转到首页
+          this.$router.push({
+            name: 'index',
+            params: {
+              name: 1
+            }
+          })
+        }
+      })
     }
   },
   watch: {

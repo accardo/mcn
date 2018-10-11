@@ -32,9 +32,12 @@ export default {
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
           if(data.code!="0000"){
             localStorage.setItem('navindex','1');
-            this.$router.push({
-              name:'idTest'
-            })
+            this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
+            setTimeout(()=>{
+              this.$router.push({
+                name:'idTest'
+              })
+            },1500)
           }
         })
       },

@@ -1,5 +1,6 @@
 import edit from '@/pages/mixins/edit';
 import util from '../../util/util';
+import * as httpUrl from '../../util/http'
 export default {
     data() {
       return {
@@ -26,11 +27,19 @@ export default {
           idCardPhoto: [
             { required: true, message: '请上传身份证', trigger: 'change' },
           ]
-        }
+        }, 
       };
+     
     },
     mounted() {
       this.getStatus();
+     // console.log(this.$http.httpAjax(this.$http.ajaxUrl + '/kol/works/getQiniuToken'))
+      //this.aData = this.$http.httpAjax(this.$http.ajaxUrl + '/kol/works/getQiniuToken')
+    },
+    computed: {
+      ajaxUrl() {
+        return httpUrl.ajaxUrl
+      }
     },
     methods: {
        //获取用户状态

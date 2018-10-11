@@ -12,26 +12,9 @@ export default {
     },
 
     mounted(){
-      this.getStatus();
       this.getRecentList();
     },
     methods:{
-      //获取用户状态
-      getStatus(){
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
-          if(data.code!="0000"){
-            localStorage.setItem('navindex','1');
-            this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
-            //成功后跳转到首页
-            setTimeout(()=>{
-              this.$router.push({
-                name:'idTest'
-              })
-            },1500)
-          }
-        })
-      },
-
       /*
        * Description: 最新编辑 只要一条数据
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>

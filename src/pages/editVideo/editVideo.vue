@@ -29,7 +29,7 @@
                 <el-form-item label="视频封面" prop="homePicture">
                    <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
+                        :action = "ajaxUrl + '/kol/works/getQiniuToken'"
                         :show-file-list="false"
                         :on-success="handlePicSuccess"
                         :before-upload="beforeUploadPic"
@@ -45,7 +45,7 @@
                 <el-form-item label="视频预览" prop="videoHref">
                     <el-upload  style="width:240px;"
                         class="avatar-uploader"
-                        action="https://mcn-kol-t.daydaycook.com.cn/kol/works/getQiniuToken"
+                        :action = "ajaxUrl + '/kol/works/getQiniuToken'"
                         :show-file-list="false"
                         :on-success="handleVideoSuccess"
                         :before-upload="beforeUploadVideo"

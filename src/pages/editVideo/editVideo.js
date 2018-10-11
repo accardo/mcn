@@ -1,5 +1,6 @@
 import edit from '@/pages/mixins/edit';
 import util from "../../util/util";
+import * as httpUrl from '../../util/http'
 export default {
     data() {
         return {
@@ -42,8 +43,29 @@ export default {
           }
         };
     },
-    mounted() {},
+    mounted() {
+        this.getStatus();
+    },
+    computed: {
+        ajaxUrl() {
+            return httpUrl.ajaxUrl
+        }
+    },
     methods: {
+        //获取用户状态
+      getStatus(){
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+          if(data.code!="0000"){
+            localStorage.setItem('navindex','1');
+            this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
+            setTimeout(()=>{
+              this.$router.push({
+                name:'idTest'
+              })
+            },1500)
+          }
+        })
+      },
       /*
        * Description: 视频上传
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>
