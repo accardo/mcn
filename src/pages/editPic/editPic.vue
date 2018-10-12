@@ -4,7 +4,7 @@
         <section class="in-content">
             <el-form :inline="true" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
                 <el-form-item label="标题" class="block" prop="title">
-                    <el-input style="width:595px;" v-model="ruleForm.title" auto-complete="off"></el-input>
+                    <el-input style="width:595px;" maxlength="15" v-model="ruleForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类"  prop="cateCode1">
                      <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;">
@@ -36,21 +36,14 @@
                         </el-option>
                     </el-select>
                 </el-form-item>-->
-                <el-form-item label="封面" prop="homePicture">
-                  <el-upload  style="width:240px;"
-                              class="avatar-uploader"
-                              :action = "ajaxUrl + '/kol/works/getQiniuToken'"
-                              :show-file-list="false"
-                              :on-success="handlePicSuccess"
-                              :before-upload="beforeUploadPic"
-                              :on-progress="picPercent"
-                              :data="{session}">
-                    <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    <div class="progress"  v-if="picFlag == true" >
-                      <i class="el-icon-loading"></i>
+                <el-form-item label="封面" prop="homePicture"  class="uploadFile">
+                  <input type="file" @change="getTokenPic" class="fileInput">
+                    <div class="fileBox">
+                        <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
+                        <div class="progress"  v-if="picFlag == true" >
+                            <i class="el-icon-loading"></i>
+                        </div>
                     </div>
-                  </el-upload>
                 </el-form-item>
               <el-form-item  label="正文" prop="workContext">
                 <div class="form-item">
@@ -144,6 +137,31 @@
     top:50%;
     margin-left:-20px;
     margin-top:-20px;
+}
+.uploadFile{
+    position: relative;
+    width: 340px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+.uploadFile .fileInput{
+    width: 240px;
+    height: 150px;
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    opacity: 0;
+    z-index: 9;
+}
+.uploadFile .fileBox{
+    width: 240px;
+    height: 150px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    overflow: hidden; 
 }
 </style>
 

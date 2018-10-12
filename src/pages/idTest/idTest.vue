@@ -16,7 +16,7 @@
                     <el-input  v-model="ruleForm.idCardName"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号码" prop="idCardNum">
-                    <el-input  v-model="ruleForm.idCardNum"></el-input>
+                    <el-input maxlength="18" v-model="ruleForm.idCardNum"></el-input>
                 </el-form-item>
                  <el-form-item label="身份证照片" prop="idCardPhoto">
                    <el-upload

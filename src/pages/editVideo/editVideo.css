@@ -26,6 +26,46 @@
 .el-dialog .el-form-item{
     margin-bottom:6px;
 }
+.uploadFile{
+    position: relative;
+    width: 340px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+.uploadFile .fileInput{
+    width: 240px;
+    height: 150px;
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    opacity: 0;
+    z-index: 9;
+}
+.uploadFile .fileBox{
+    width: 240px;
+    height: 150px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    overflow: hidden; 
+}
+.play-icon{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -20px;
+    margin-top: -20px;
+    z-index: 10;
+    cursor: pointer;
+}
+.play-icon .icon-bofang{
+    font-size: 40px;
+    color: #606266;
+}
 .shadow{
     position: fixed;
     top:0;
@@ -33,20 +73,21 @@
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,.4);
+    z-index: 11;
 }
 .video-window{
     width: 500px;
-    /* height: 400px; */
     position: fixed;
     left: 50%;
     margin-left: -250px;
-    top: 120px;
+    top: 85px;
     background: #fff;
     text-align: center;
 }
 .video-window video{
     margin-top: 20px;
     margin-bottom: 20px;
+    max-width: 350px;
 }
 .close-icon{
     position: absolute;

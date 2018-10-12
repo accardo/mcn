@@ -18,6 +18,7 @@ export default {
           rules: {
             title: [
               { required: true, message: '请输入标题', trigger: 'blur' },
+              { max: 15, message: '最多可输入15字', trigger: 'blur' }
             ],
             cateCode1: [
               { required: true, message: '请选择一级分类', trigger: 'blur' },

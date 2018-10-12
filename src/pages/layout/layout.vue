@@ -2,7 +2,7 @@
    <div class="content">
        <el-container >
             <el-header>
-              <img class="fl" src="../../../static/img/logo.png" alt="">
+              <img class="fl" :src="headImg" alt="">
               <span class="fl">日日煮</span>
               <el-dropdown  @command="handleCommand" class="fr">
                 <span class="el-dropdown-link">

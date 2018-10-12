@@ -4,6 +4,7 @@ export default {
         return {
             // useraccount:'18516061111',
             useraccount:localStorage.getItem('name'),
+            headImg: localStorage.getItem('headImg')?localStorage.getItem('headImg'):'../../../static/img/logo.png',
         }
     },
     components:{

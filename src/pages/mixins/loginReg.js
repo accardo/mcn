@@ -99,6 +99,9 @@ const loginReg = {
               localStorage.setItem('sessionId',res.data.data.session);
               localStorage.setItem('name',res.data.data.name);
               localStorage.setItem('navindex','1');
+              if(!!res.data.data.thumb){
+                localStorage.setItem('headImg',res.data.data.thumb);
+              }
               this.session = res.data.data.session;
               this.getStatus();
             } else {
@@ -132,12 +135,9 @@ const loginReg = {
     getStatus(){
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
         if(data.code == '1002'){//尚未认证，先去填写身份信息
-          this.$message({ message: '您需要先通过身份认证',type: 'warning',duration:1500});
-          setTimeout(()=>{
-            this.$router.push({
-              name:'idTest'
-            })
-          },1500)
+          this.$router.push({
+            name:'idTest'
+          })
         }else{//其他情况跳转到首页
           this.$router.push({
             name: 'index',

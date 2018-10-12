@@ -38,9 +38,6 @@ const edit = {
     getDetails() {
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/findOne`, {id: this.$route.params.id}).then(({data}) => {
         this.ruleForm = data.data;
-        if(this.$route.name == 'editVideo' || this.$route.name == 'createVideo'){
-          this.watchVideo();
-        }
       })
     },
     /*
@@ -60,6 +57,7 @@ const edit = {
      */
     getLevelTwo(value) {
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
+        console.log(data.data)
         if (this.isLevel) {
           this.isLevel = false
         } else {
@@ -72,28 +70,46 @@ const edit = {
       })
     },
     /*
-     * Description: 图片上传
+     * Description: 图片上传   10.12上传方式修改
      * Author: yanlichen <lichen.yan@daydaycook.com.cn>
      * Date: 2018/9/25
      */
-    handlePicSuccess(res, file) {
-      util.qiniuUpload(res.data, file, 1).then((url)=> {
-        this.picFlag = false;
-        this.ruleForm.homePicture = url
-      });
-    },
-    picPercent(){
-      this.picFlag = true;
-    },
-    beforeUploadPic(file) {
-      const isJpg = file.type === 'image/jpeg';
-      const isPng = file.type === 'image/png';
-      const isGif = file.type === 'image/gif';
+    getTokenPic(file){
+      const isJpg = file.target.files[0].type === 'image/jpeg';
+      const isPng = file.target.files[0].type === 'image/png';
+      const isGif = file.target.files[0].type === 'image/gif';
       if (!isJpg && !isPng && !isGif) {
         this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+        return false;
       }
-      return isJpg || isPng || isGif
+      this.picFlag = true;
+      this.ruleForm.homePicture = '';
+      this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+          this.token =  data.data
+          util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+            this.picFlag = false;
+            this.ruleForm.homePicture = url
+          });
+       }) 
     },
+    // handlePicSuccess(res, file) {
+    //   util.qiniuUpload(res.data, file, 1).then((url)=> {
+    //     this.picFlag = false;
+    //     this.ruleForm.homePicture = url
+    //   });
+    // },
+    // picPercent(){
+    //   this.picFlag = true;
+    // },
+    // beforeUploadPic(file) {
+    //   const isJpg = file.type === 'image/jpeg';
+    //   const isPng = file.type === 'image/png';
+    //   const isGif = file.type === 'image/gif';
+    //   if (!isJpg && !isPng && !isGif) {
+    //     this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+    //   }
+    //   return isJpg || isPng || isGif
+    // },
     /*
        * Description: type -> 1 保存草稿, type -> 2 发布审核 更新保存
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>

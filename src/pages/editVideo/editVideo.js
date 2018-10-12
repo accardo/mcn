@@ -24,6 +24,7 @@ export default {
           rules: {
             title: [
               { required: true, message: '请输入标题', trigger: 'blur' },
+              { max: 20, message: '最多可输入20字', trigger: 'blur' }
             ],
             cateCode1: [
               { required: true, message: '请选择一级分类', trigger: 'change' },
@@ -37,10 +38,12 @@ export default {
             videoHref: [
               { required: true, message: '请上传视频', trigger: 'blur' },
             ],
-            remark: [
+            workDescribe: [
               { required: true, message: '请输入描述', trigger: 'blur' },
+              { max: 120, message: '最多可输入120字', trigger: 'blur' }
             ],
-          }
+          },
+          token: '',
         };
     },
     mounted() {
@@ -66,42 +69,21 @@ export default {
           }
         })
       },
-      /*
-       * Description: 视频上传
-       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
-       * Date: 2018/9/25
-       */
-      handleVideoSuccess(res, file) {
-        util.qiniuUpload(res.data, file, 2).then((url)=> {
-          this.videoFlag = false;
-          this.ruleForm.videoHref = url
-        });
-      },
-      videoPercent(event, file, fileList){
+      getTokenVideo(file) {
         this.videoFlag = true;
-      },
-      /*
-       * Description: 视频格式限制
-       * Author: yanlichen <lichen.yan@daydaycook.com.cn>
-       * Date: 2018/9/27
-       */
-      beforeUploadVideo(file) {
-        const isMp4 = file.type === 'video/mp4';
-        if (!isMp4) {
-          this.$message.error('视频格式为MP4格式');
-        }
-        return isMp4
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+            this.token =  data.data
+            util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
+                this.videoFlag = false;
+                this.ruleForm.videoHref = url
+            });
+         }) 
       },
       //预览视频
-      watchVideo(){
+      palyVideo(){
         let _this = this;
-        this.$nextTick(() => {
-            let videoDom = document.getElementsByTagName('video')[0];
-            videoDom.onplay=function(){
-                videoDom.pause();
-                _this.shadow = true;
-            }
-        })
+        let videoDom = document.getElementsByTagName('video')[0];
+        _this.shadow = true;
       },
       //关闭视频预览
       closeShadow(){

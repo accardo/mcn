@@ -4,7 +4,7 @@
         <section class="in-content">
             <el-form v-if="ruleForm" :inline="true" :model="ruleForm" :rules="rules" status-icon ref="ruleForm" label-width="100px">
                 <el-form-item label="标题" class="block" prop="title">
-                    <el-input style="width:595px;" v-model="ruleForm.title"></el-input>
+                    <el-input style="width:595px;" maxlength="20" v-model="ruleForm.title"></el-input>
                 </el-form-item>
                 <el-form-item label="一级分类" prop="cateCode1">
                      <el-select v-if="levelFirst" v-model="ruleForm.cateCode1" style="width:240px;" placeholder="请选择">
@@ -26,47 +26,37 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="视频封面" prop="homePicture">
-                   <el-upload  style="width:240px;"
-                        class="avatar-uploader"
-                        :action = "ajaxUrl + '/kol/works/getQiniuToken'"
-                        :show-file-list="false"
-                        :on-success="handlePicSuccess"
-                        :before-upload="beforeUploadPic"
-                        :data="{session}"
-                        :on-progress="picPercent">
+                <el-form-item label="视频封面" prop="homePicture" class="uploadFile">
+                    <input type="file" @change="getTokenPic" class="fileInput">
+                    <div class="fileBox">
                         <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         <div class="progress"  v-if="picFlag == true" >
                             <i class="el-icon-loading"></i>
                         </div>
-                    </el-upload>
+                    </div>
                 </el-form-item>
-                <el-form-item label="视频预览" prop="videoHref">
-                    <el-upload  style="width:240px;"
-                        class="avatar-uploader"
-                        :action = "ajaxUrl + '/kol/works/getQiniuToken'"
-                        :show-file-list="false"
-                        :on-success="handleVideoSuccess"
-                        :before-upload="beforeUploadVideo"
-                        :data="{session}"
-                        :on-progress="videoPercent">
-                      <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref" controls="controls">
-                        Your browser does not support the video tag.
-                      </video>
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <el-form-item label="视频预览" prop="videoHref" class="uploadFile">
+                    <input type="file" @change="getTokenVideo" class="fileInput">
+                    <div class="fileBox">
+                        <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref">
+                            Your browser does not support the video tag.
+                        </video>
                         <div class="progress"  v-if="videoFlag == true" >
                             <i class="el-icon-loading"></i>
                         </div>
-                    </el-upload>
+                        <div class="play-icon" @click="palyVideo()" v-if="ruleForm.videoHref">
+                            <i class="iconfont icon-bofang"></i>
+                        </div>
+                    </div>
                 </el-form-item>
                 <el-form-item label="描述" class="block" prop="remark">
                     <el-input
-                        style="width: 590px;"
+                        style="width: 598px;"
                         rows="4"
                         type="textarea"
                         placeholder="请输入内容"
-                        v-model="ruleForm.remark">
+                        maxlength="120"
+                        v-model="ruleForm.workDescribe">
                     </el-input>
                 </el-form-item>
                 <el-form-item class="block" style="padding-left:100px;">
@@ -116,6 +106,7 @@
 <style scoped>
     @import '../../../static/css/common.css';
     @import './editVideo.css';
+    @import '../../../static/css/iconfont.css';
 </style>
 <style>
 .el-select-dropdown__item{
@@ -156,6 +147,7 @@
     left: 0;
     border-radius: 6px;
     background:#fff;
+    z-index: 10;
 }
 .in-content .progress i{
     font-size:40px;

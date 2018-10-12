@@ -57,6 +57,7 @@ export function imgUrl() {
  */
 export function qiniuUpload(token, file, type) {
   return new Promise((resolve) => {
+  
     let { name } =file;
     let d =name.split('.');
     let t = new Date().getTime();
@@ -70,7 +71,7 @@ export function qiniuUpload(token, file, type) {
       useCdnDomain: true,
       region: qiniu.region.z2
     };
-    let observable = qiniu.upload(file.raw, name, token, qiniuPutExtra, qiniuConfig);
+    let observable = qiniu.upload(file, name, token, qiniuPutExtra, qiniuConfig);
     observable.subscribe({
       error(){
         if (type == 1) {

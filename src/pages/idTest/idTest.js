@@ -55,6 +55,7 @@ export default {
             }else if(data.code=="1003"){//资料审核中
               this.loadingStatus = true;
             }else{//尚未认证
+              this.$message({ message: '您需要先通过身份认证',type: 'warning',duration:1500});
               this.formShow = true;
             }
           })

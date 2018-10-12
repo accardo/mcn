@@ -17,6 +17,7 @@ export default {
           session: this.session
         }).then((res) => {
           if(res.data.code == 1 && res.data.data == 1 ){ //返回为1时已登录，直接跳转至首页
+            localStorage.setItem('navindex','1');
             this.$router.push({
               name: 'index',
               params: {
