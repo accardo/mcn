@@ -2,12 +2,16 @@ import { quillEditor } from 'vue-quill-editor'
 import edit from '@/pages/mixins/edit';
 import * as httpUrl from '../../util/http'
 export default {
+    // components: {
+    //   quillEditor
+    // },
     data() {
         return {
           editorOption:{
               modules:{
                   toolbar:[
-                      ['bold', 'italic', 'underline', 'strike', 'color','align', 'image', 'video','link'],        // toggled buttons
+                      ['bold', 'italic', 'underline', 'strike', 'color', 'image', 'video','link'],        // toggled buttons
+                      [{ 'align': [] }],
                       ['blockquote', 'code-block'],
                       [{ 'color': [] }, { 'background': [] }],
                       // [{'size':['smale',false,'large','huge']}],
@@ -30,7 +34,7 @@ export default {
               { required: true, message: '请上传图文封面', trigger: 'blur' },
             ],
             workContext: [
-              { required: true, message: '请输入描述内容', trigger: 'blur' },
+              { required: true, message: '请输入正文内容', trigger: 'blur' },
             ],
           }
         };
@@ -47,7 +51,7 @@ export default {
       //获取用户状态
       getStatus(){
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
-          if(data.code!="0000"){
+          if(data.code=="1001" || data.code=="1002" || data.code=="1003" ){
             localStorage.setItem('navindex','1');
             this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
             setTimeout(()=>{
@@ -57,6 +61,9 @@ export default {
             },1500)
           }
         })
+      },
+      onEditorChange(){//内容改变事件
+        // console.log(this.ruleForm.workContext)
       },
       back() {//取消
         if(this.$route.params.index){

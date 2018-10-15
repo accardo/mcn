@@ -61,4 +61,8 @@
   height: 100%;
   display: block;
 }
+.uploadFile .el-form-item__content{
+    width: 240px;
+    height: 150px;
+} 
 </style>

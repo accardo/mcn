@@ -30,7 +30,7 @@ export default {
       //获取用户状态
       getStatus(){
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
-          if(data.code!="0000"){
+          if(data.code=="1001" || data.code=="1002" || data.code=="1003" ){
             localStorage.setItem('navindex','1');
             this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
             setTimeout(()=>{

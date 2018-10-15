@@ -52,7 +52,7 @@
                                  v-model="ruleForm.workContext"
                                  ref="myQuillEditor"
                                  :options="editorOption"
-                  >
+                                 @change="onEditorChange($event)">
                   </quill-editor>
                 </div>
               </el-form-item>
@@ -96,6 +96,10 @@
     height: 150px;
     display: block;
 }
+.uploadFile .el-form-item__content{
+    width: 240px;
+    height: 150px;
+} 
 .ql-toolbar.ql-snow{
     border:1px solid #dcdfe6;
     border-top-left-radius:4px;
@@ -163,6 +167,15 @@
     position: absolute;
     top:0;
     overflow: hidden; 
+}
+.ql-editor{
+    min-height:120px;
+}
+.ql-picker-label{
+    line-height:24px;
+}
+.ql-tooltip.ql-editing{
+    left: 0 !important;
 }
 </style>
 

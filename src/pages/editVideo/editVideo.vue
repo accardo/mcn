@@ -141,6 +141,10 @@
     height: 150px;
     display: block;
 }
+.uploadFile .el-form-item__content{
+    width: 240px;
+    height: 150px;
+} 
 .in-content .progress{
     width:100%;
     height: 100%;
