@@ -16,6 +16,7 @@ export default {
         remarkShow: false, //1001审核未通过 显示原因
         loadingStatus:false,   //等待审核状态
         successStatus: false,  //审核成功状态
+        picFlag:false,//图片上传进度条
         rules: {
           idCardName: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -33,8 +34,6 @@ export default {
     },
     mounted() {
       this.getStatus();
-     // console.log(this.$http.httpAjax(this.$http.ajaxUrl + '/kol/works/getQiniuToken'))
-      //this.aData = this.$http.httpAjax(this.$http.ajaxUrl + '/kol/works/getQiniuToken')
     },
     computed: {
       ajaxUrl() {
@@ -60,6 +59,24 @@ export default {
             }
           })
         },
+        getTokenPic(file){
+          const isJpg = file.target.files[0].type === 'image/jpeg';
+          const isPng = file.target.files[0].type === 'image/png';
+          const isGif = file.target.files[0].type === 'image/gif';
+          if (!isJpg && !isPng && !isGif) {
+            this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+            return false;
+          }
+          this.picFlag = true;
+          this.ruleForm.idCardPhoto = '';
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+              this.token =  data.data
+              util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+                this.picFlag = false;
+                this.ruleForm.idCardPhoto = url
+              });
+           }) 
+        },
         submitForm(formName) {
           delete this.ruleForm.remark;
             this.$refs[formName].validate((valid) => {
@@ -81,20 +98,6 @@ export default {
                 return false;
             }
             });
-        },
-        handleAvatarSuccess(res, file) {
-          util.qiniuUpload(res.data, file, 1).then((url) => {
-            this.ruleForm.idCardPhoto = url
-          })
-        },
-        beforeUploadPic(file) {
-          const isJpg = file.type === 'image/jpeg';
-          const isPng = file.type === 'image/png';
-          const isGif = file.type === 'image/gif';
-          if (!isJpg && !isPng && !isGif) {
-            this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
-          }
-          return isJpg || isPng || isGif
         },
     }
   }

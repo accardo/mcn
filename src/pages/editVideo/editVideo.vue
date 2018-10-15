@@ -29,6 +29,7 @@
                 <el-form-item label="视频封面" prop="homePicture" class="uploadFile">
                     <input type="file" @change="getTokenPic" class="fileInput">
                     <div class="fileBox">
+                        <i v-if="ruleForm.homePicture==''" class="el-icon-plus"></i>
                         <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                         <div class="progress"  v-if="picFlag == true" >
                             <i class="el-icon-loading"></i>
@@ -38,6 +39,7 @@
                 <el-form-item label="视频预览" prop="videoHref" class="uploadFile">
                     <input type="file" @change="getTokenVideo" class="fileInput">
                     <div class="fileBox">
+                        <i v-if="ruleForm.videoHref==''" class="el-icon-plus"></i>
                         <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref">
                             Your browser does not support the video tag.
                         </video>
@@ -64,7 +66,7 @@
                     <el-button type="primary" @click="saveRelease(1, 'ruleForm')" :loading="isSave">{{saveText}}</el-button>
                     <el-button type="primary" @click="saveRelease(2, 'ruleForm')" :loading="isSave">{{saveReleaseText}}</el-button>
                 </el-form-item>
-                <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="45%">
+                <el-dialog title="发布时间" :visible.sync="dialogFormVisible" width="45%">
                     <el-form >
                         <el-form-item style=" display: block">
                             <el-radio v-model="ruleForm.radio" label="1" @change="radioStatus()">现在发布</el-radio>

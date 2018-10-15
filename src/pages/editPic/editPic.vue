@@ -37,8 +37,9 @@
                     </el-select>
                 </el-form-item>-->
                 <el-form-item label="封面" prop="homePicture"  class="uploadFile">
-                  <input type="file" @change="getTokenPic" class="fileInput">
+                    <input type="file" @change="getTokenPic" class="fileInput">
                     <div class="fileBox">
+                        <i v-if="ruleForm.homePicture==''" class="el-icon-plus"></i>
                         <img v-if="ruleForm.homePicture" :src="ruleForm.homePicture" class="avatar">
                         <div class="progress"  v-if="picFlag == true" >
                             <i class="el-icon-loading"></i>
