@@ -82,7 +82,7 @@ export default {
             this.$refs[formName].validate((valid) => {
             if (valid) {
               this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/updatePersonal`, this.ruleForm).then(({data}) => {
-                if(data.code = '0000'){
+                if(data.code == '0000'){
                   this.$message({ message: '身份证信息提交成功',type: 'success',duration:1500});
                   //成功后跳转到首页
                   setTimeout(()=>{
@@ -90,7 +90,7 @@ export default {
                       name:'index'
                     })
                   },1500)
-                }else if(data.code = '1001'){
+                }else if(data.code == '1001'){
                   this.$message({ message: data.message, type: 'error', duration:1500});
                 }
               })
