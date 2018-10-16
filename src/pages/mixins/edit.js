@@ -151,24 +151,29 @@ const edit = {
             } else {
               urlSaveUpdate = '/kol/works/update'
             }
-            this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(() => {
-              if (type == 1) {
-                this.saveText = '保存'
-                this.$message({type: 'success', message: '保存草稿成功'});
-              } else if(type == 2) {
-                this.saveReleaseText = '保存并发布';
-                this.$message({type: 'success', message: '保存并发布成功'});
+            this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(({data}) => {
+              if(data.code=='0000'){
+                if (type == 1) {
+                  this.saveText = '保存'
+                  this.$message({type: 'success', message: '保存草稿成功'});
+                } else if(type == 2) {
+                  this.saveReleaseText = '保存并发布';
+                  this.$message({type: 'success', message: '保存并发布成功'});
+                }
+                this.isSave = false;
+                if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
+                  this.$router.push({
+                    name: 'pic'
+                  })
+                } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
+                  this.$router.push({
+                    name: 'video'
+                  })
+                }
+              }else{
+                Message.error(res.data.message);
               }
-              this.isSave = false;
-              if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
-                this.$router.push({
-                  name: 'pic'
-                })
-              } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
-                this.$router.push({
-                  name: 'video'
-                })
-              }
+             
             })
           }).catch(action => {
           });

@@ -49,11 +49,12 @@
               <el-form-item  label="正文" prop="workContext">
                 <div class="form-item">
                   <quill-editor  style="width:595px;display:inline-block;float:left"
-                                 v-model="ruleForm.workContext"
-                                 ref="myQuillEditor"
-                                 :options="editorOption"
-                                 @change="onEditorChange($event)">
+                        v-model="ruleForm.workContext"
+                        ref="myQuillEditor"
+                        :options="editorOption"
+                        @change="onEditorChange($event)">
                   </quill-editor>
+                  <input type="file" @change="uploadPic" id="uploadPic" style="display:none;">
                 </div>
               </el-form-item>
               <el-form-item class="block" style="padding-left:100px;">

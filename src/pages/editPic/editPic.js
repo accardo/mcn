@@ -1,5 +1,7 @@
 import { quillEditor } from 'vue-quill-editor'
+import * as Quill from 'quill'    // 引入编辑器
 import edit from '@/pages/mixins/edit';
+import util from "../../util/util";
 import * as httpUrl from '../../util/http'
 export default {
     // components: {
@@ -41,6 +43,13 @@ export default {
     },
     mounted() {
       this.getStatus();
+      var imgHandler = async function(state) {
+        if (state) {
+          let fileInput =document.getElementById("uploadPic") //隐藏的file元素
+          fileInput.click();
+        }
+      }
+      this.$refs.myQuillEditor.quill.getModule("toolbar").addHandler("image", imgHandler)
     },
     computed: {
       ajaxUrl() {
@@ -61,6 +70,22 @@ export default {
             },1500)
           }
         })
+      },
+      uploadPic(file){
+        const isJpg = file.target.files[0].type === 'image/jpeg';
+        const isPng = file.target.files[0].type === 'image/png';
+        const isGif = file.target.files[0].type === 'image/gif';
+        if (!isJpg && !isPng && !isGif) {
+          this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+          return false;
+        }
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+            this.token =  data.data
+            util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+              this.addImgRange = this.$refs.myQuillEditor.quill.getSelection()
+              this.$refs.myQuillEditor.quill.insertEmbed(this.addImgRange != null?this.addImgRange.index:0, 'image',url, Quill.sources.USER)
+            });
+        }) 
       },
       onEditorChange(){//内容改变事件
         // console.log(this.ruleForm.workContext)
