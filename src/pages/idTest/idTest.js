@@ -1,88 +1,103 @@
+import edit from '@/pages/mixins/edit';
+import util from '../../util/util';
+import * as httpUrl from '../../util/http'
 export default {
     data() {
-      var checkName = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入身份证姓名'));
-        } else {
-          callback();
-        }
-      };
-      var checkNum = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入身份证号码'));
-        }else if( value.length != 18 ){
-          callback(new Error('身份证长度不正确'));
-        } else {
-          callback();
-        }
-      };
-      var checkImg = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请上传身份证照片'));
-        }else {
-          callback();
-        }
-      };
       return {
         ruleForm: {
-          name:'',
-          num:'',
-          imageUrl:''
+          idCardName:'',
+          idCardNum:'',
+          idCardPhoto:'',
+          remark:'',
+          checkState:'W'
         },
+        session: localStorage.getItem('sessionId'),
+        formShow: false, //表单显示   1002尚未认证 1001 审核未通过
+        remarkShow: false, //1001审核未通过 显示原因
+        loadingStatus:false,   //等待审核状态
+        successStatus: false,  //审核成功状态
+        picFlag:false,//图片上传进度条
         rules: {
-            name: [
-              { validator: checkName, trigger: 'blur' }
-              ],
-            num: [
-              { validator: checkNum, trigger: 'blur' }
-            ],
-            imageUrl:[
-              { validator: checkImg, trigger:'change'}
-            ]
-        }
+          idCardName: [
+            { required: true, message: '请输入姓名', trigger: 'blur' },
+          ],
+          idCardNum: [
+            { required: true, message: '请输入身份证号', trigger: 'blur' },
+            { min: 15, max: 18, message: '请输入正确的身份证', trigger: 'blur' }
+          ],
+          idCardPhoto: [
+            { required: true, message: '请上传身份证', trigger: 'change' },
+          ]
+        }, 
       };
+     
+    },
+    mounted() {
+      this.getStatus();
+    },
+    computed: {
+      ajaxUrl() {
+        return httpUrl.ajaxUrl
+      }
     },
     methods: {
+       //获取用户状态
+        getStatus(){
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+            if(data.code=="0000"){//审核通过
+              this.successStatus = true;
+            }else if(data.code=="1001"){//审核未通过
+              this.formShow = true;
+              this.remarkShow = true;
+              this.ruleForm = data.data;
+              this.ruleForm.checkState = 'W'
+            }else if(data.code=="1003"){//资料审核中
+              this.loadingStatus = true;
+            }else{//尚未认证
+              this.$message({ message: '您需要先通过身份认证',type: 'warning',duration:1500});
+              this.formShow = true;
+            }
+          })
+        },
+        getTokenPic(file){
+          const isJpg = file.target.files[0].type === 'image/jpeg';
+          const isPng = file.target.files[0].type === 'image/png';
+          const isGif = file.target.files[0].type === 'image/gif';
+          if (!isJpg && !isPng && !isGif) {
+            this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+            return false;
+          }
+          this.picFlag = true;
+          this.ruleForm.idCardPhoto = '';
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+              this.token =  data.data
+              util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+                this.picFlag = false;
+                this.ruleForm.idCardPhoto = url
+              });
+           }) 
+        },
         submitForm(formName) {
+          delete this.ruleForm.remark;
             this.$refs[formName].validate((valid) => {
             if (valid) {
-              //成功后跳转到首页
-              this.$router.push({
-                name:'index'
+              this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/updatePersonal`, this.ruleForm).then(({data}) => {
+                if(data.code == '0000'){
+                  this.$message({ message: '身份证信息提交成功',type: 'success',duration:1500});
+                  //成功后跳转到首页
+                  setTimeout(()=>{
+                    this.$router.push({
+                      name:'index'
+                    })
+                  },1500)
+                }else if(data.code == '1001'){
+                  this.$message({ message: data.message, type: 'error', duration:1500});
+                }
               })
             } else {
-                console.log('error submit!!');
                 return false;
             }
             });
         },
-        handleAvatarSuccess(res, file) {
-          this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
-          console.log(this.ruleForm.dataimageUrl)
-        },
-        beforeAvatarUpload(file) {
-          const isJPG = file.type === 'image/jpeg';//规定图片格式
-          const isLt2M = file.size / 1024 / 1024 < 2;//规定图片大小
-  
-          if (!isJPG) {
-            this.$message.error('上传图片只能是 JPG 格式!');
-          }
-          if (!isLt2M) {
-            this.$message.error('上传图片大小不能超过 2MB!');
-          }
-          return isJPG && isLt2M;
-        },
-        linkto() {
-            //跳转到登录页
-            this.$router.push({
-                name:'login'
-            })
-        },
-        skip() {
-          //跳过身份认证
-          this.$router.push({
-            name:'index'
-        })
-        }
     }
   }

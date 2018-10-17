@@ -2,7 +2,8 @@ import navList from '@/components/navlist.vue';
 export default {
     data(){
         return {
-            useraccount:'18516061111',
+            useraccount:localStorage.getItem('name'),
+            headImg: localStorage.getItem('headImg')?localStorage.getItem('headImg'):'https://mobile.daydaycook.com.cn/shop/static/img/logo.png',
         }
     },
     components:{
@@ -26,6 +27,7 @@ export default {
                 console.log('退出')
                 localStorage.removeItem('sessionId');
                 localStorage.removeItem('name');
+                localStorage.removeItem('navindex');
                 this.$router.push({
                     name:'login'
                 })

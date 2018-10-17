@@ -1,98 +1,106 @@
-import classifyData from '../editVideo/a.json';
 import { quillEditor } from 'vue-quill-editor'
+import * as Quill from 'quill'    // 引入编辑器
+import edit from '@/pages/mixins/edit';
+import util from "../../util/util";
+import * as httpUrl from '../../util/http'
 export default {
+    // components: {
+    //   quillEditor
+    // },
     data() {
         return {
-            ruleForm:{
-                title:'',
-                typeOne:'',
-                typeTwo:'',
-                tips:[],
-                imageUrl:'https://mobile.daydaycook.com.cn/activity/2018/09/kitchen/images/share.jpg',
-                videoImgUrl:'',
-                videoUrl:'',
-                textarea:'',
-            },
-            content:null,
-            editorOption:{
-                modules:{
-                    toolbar:[
-                        ['bold', 'italic', 'underline', 'strike', 'color','align', 'image', 'video','link'],        // toggled buttons
-                        ['blockquote', 'code-block'],
-                        [{ 'color': [] }, { 'background': [] }], 
-                        // [{'size':['smale',false,'large','huge']}],
-                        // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ]
-                }
-            },
-            selectValue:'',
-            childList:[],
-            tipsOptions:[{
-                value: '选项1',
-                label: '111'
-              }, {
-                value: '选项2',
-                label: '222'
-              }, {
-                value: '选项3',
-                label: '333'
-              }, {
-                value: '选项4',
-                label: '444'
-              }, {
-                value: '选项5',
-                label: '4444'
-            }],
-            typeOptions:classifyData.data,
+          editorOption:{
+              modules:{
+                  toolbar:[
+                      ['bold', 'italic', 'underline', 'strike', 'color', 'image', 'video','link'],        // toggled buttons
+                      [{ 'align': [] }],
+                      ['blockquote', 'code-block'],
+                      [{ 'color': [] }, { 'background': [] }],
+                      // [{'size':['smale',false,'large','huge']}],
+                      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                  ]
+              }
+          },
+          rules: {
+            title: [
+              { required: true, message: '请输入标题', trigger: 'blur' },
+              { max: 15, message: '最多可输入15字', trigger: 'blur' }
+            ],
+            cateCode1: [
+              { required: true, message: '请选择一级分类', trigger: 'blur' },
+            ],
+            cateCode2: [
+              { required: true, message: '请选择二级分类', trigger: 'blur' },
+            ],
+            homePicture: [
+              { required: true, message: '请上传图文封面', trigger: 'blur' },
+            ],
+            workContext: [
+              { required: true, message: '请输入正文内容', trigger: 'blur' },
+            ],
+          }
         };
     },
-    created() {
-        this.init();
+    mounted() {
+      this.getStatus();
+      var imgHandler = async function(state) {
+        if (state) {
+          let fileInput =document.getElementById("uploadPic") //隐藏的file元素
+          fileInput.click();
+        }
+      }
+      this.$refs.myQuillEditor.quill.getModule("toolbar").addHandler("image", imgHandler)
+    },
+    computed: {
+      ajaxUrl() {
+        return httpUrl.ajaxUrl
+      }
     },
     methods: {
-        init(){
-            //console.log(classifyData)
-        },
-        selectTypeOne(value){
-            let self = this;
-            self.typeOptions.map(item => {
-                if(item.key == value){
-                    self.ruleForm.typeTwo = '';
-                    self.childList = item.options;
-                }
-            })
-        },
-        selectTypeTwo(value){
-            let self = this;
-            console.log(self.ruleForm.typeOne,self.ruleForm.typeTwo)
-        },
-        handleAvatarSuccess(res, file) {
-            this.ruleForm.dataimageUrl = URL.createObjectURL(file.raw);
-            console.log(this.ruleForm.dataimageUrl)
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';//规定图片格式
-            const isLt2M = file.size / 1024 / 1024 < 2;//规定图片大小
-
-            if (!isJPG) {
-                this.$message.error('上传图片只能是 JPG 格式!');
-            }
-            if (!isLt2M) {
-                this.$message.error('上传图片大小不能超过 2MB!');
-            }
-            return isJPG && isLt2M;
-        },
-        onEditorBlur(){//失去焦点事件
-        },
-        onEditorFocus(){//获得焦点事件
-        },
-        onEditorChange(){//内容改变事件
-        },
-        back(){
-            //取消
-            this.$router.push({
-                name:'pic'
-            })
+      //获取用户状态
+      getStatus(){
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/user/checkUser`).then(({data}) => {
+          if(data.code=="1001" || data.code=="1002" || data.code=="1003" ){
+            localStorage.setItem('navindex','1');
+            this.$message({ message: '身份认证通过才可以继续操作哦',type: 'warning',duration:1500});
+            setTimeout(()=>{
+              this.$router.push({
+                name:'idTest'
+              })
+            },1500)
+          }
+        })
+      },
+      uploadPic(file){
+        const isJpg = file.target.files[0].type === 'image/jpeg';
+        const isPng = file.target.files[0].type === 'image/png';
+        const isGif = file.target.files[0].type === 'image/gif';
+        if (!isJpg && !isPng && !isGif) {
+          this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+          return false;
         }
-    }
+        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+            this.token =  data.data
+            util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+              this.addImgRange = this.$refs.myQuillEditor.quill.getSelection()
+              this.$refs.myQuillEditor.quill.insertEmbed(this.addImgRange != null?this.addImgRange.index:0, 'image',url, Quill.sources.USER)
+            });
+        }) 
+      },
+      onEditorChange(){//内容改变事件
+        // console.log(this.ruleForm.workContext)
+      },
+      back() {//取消
+        if(this.$route.params.index){
+          this.$router.push({
+            name:'index'
+          })
+        }else{
+          this.$router.push({
+            name:'pic'
+          })
+        }
+      },
+    },
+    mixins: [edit],
 };
