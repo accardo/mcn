@@ -24,10 +24,10 @@ export default {
                     name:'idTest'
                 })
             }else {
-                console.log('退出')
                 localStorage.removeItem('sessionId');
                 localStorage.removeItem('name');
                 localStorage.removeItem('navindex');
+                localStorage.removeItem('headImg');
                 this.$router.push({
                     name:'login'
                 })

@@ -92,24 +92,6 @@ const edit = {
           });
        }) 
     },
-    // handlePicSuccess(res, file) {
-    //   util.qiniuUpload(res.data, file, 1).then((url)=> {
-    //     this.picFlag = false;
-    //     this.ruleForm.homePicture = url
-    //   });
-    // },
-    // picPercent(){
-    //   this.picFlag = true;
-    // },
-    // beforeUploadPic(file) {
-    //   const isJpg = file.type === 'image/jpeg';
-    //   const isPng = file.type === 'image/png';
-    //   const isGif = file.type === 'image/gif';
-    //   if (!isJpg && !isPng && !isGif) {
-    //     this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
-    //   }
-    //   return isJpg || isPng || isGif
-    // },
     /*
        * Description: type -> 1 保存草稿, type -> 2 发布审核 更新保存
        * Author: yanlichen <lichen.yan@daydaycook.com.cn>

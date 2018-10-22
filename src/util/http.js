@@ -9,7 +9,7 @@ let status = (_url.indexOf('127') > -1 || _url.indexOf('localhost') > -1) ?
     1 : _url.indexOf('mobile-staging') > -1 ?
       2 : 3;
 
-    status = 1;		//手动干扰
+    status = 3;		//手动干扰
 
 // web 端地址 http://10.23.116.187:8090 http://192.168.18.53:8090
 export const ajaxUrl  = status == 0 ? 'http://10.23.116.187:8090' : status == 1 ?
@@ -33,6 +33,7 @@ export const httpAjax = function (url, data) {
           localStorage.removeItem('sessionId');
           localStorage.removeItem('name');
           localStorage.removeItem('navindex');
+          localStorage.removeItem('headImg');
           location.href = '/mcn/backend/#/login'
         } else if(res.data.code == '9999'){
           Message.error(res.data.message);
