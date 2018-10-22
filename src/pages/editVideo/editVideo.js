@@ -82,7 +82,6 @@ export default {
       //预览视频
       palyVideo(){
         let _this = this;
-        let videoDom = document.getElementsByTagName('video')[0];
         _this.shadow = true;
       },
       //关闭视频预览
@@ -93,11 +92,11 @@ export default {
         videoDom.pause();
       },
       radioStatus(){
-          let that = this;
-          if(that.ruleForm.radio == 2){
-              that.disabled = false;
+          let _this = this;
+          if(_this.ruleForm.radio == 2){
+            _this.disabled = false;
           }else{
-              that.disabled = true;
+            _this.disabled = true;
           }
       },
       dateChange(){//用户选取日期

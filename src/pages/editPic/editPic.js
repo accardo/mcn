@@ -4,9 +4,6 @@ import edit from '@/pages/mixins/edit';
 import util from "../../util/util";
 import * as httpUrl from '../../util/http'
 export default {
-    // components: {
-    //   quillEditor
-    // },
     data() {
         return {
           editorOption:{
@@ -16,8 +13,6 @@ export default {
                       [{ 'align': [] }],
                       ['blockquote', 'code-block'],
                       [{ 'color': [] }, { 'background': [] }],
-                      // [{'size':['smale',false,'large','huge']}],
-                      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                   ]
               }
           },
@@ -43,7 +38,7 @@ export default {
     },
     mounted() {
       this.getStatus();
-      var imgHandler = async function(state) {
+      var imgHandler = async function(state) {//富文本编辑器添加自定义上传图片
         if (state) {
           let fileInput =document.getElementById("uploadPic") //隐藏的file元素
           fileInput.click();
@@ -71,6 +66,7 @@ export default {
           }
         })
       },
+      //富文本编辑器-图片上传
       uploadPic(file){
         const isJpg = file.target.files[0].type === 'image/jpeg';
         const isPng = file.target.files[0].type === 'image/png';

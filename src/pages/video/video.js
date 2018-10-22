@@ -74,8 +74,7 @@ export default {
           default:
             this.$message({message: '未知错误',type: 'error'});
         }
-        this.isRefresh = true
-        console.log(tab.name, this.listData, '123')
+        this.isRefresh = true;
       }
     }
 };
