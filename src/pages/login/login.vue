@@ -37,7 +37,7 @@
 <script src="./login.js"></script>
 <style scoped>
     @import '../../../static/css/common.css';
-	@import './login.css';
+    @import './login.css';
 </style>
 <style>
     .login-btn{
@@ -56,5 +56,6 @@
         border-radius:100px;
     }
 </style>
+
 
 

@@ -33,6 +33,7 @@ export const httpAjax = function (url, data) {
           localStorage.removeItem('sessionId');
           localStorage.removeItem('name');
           localStorage.removeItem('navindex');
+          localStorage.removeItem('headImg');
           location.href = '/mcn/backend/#/login'
         } else if(res.data.code == '9999'){
           Message.error(res.data.message);
