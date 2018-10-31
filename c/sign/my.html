@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="full-screen" content="yes">
+        <title>我的作品</title>
+        <script>
+            (function(){
+                var elm = document.documentElement;
+                elm.style.fontSize = 100 * (elm.clientWidth/320) + 'px';
+            })();
+            // sessionStorage.setItem('sessionId','9a900ae5-0c9a-4adf-8663-b6447e5ba4cd');
+        </script>
+        <script>
+            //growingio埋点
+        !function(e,t,n,g,i){e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},n=t.createElement("script"),tag=t.getElementsByTagName("script")[0],n.async=1,n.src=('https:'==document.location.protocol?'https://':'http://')+g,tag.parentNode.insertBefore(n,tag)}(window,document,"script","assets.growingio.com/2.1/gio.js","gio");
+            gio('init','82bc91ac25611960', {});
+            gio('send');
+        </script>
+        <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+        <link rel="stylesheet" href="./css/ddc.css?v=3">
+        <link rel="stylesheet" href="./css/LArea.css">
+        <link href="./css/video-js.css" rel="stylesheet">
+        <script src="./lib/video.js"></script>
+    </head>
+    <body>
+        <!-- 我的作品 -->
+        <div class="wraper my">
+            <div class="list ss">
+                <div class="scroll ss"></div>
+            </div>
+            <a href="sign.html" class="upload">继续上传</a>
+        </div>
+        <!-- 提示 -->
+        <div class="toast" id="toast">
+            <p class="icon"><img src="" /></p>
+            <p class="text"></p>
+        </div>
+        <script src="./lib/ddc.js?v=1017"></script>
+        <script src="./js/my.js?v=3"></script>
+        <script>
+            (function () {
+                 if (window.location.href.indexOf('mobile.daydaycook.com') == -1) {
+                    var src = '//cdn.bootcss.com/eruda/1.2.4/eruda.min.js';
+                    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+                    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+                }
+            })();
+        </script>
+    </body>
+</html>
