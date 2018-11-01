@@ -38,8 +38,8 @@
                         children:[
                         {title:'视频列表',ind:'2-1',children:[],icon:'',link:'video'},
                         {title:'图文列表',ind:'2-2',children:[],icon:'el-icon-menu',link:'pic'},
+                        {title:'食谱列表',ind:'2-3',children:[],icon:'el-icon-menu',link:'recipe'},
                     ]}
-
                 ]
             }
         },

@@ -17,7 +17,6 @@
                   <span class="title fl">{{item.title}}</span>
               </p>
               <p>
-                  <!-- <el-tag class="tag-signs" type="success" size="small" v-for="(itemSigns, index) in item.signs" :key="index">{{itemSigns}}</el-tag> -->
                   <el-tag class="tag-signs" type="success" size="small" v-if="item.cateCode1">{{item.cateCode1}}</el-tag>
                   <el-tag class="tag-signs" type="success" size="small" v-if="item.cateCode2">{{item.cateCode2}}</el-tag>
               </p>

@@ -1,0 +1,34 @@
+.food-list,.steps-list{
+    margin-left: 100px;
+    width: 600px;
+    margin-bottom: 10px;
+    clear: both;
+}
+.food-list span{
+    font-size: 14px;
+    color: #606266;
+}
+.food-list .el-input{
+    display: inline-block;
+    width: 200px;
+}
+.food-list .del,.steps-list .del{
+    color: #F56C6C;
+}
+.steps-list .uploadFile{
+    float: left;
+    width: 240px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.steps-list .el-input{
+    float: left;
+}
+.steps-list  .steps-btn{
+    float: right;
+}
+.steps-list  .steps-btn .el-button{
+    display: block;
+    padding: 0;
+    margin: 0 0 10px 10px;
+}

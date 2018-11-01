@@ -7,14 +7,41 @@ const edit = {
         title: '',
         cateCode1: '',
         cateCode2: '',
+        tips:[],
         homePicture: '',
         workContext: '',
         videoHref: '',
-        remark: ''
+        remark: '',
+        foodList:[{//食材添加
+            name:'',
+            dosage:''
+        }],
+        stepsList:[{//食材添加
+          href:'',
+          text:''
+        }],
       },
       session: localStorage.getItem('sessionId'),
       levelFirst: null, // 一级分类
       levelSecond: null, // 二级分类
+      tipsOptions:[
+        {
+            value: '选项1',
+            label: '选项11'
+          }, {
+            value: '选项2',
+            label: '选项22'
+          }, {
+            value: '选项3',
+            label: '选项33'
+          }, {
+            value: '选项4',
+            label: '选项44'
+          }, {
+            value: '选项5',
+            label: '选项55'
+          }
+      ],
       videoFlag:false,//视频上传进度条
       picFlag:false,//图片上传进度条
       isLevel: true,
@@ -24,14 +51,14 @@ const edit = {
     }
   },
   mounted() {
-    if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo') {
+    if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo' && this.$route.name !== 'createRecipe') {
       this.getDetails();
     }
     this.getLevel();
   },
   methods: {
     /*
-     * Description: 图文、视频详情信息
+     * Description: 图文、视频、食谱详情信息
      * Author: yanlichen <lichen.yan@daydaycook.com.cn>
      * Date: 2018/9/21
      */
@@ -57,13 +84,13 @@ const edit = {
      */
     getLevelTwo(value) {
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
-        console.log(data.data)
+        // console.log(data.data)
         if (this.isLevel) {
           this.isLevel = false
         } else {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
-        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo') {
+        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo'|| this.$route.name == 'createRecipe') {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
         this.levelSecond = data.data;
@@ -127,8 +154,11 @@ const edit = {
             } else if (this.$route.name === 'createVideo') {
               this.ruleForm.workType = 2
               this.ruleForm.publishTask = 1
+            }else if (this.$route.name === 'createRecipe') {
+              this.ruleForm.workType = 3 //?
+              this.ruleForm.publishTask = 1
             }
-            if(this.$route.name === 'createPic' || this.$route.name === 'createVideo') {
+            if(this.$route.name === 'createPic' || this.$route.name === 'createVideo' || his.$route.name === 'createRecipe') {
               urlSaveUpdate = '/kol/works/save'
             } else {
               urlSaveUpdate = '/kol/works/update'
@@ -150,6 +180,10 @@ const edit = {
                 } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
                   this.$router.push({
                     name: 'video'
+                  })
+                }else if (this.$route.name === 'createRecipe' || this.$route.name === 'editRecipe') {
+                  this.$router.push({
+                    name: 'recipe'
                   })
                 }
               }else{
