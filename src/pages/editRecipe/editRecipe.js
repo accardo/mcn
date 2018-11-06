@@ -29,9 +29,6 @@ export default {
                 { required: true, message: '请输入描述', trigger: 'blur' },
                 { max: 50, message: '最多可输入50字', trigger: 'blur' }
             ],
-            text:[
-                {equired: true, message: '请上传图文封面', trigger: 'blur' }
-            ],
           }
         };
     },
