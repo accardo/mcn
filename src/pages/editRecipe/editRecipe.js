@@ -6,6 +6,7 @@ export default {
     data() {
         return {
           shadow:false, //弹窗遮罩
+          videoObj:null,
           editorOption:{
               modules:{
                   toolbar:[
@@ -21,15 +22,6 @@ export default {
                 { required: true, message: '请输入标题', trigger: 'blur' },
                 { max: 15, message: '最多可输入15字', trigger: 'blur' }
             ],
-            cateCode1: [
-                { required: true, message: '请选择一级分类', trigger: 'blur' },
-            ],
-            cateCode2: [
-                { required: true, message: '请选择二级分类', trigger: 'blur' },
-            ],
-            tips: [
-                { required: true, message: '请选择标签', trigger: 'blur' },
-            ],
             homePicture: [
                 { required: true, message: '请上传图文封面', trigger: 'blur' },
             ],
@@ -37,8 +29,8 @@ export default {
                 { required: true, message: '请输入描述', trigger: 'blur' },
                 { max: 50, message: '最多可输入50字', trigger: 'blur' }
             ],
-            workContext: [
-                { required: true, message: '请输入正文内容', trigger: 'blur' },
+            text:[
+                {equired: true, message: '请上传图文封面', trigger: 'blur' }
             ],
           }
         };
@@ -111,12 +103,21 @@ export default {
       },
       //上传视频
       getTokenVideo(file) {
+        this.ruleForm.videoHref = '';
         this.videoFlag = true;
+        let self = this;
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
                 this.videoFlag = false;
-                this.ruleForm.videoHref = url
+                this.ruleForm.videoHref = url;
+                self.$nextTick(() => {
+                    let videoDom = document.getElementById('video');
+                    videoDom.addEventListener('loadedmetadata',()=> {
+                        console.log('加载完成');
+                        console.log(videoDom.duration);
+                    })
+                })
             });
          }) 
       },
@@ -149,8 +150,11 @@ export default {
             });
         }) 
       },
+      onEditorChange(){//内容改变事件
+        // console.log(this.ruleForm.workContext)
+      },
       //步骤列表添加图片
-      getTokenPicList(file,index,item){
+      getTokenPicList(file,item){
         const isJpg = file.target.files[0].type === 'image/jpeg';
         const isPng = file.target.files[0].type === 'image/png';
         const isGif = file.target.files[0].type === 'image/gif';

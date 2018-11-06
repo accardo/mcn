@@ -50,7 +50,7 @@
                     <input type="file" @change="getTokenVideo" class="fileInput">
                     <div class="fileBox">
                         <i v-if="ruleForm.videoHref==''" class="el-icon-plus"></i>
-                        <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref">
+                        <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref" id="video">
                             Your browser does not support the video tag.
                         </video>
                         <div class="progress"  v-if="videoFlag == true" >
@@ -76,9 +76,17 @@
                 </el-form-item>
                 <div class="food-list" v-for="(item,index) in ruleForm.foodList" :key="index">
                     <span>名称</span>
-                    <el-input size="small" placeholder="请输入名称" v-model="item.name"></el-input>
+                    <el-form-item class="min-item"
+                    :prop="'foodList.' + index + '.name'"
+                    :rules="{required: true, message: '名称不能为空', trigger: 'blur'}">
+                        <el-input size="small" placeholder="请输入名称" v-model="item.name"></el-input>
+                    </el-form-item>
                     <span>用量</span>
-                    <el-input size="small" placeholder="请输入用量" v-model="item.dosage"></el-input>
+                    <el-form-item class="min-item"
+                    :prop="'foodList.' + index + '.dosage'"
+                    :rules="{required: true, message: '用量不能为空', trigger: 'blur'}">
+                        <el-input size="small" placeholder="请输入用量" v-model="item.dosage"></el-input>
+                    </el-form-item>
                     <el-button type="text" v-if="index!=0" @click="upList(index,item,1)">上移</el-button>
                     <el-button type="text" v-if="index!=ruleForm.foodList.length-1" @click="downList(index,item,1)">下移</el-button>
                     <el-button type="text" class="del"  @click="ruleForm.foodList.splice(index, 1)">删除</el-button>
@@ -97,26 +105,22 @@
                 <el-form-item label="步骤" class="block" prop="" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(2)">添加</el-button>
                 </el-form-item>
-                <div class="steps-list" v-for="(item,index) in ruleForm.stepsList" :key="index">
+                <div class="steps-list" v-for="(item,index) in ruleForm.stepsList">
                     <div class="uploadFile">
-                        <input type="file" @change="getTokenPicList($event,index,item)" class="fileInput">
+                        <input type="file" @change="getTokenPicList($event,item)" class="fileInput">
                         <div class="fileBox">
                             <i v-if="item.href==''" class="el-icon-plus"></i>
                             <img v-if="item.href" :src="item.href" class="avatar">
-                            <!-- <div class="progress"  v-if="picFlag == true" >
-                                <i class="el-icon-loading"></i>
-                            </div> -->
                         </div>
                         <div class="delete" v-if="item.href!=''" @click="delPic(item)">+</div>
                     </div>
-                    <el-input
-                        v-model="item.text"
-                        style="width: 300px;height:150px;"
-                        rows="6"
-                        type="textarea"
-                        resize = "none"
-                        placeholder="请输入内容">
-                    </el-input>
+                    <el-form-item
+                    :prop="'stepsList.' + index + '.text'"
+                    :rules="{required: true, message: '内容不能为空', trigger: 'blur'}">
+                        <el-input v-model="item.text" style="width: 300px;height:150px;" rows="6"
+                            type="textarea" resize = "none" placeholder="请输入内容">
+                        </el-input>
+                    </el-form-item>
                     <div class="steps-btn">
                         <el-button type="text" v-if="index!=0" @click="upList(index,item,2)">上移</el-button>
                         <el-button type="text" v-if="index!=ruleForm.stepsList.length-1" @click="downList(index,item,2)">下移</el-button>

@@ -8,6 +8,10 @@
     font-size: 14px;
     color: #606266;
 }
+.food-list .min-item{
+    margin-right: 0px;
+    margin-bottom: 10px;
+}
 .food-list .el-input{
     display: inline-block;
     width: 200px;
