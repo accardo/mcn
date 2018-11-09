@@ -39,15 +39,15 @@ const tableList = {
     getTableData() {
       this.loading = true;
       this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
-        if (res.data.data.rows.length > 0) {
-          res.data.data.rows.forEach((item) => {
-            item.signs = util.stringSplit(item.signs)
-          })
-        }
-        this.amount = res.data.data.total;
-        this.internalPageSize = this.searchData.pageSize;
-        this.tableData = res.data.data.rows;
-        this.loading = false;
+        // if (res.data.data.rows.length > 0) {
+        //   res.data.data.rows.forEach((item) => {
+        //     item.signs = util.stringSplit(item.signs)
+        //   })
+        // }
+        // this.amount = res.data.data.total;
+        // this.internalPageSize = this.searchData.pageSize;
+        // this.tableData = res.data.data.rows;
+        // this.loading = false;
       })
     },
     /*

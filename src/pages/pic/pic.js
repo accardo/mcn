@@ -16,7 +16,7 @@ export default {
         tableList
     },
     mounted(){
-      // this.getStatus();
+      this.getStatus();
     },
     methods: {
       //获取用户状态

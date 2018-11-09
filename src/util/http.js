@@ -27,9 +27,9 @@ export const httpAjax = function (url, data) {
   let params = Object.assign({session: sessionid || ''}, data)
   return new Promise((resolve, reject) => {
     axios.post(url, params).then((res)=> {
+      // axios.post(url, querystring.stringify(params)).then((res)=> {
         resolve(res)
         if (res.data.code == '1097' || res.data.code == '1098' || res.data.code == '1099') {
-          // Message.error(res.data.message);
           localStorage.removeItem('sessionId');
           localStorage.removeItem('name');
           localStorage.removeItem('navindex');
