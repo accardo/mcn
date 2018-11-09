@@ -71,11 +71,19 @@ export default {
       },
       getTokenVideo(file) {
         this.videoFlag = true;
+        let self = this;
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
                 this.videoFlag = false;
-                this.ruleForm.videoHref = url
+                this.ruleForm.videoHref = url;
+                self.$nextTick(() => {
+                    let videoDom = document.getElementById('video');
+                    videoDom.addEventListener('loadedmetadata',()=> {
+                        console.log(parseInt( videoDom.duration));
+                        this.ruleForm.videoTime = parseInt( videoDom.duration);
+                    })
+                })
             });
          }) 
       },

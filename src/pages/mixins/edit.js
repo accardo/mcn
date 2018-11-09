@@ -11,6 +11,7 @@ const edit = {
         workContext: '',
         videoHref: '',
         remark: '',
+        videoTime:'',
         cookInfoRequestDTO:[],
         MediaWorksDetailRequestDTO:[],
       },

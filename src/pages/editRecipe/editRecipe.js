@@ -109,11 +109,11 @@ export default {
                 this.videoFlag = false;
                 this.ruleForm.videoHref = url;
                 self.$nextTick(() => {
-                    let videoDom = document.getElementById('video');
-                    videoDom.addEventListener('loadedmetadata',()=> {
-                        console.log('加载完成');
-                        console.log(videoDom.duration);
-                    })
+                  let videoDom = document.getElementById('video');
+                  videoDom.addEventListener('loadedmetadata',()=> {
+                      console.log(parseInt( videoDom.duration));
+                      this.ruleForm.videoTime = parseInt( videoDom.duration);
+                  })
                 })
             });
          }) 
