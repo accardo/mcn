@@ -24,7 +24,7 @@ const formatTimeTwo = (str) => {
   return setv(h) + ':' + setv(mn)
 }
 /*
- * Description: 区分图文和视频
+ * Description: 区分图文和视频 add食谱
  * Author: yanlichen <lichen.yan@daydaycook.com.cn>
  * Date: 2018/9/29
  */
@@ -34,6 +34,8 @@ const formatLabel = (str) => {
     tempStr = '图文';
   } else if (str == 2) {
     tempStr = '视频';
+  }else if (str == 6) {
+    tempStr = '食谱';
   }
   return tempStr
 }

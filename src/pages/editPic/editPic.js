@@ -37,7 +37,7 @@ export default {
         };
     },
     mounted() {
-      this.getStatus();
+      // this.getStatus();
       var imgHandler = async function(state) {//富文本编辑器添加自定义上传图片
         if (state) {
           let fileInput =document.getElementById("uploadPic") //隐藏的file元素

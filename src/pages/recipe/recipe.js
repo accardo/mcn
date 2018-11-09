@@ -5,7 +5,7 @@ export default {
           activeName: '1',
           listData: {
             state: 1,
-            workType: 2,//接口获取数据需要改参数类型
+            workType: 6,
             pageIndex: 1,
             pageSize: 10
           },
@@ -41,7 +41,7 @@ export default {
     //   切换tab
       handleClick(tab) {
         this.listData = {
-          workType: 2,//接口获取数据需要改参数类型
+          workType: 6,
           pageIndex: 1,
           pageSize: 10
         }

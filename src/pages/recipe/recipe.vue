@@ -9,32 +9,32 @@
                   </router-link>
                 </el-row>
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 1" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 1" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="草稿" name="2">
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 2" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 2" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="审核中" name="3">
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 3" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 3" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="已发布" name="4">
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 4" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 4" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="未过审" name="5">
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 5" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 5" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="已下线" name="6">
                 <div class="list">
-                    <table-list url="/kol/works/list" :is-refresh.sync="isRefresh" v-if="listData.state == 6" :search-data="listData"></table-list>
+                    <table-list url="/kol/cook/list" :is-refresh.sync="isRefresh" v-if="listData.state == 6" :search-data="listData"></table-list>
                 </div>
             </el-tab-pane>
         </el-tabs>

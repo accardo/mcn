@@ -66,36 +66,36 @@ export default {
       addList(type){
           if(type==1){
             let cope = {
-                name:"",
-                dosage:""
+              cookMaterial:"",
+              cookDosage:""
             }
-            this.ruleForm.foodList.push(cope);
+            this.ruleForm.cookInfoRequestDTO.push(cope);
           }else if(type==2){
             let cope = {
-                href:"",
-                text:""
+              homePicture:"",
+              workDescribe:""
             }
-            this.ruleForm.stepsList.push(cope);
+            this.ruleForm.MediaWorksDetailRequestDTO.push(cope);
           }
       },
       //上移
       upList(index,item,type){
           if(type == 1){
-            this.ruleForm.foodList.splice(index,1);
-            this.ruleForm.foodList.splice(parseInt(index)-1,0,item);
+            this.ruleForm.cookInfoRequestDTO.splice(index,1);
+            this.ruleForm.cookInfoRequestDTO.splice(parseInt(index)-1,0,item);
           }else if(type == 2){
-            this.ruleForm.stepsList.splice(index,1);
-            this.ruleForm.stepsList.splice(parseInt(index)-1,0,item);
+            this.ruleForm.MediaWorksDetailRequestDTO.splice(index,1);
+            this.ruleForm.MediaWorksDetailRequestDTO.splice(parseInt(index)-1,0,item);
           }
       },
       //下移
       downList(index,item,type){
           if(type == 1){
-            this.ruleForm.foodList.splice(index,1);
-            this.ruleForm.foodList.splice(parseInt(index)+1,0,item);
+            this.ruleForm.cookInfoRequestDTO.splice(index,1);
+            this.ruleForm.cookInfoRequestDTO.splice(parseInt(index)+1,0,item);
           }else if(type == 2){
-            this.ruleForm.stepsList.splice(index,1);
-            this.ruleForm.stepsList.splice(parseInt(index)+1,0,item);
+            this.ruleForm.MediaWorksDetailRequestDTO.splice(index,1);
+            this.ruleForm.MediaWorksDetailRequestDTO.splice(parseInt(index)+1,0,item);
           }
       },
       //上传视频
@@ -159,17 +159,17 @@ export default {
             this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
             return false;
         }
-        item.href = '';
+        item.homePicture = '';
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
-                item.href = url
+                item.homePicture = url
             });
         }) 
       },
       //步骤列表图片删除
       delPic(item){
-        item.href = '';
+        item.homePicture = '';
       },
       back() {//取消
         if(this.$route.params.index){

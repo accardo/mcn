@@ -26,7 +26,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-               <el-form-item label="标签" prop="tips" class="block">
+               <!-- <el-form-item label="标签" prop="tips" class="block">
                     <el-select v-model="ruleForm.tips" multiple style="width:595px;">
                         <el-option
                             v-for="item in tipsOptions"
@@ -35,7 +35,7 @@
                             :value="item.value">
                         </el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="封面" prop="homePicture"  class="uploadFile">
                     <input type="file" @change="getTokenPic" class="fileInput">
                     <div class="fileBox">
@@ -74,22 +74,22 @@
                 <el-form-item label="食材" class="block" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(1)">添加</el-button>
                 </el-form-item>
-                <div class="food-list" v-for="(item,index) in ruleForm.foodList" :key="index">
+                <div class="food-list" v-for="(item,index) in ruleForm.cookInfoRequestDTO" :key="index">
                     <span>名称</span>
                     <el-form-item class="min-item"
-                    :prop="'foodList.' + index + '.name'"
+                    :prop="'cookInfoRequestDTO.' + index + '.cookMaterial'"
                     :rules="{required: true, message: '名称不能为空', trigger: 'blur'}">
-                        <el-input size="small" placeholder="请输入名称" v-model="item.name"></el-input>
+                        <el-input size="small" placeholder="请输入名称" v-model="item.cookMaterial"></el-input>
                     </el-form-item>
                     <span>用量</span>
                     <el-form-item class="min-item"
-                    :prop="'foodList.' + index + '.dosage'"
+                    :prop="'cookInfoRequestDTO.' + index + '.cookDosage'"
                     :rules="{required: true, message: '用量不能为空', trigger: 'blur'}">
-                        <el-input size="small" placeholder="请输入用量" v-model="item.dosage"></el-input>
+                        <el-input size="small" placeholder="请输入用量" v-model="item.cookDosage"></el-input>
                     </el-form-item>
                     <el-button type="text" v-if="index!=0" @click="upList(index,item,1)">上移</el-button>
-                    <el-button type="text" v-if="index!=ruleForm.foodList.length-1" @click="downList(index,item,1)">下移</el-button>
-                    <el-button type="text" class="del"  @click="ruleForm.foodList.splice(index, 1)">删除</el-button>
+                    <el-button type="text" v-if="index!=ruleForm.cookInfoRequestDTO.length-1" @click="downList(index,item,1)">下移</el-button>
+                    <el-button type="text" class="del"  @click="ruleForm.cookInfoRequestDTO.splice(index, 1)">删除</el-button>
                 </div>
                 <el-form-item  label="步骤详情" prop="workContext" style="margin-top:20px;margin-bottom:0;">
                     <div class="form-item">
@@ -105,26 +105,26 @@
                 <el-form-item label="步骤" class="block" prop="" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(2)">添加</el-button>
                 </el-form-item>
-                <div class="steps-list" v-for="(item,index) in ruleForm.stepsList">
+                <div class="steps-list" v-for="(item,index) in ruleForm.MediaWorksDetailRequestDTO">
                     <div class="uploadFile">
                         <input type="file" @change="getTokenPicList($event,item)" class="fileInput">
                         <div class="fileBox">
-                            <i v-if="item.href==''" class="el-icon-plus"></i>
-                            <img v-if="item.href" :src="item.href" class="avatar">
+                            <i v-if="item.homePicture==''" class="el-icon-plus"></i>
+                            <img v-if="item.homePicture" :src="item.homePicture" class="avatar">
                         </div>
-                        <div class="delete" v-if="item.href!=''" @click="delPic(item)">+</div>
+                        <div class="delete" v-if="item.homePicture!=''" @click="delPic(item)">+</div>
                     </div>
                     <el-form-item
-                    :prop="'stepsList.' + index + '.text'"
+                    :prop="'MediaWorksDetailRequestDTO.' + index + '.workDescribe'"
                     :rules="{required: true, message: '内容不能为空', trigger: 'blur'}">
-                        <el-input v-model="item.text" style="width: 300px;height:150px;" rows="6"
+                        <el-input v-model="item.workDescribe" style="width: 300px;height:150px;" rows="6"
                             type="textarea" resize = "none" placeholder="请输入内容">
                         </el-input>
                     </el-form-item>
                     <div class="steps-btn">
                         <el-button type="text" v-if="index!=0" @click="upList(index,item,2)">上移</el-button>
-                        <el-button type="text" v-if="index!=ruleForm.stepsList.length-1" @click="downList(index,item,2)">下移</el-button>
-                        <el-button type="text" class="del" @click="ruleForm.stepsList.splice(index, 1)">删除</el-button>
+                        <el-button type="text" v-if="index!=ruleForm.MediaWorksDetailRequestDTO.length-1" @click="downList(index,item,2)">下移</el-button>
+                        <el-button type="text" class="del" @click="ruleForm.MediaWorksDetailRequestDTO.splice(index, 1)">删除</el-button>
                     </div>
                 </div>
                 <el-form-item class="block" style="padding-left:100px;">

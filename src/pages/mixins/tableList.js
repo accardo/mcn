@@ -69,11 +69,11 @@ const tableList = {
       this.getTableData();
     },
     /*
-	 * Description: 视频下线
+	 * Description: 下线
 	 * Author: yanlichen <lichen.yan@daydaycook.com.cn>
 	 * Date: 2018/9/27
 	 */
-    outLine(id){
+    outLine(id,type){
       let params = {
         id,
         state: 'Z'
@@ -83,10 +83,18 @@ const tableList = {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
-          this.$message({type: 'success', message: '下线成功'});
-          this.getTableData();
-        })
+        if(type == 6){//食谱类型 下线
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/cook/update`, params).then(() => {
+            this.$message({type: 'success', message: '下线成功'});
+            this.getTableData();
+          })
+        }else{//视频 图文下线
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+            this.$message({type: 'success', message: '下线成功'});
+            this.getTableData();
+          })
+        }
+        
       }).catch(action => {
 
       });

@@ -40,15 +40,15 @@
         <!-- A草稿 -->
         <div v-if="item.state=='A'">
           <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
-          <el-button size="mini" @click="publish(item.id)" type="primary">发布</el-button>
+          <el-button size="mini" @click="publish(item.id, item.workType)" type="primary">发布</el-button>
         </div>
         <!-- W审核中 -->
         <div v-if="item.state=='W'">
-          <el-button size="mini" @click="backout(item.id)" type="warning">撤销</el-button>
+          <el-button size="mini" @click="backout(item.id, item.workType)" type="warning">撤销</el-button>
         </div>
         <!-- S已发布 -->
         <div v-if="item.state=='S'">
-          <el-button size="mini"  @click="outLine(item.id)" type="danger">下线</el-button>
+          <el-button size="mini"  @click="outLine(item.id, item.workType)" type="danger">下线</el-button>
         </div>
         <!-- F未过审 -->
         <div v-if="item.state=='F'">
@@ -103,6 +103,8 @@
           name = 'editPic'
         } else if (workType == 2) {
           name = 'editVideo'
+        }else if (workType == 6) {
+          name = 'editRecipe'
         }
         this.$router.push({
           name,
@@ -113,7 +115,7 @@
         })
       },
       // 发布
-      publish(id) {
+      publish(id, workType) {
         let params = {
           id,
           state: 'W'
@@ -123,16 +125,24 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         }).then(() => {
-          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
-            this.$message({type: 'success', message: '发布成功'});
-            this.getTableData();
-          })
+          if(workType == 6){
+            this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/cook/update`, params).then(() => {
+              this.$message({type: 'success', message: '发布成功'});
+              this.getTableData();
+            }) 
+          }else if(workType == 1 || workType == 2){
+            this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+              this.$message({type: 'success', message: '发布成功'});
+              this.getTableData();
+            })  
+          }
+          
         }).catch(action => {
 
         });
       },
       // 撤销
-      backout(id) {
+      backout(id, workType) {
         let params = {
           id,
           state: 'A'
@@ -142,10 +152,18 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         }).then(() => {
-          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
-            this.$message({type: 'success', message: '撤销成功'});
-            this.getTableData();
-          })
+          if(workType == 6){
+            this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/cook/update`, params).then(() => {
+              this.$message({type: 'success', message: '撤销成功'});
+              this.getTableData();
+            })
+          }else if(workType == 1 || workType == 2){
+            this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+              this.$message({type: 'success', message: '撤销成功'});
+              this.getTableData();
+            })  
+          }
+          
         }).catch(action => {
 
         });
