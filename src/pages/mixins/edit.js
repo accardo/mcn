@@ -10,7 +10,7 @@ const edit = {
         homePicture: '',
         workContext: '',
         videoHref: '',
-        videoTime:'',
+        videoTime: 0,
         remark: ''
       },
       session: localStorage.getItem('sessionId'),
@@ -105,6 +105,19 @@ const edit = {
       delete this.ruleForm.timeTo1;
       delete this.ruleForm.timeTo2;
       delete this.ruleForm.updateTime;
+      delete this.ruleForm.userId;
+      delete this.ruleForm.praiseNum;
+      delete this.ruleForm.readNum;
+      delete this.ruleForm.commentNum;
+      delete this.ruleForm.shareNum;
+      delete this.ruleForm.recommendStatus;
+      delete this.ruleForm.comeSource;
+      delete this.ruleForm.putDown;
+      delete this.ruleForm.topOne;
+      delete this.ruleForm.recommendTime;
+      delete this.ruleForm.putTime;
+      delete this.ruleForm.topTime;
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('确认保存?', '确认消息', {
