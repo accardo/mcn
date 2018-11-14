@@ -61,7 +61,7 @@ export function qiniuUpload(token, file, type) {
     let { name } =file;
     let d =name.split('.');
     let t = new Date().getTime();
-    name = `${d[0]}${t}.${d[1]}`;
+    name = `${parseInt(Math.random()*100)}${t}.${d[1]}`;
     let qiniuPutExtra = {
       fname: "",
       params: {},
@@ -86,6 +86,7 @@ export function qiniuUpload(token, file, type) {
     })
   })
 }
+
 export default {
   delay,
   httpAjax,

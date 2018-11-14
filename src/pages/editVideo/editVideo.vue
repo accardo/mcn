@@ -40,7 +40,7 @@
                     <input type="file" @change="getTokenVideo" class="fileInput">
                     <div class="fileBox">
                         <i v-if="ruleForm.videoHref==''" class="el-icon-plus"></i>
-                        <video class="avatar" v-if="ruleForm.videoHref" :src="ruleForm.videoHref">
+                        <video class="avatar" id="video" v-if="ruleForm.videoHref" :src="ruleForm.videoHref">
                             Your browser does not support the video tag.
                         </video>
                         <div class="progress"  v-if="videoFlag == true" >

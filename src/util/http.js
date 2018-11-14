@@ -9,7 +9,7 @@ let status = (_url.indexOf('127') > -1 || _url.indexOf('localhost') > -1) ?
     1 : _url.indexOf('mobile-staging') > -1 ?
       2 : 3;
 
-    status = 3;		//手动干扰
+    // status = 1;		//手动干扰
 
 // web 端地址 http://10.23.116.187:8090 http://192.168.18.53:8090
 export const ajaxUrl  = status == 0 ? 'http://10.23.116.187:8090' : status == 1 ?
@@ -29,7 +29,6 @@ export const httpAjax = function (url, data) {
     axios.post(url, querystring.stringify(params)).then((res)=> {
         resolve(res)
         if (res.data.code == '1097' || res.data.code == '1098' || res.data.code == '1099') {
-          // Message.error(res.data.message);
           localStorage.removeItem('sessionId');
           localStorage.removeItem('name');
           localStorage.removeItem('navindex');
