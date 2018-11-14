@@ -10,7 +10,7 @@ export default {
           editorOption:{
               modules:{
                   toolbar:[
-                      ['bold', 'italic', 'underline', 'strike', 'color', 'image', 'video','link'],        // toggled buttons
+                      ['bold', 'italic', 'underline', 'strike', 'image', 'video'],        // toggled buttons
                       [{ 'align': [] }],
                       ['blockquote', 'code-block'],
                       [{ 'color': [] }, { 'background': [] }],
