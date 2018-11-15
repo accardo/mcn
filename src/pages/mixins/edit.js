@@ -11,9 +11,9 @@ const edit = {
         workContext: '',
         videoHref: '',
         remark: '',
-        videoTime:'',
+        videoTime:0,
         cookInfoRequestDTO:[],
-        MediaWorksDetailRequestDTO:[],
+        mediaWorksDetailRequestDTO:[],
       },
       session: localStorage.getItem('sessionId'),
       levelFirst: null, // 一级分类
@@ -28,12 +28,11 @@ const edit = {
   },
   mounted() {
     if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo' && this.$route.name !== 'createRecipe') {
-      if (this.$route.name == 'createRecipe'){
+      if (this.$route.name == 'editRecipe'){
         this.getDetails('cook');
       } else {
         this.getDetails('works');
       }
-      
     }
     this.getLevel();
   },
@@ -44,6 +43,7 @@ const edit = {
      * Date: 2018/9/21
      */
     getDetails(getUrl) {
+      console.log(getUrl)
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/${getUrl}/findOne`, {id: this.$route.params.id}).then(({data}) => {
         this.ruleForm = data.data;
       })
@@ -171,23 +171,22 @@ const edit = {
                   this.$message({type: 'success', message: '保存并发布成功'});
                 }
                 this.isSave = false;
-                // if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
-                //   this.$router.push({
-                //     name: 'pic'
-                //   })
-                // } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
-                //   this.$router.push({
-                //     name: 'video'
-                //   })
-                // }else if (this.$route.name === 'createRecipe' || this.$route.name === 'editRecipe') {
-                //   this.$router.push({
-                //     name: 'recipe'
-                //   })
-                // }
+                if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
+                  this.$router.push({
+                    name: 'pic'
+                  })
+                } else if (this.$route.name === 'createVideo' || this.$route.name === 'editVideo') {
+                  this.$router.push({
+                    name: 'video'
+                  })
+                }else if (this.$route.name === 'createRecipe' || this.$route.name === 'editRecipe') {
+                  this.$router.push({
+                    name: 'recipe'
+                  })
+                }
               }else{
-                Message.error(res.data.message);
+                this.$message({type: 'error', message: res.data.message});
               }
-             
             })
           }).catch(action => {
           });

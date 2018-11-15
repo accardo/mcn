@@ -74,7 +74,7 @@
                 <el-form-item label="食材" class="block" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(1)">添加</el-button>
                 </el-form-item>
-                <div class="food-list" v-for="(item,index) in ruleForm.cookInfoRequestDTO" :key="index">
+                <div class="food-list" v-for="(item,index) in ruleForm.cookInfoRequestDTO">
                     <span>名称</span>
                     <el-form-item class="min-item"
                     :prop="'cookInfoRequestDTO.' + index + '.cookMaterial'"
@@ -105,7 +105,7 @@
                 <el-form-item label="步骤" class="block" prop="" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(2)">添加</el-button>
                 </el-form-item>
-                <div class="steps-list" v-for="(item,index) in ruleForm.MediaWorksDetailRequestDTO">
+                <div class="steps-list" v-for="(item,index) in ruleForm.mediaWorksDetailRequestDTO" :key="index">
                     <div class="uploadFile">
                         <input type="file" @change="getTokenPicList($event,item)" class="fileInput">
                         <div class="fileBox">
@@ -115,7 +115,7 @@
                         <div class="delete" v-if="item.homePicture!=''" @click="delPic(item)">+</div>
                     </div>
                     <el-form-item
-                    :prop="'MediaWorksDetailRequestDTO.' + index + '.workDescribe'"
+                    :prop="'mediaWorksDetailRequestDTO.' + index + '.workDescribe'"
                     :rules="{required: true, message: '内容不能为空', trigger: 'blur'}">
                         <el-input v-model="item.workDescribe" style="width: 300px;height:150px;" rows="6"
                             type="textarea" resize = "none" placeholder="请输入内容">
@@ -123,8 +123,8 @@
                     </el-form-item>
                     <div class="steps-btn">
                         <el-button type="text" v-if="index!=0" @click="upList(index,item,2)">上移</el-button>
-                        <el-button type="text" v-if="index!=ruleForm.MediaWorksDetailRequestDTO.length-1" @click="downList(index,item,2)">下移</el-button>
-                        <el-button type="text" class="del" @click="ruleForm.MediaWorksDetailRequestDTO.splice(index, 1)">删除</el-button>
+                        <el-button type="text" v-if="index!=ruleForm.mediaWorksDetailRequestDTO.length-1" @click="downList(index,item,2)">下移</el-button>
+                        <el-button type="text" class="del" @click="ruleForm.mediaWorksDetailRequestDTO.splice(index, 1)">删除</el-button>
                     </div>
                 </div>
                 <el-form-item class="block" style="padding-left:100px;">

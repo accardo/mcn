@@ -75,7 +75,7 @@ export default {
               homePicture:"",
               workDescribe:""
             }
-            this.ruleForm.MediaWorksDetailRequestDTO.push(cope);
+            this.ruleForm.mediaWorksDetailRequestDTO.push(cope);
           }
       },
       //上移
@@ -84,8 +84,8 @@ export default {
             this.ruleForm.cookInfoRequestDTO.splice(index,1);
             this.ruleForm.cookInfoRequestDTO.splice(parseInt(index)-1,0,item);
           }else if(type == 2){
-            this.ruleForm.MediaWorksDetailRequestDTO.splice(index,1);
-            this.ruleForm.MediaWorksDetailRequestDTO.splice(parseInt(index)-1,0,item);
+            this.ruleForm.mediaWorksDetailRequestDTO.splice(index,1);
+            this.ruleForm.mediaWorksDetailRequestDTO.splice(parseInt(index)-1,0,item);
           }
       },
       //下移
@@ -94,8 +94,8 @@ export default {
             this.ruleForm.cookInfoRequestDTO.splice(index,1);
             this.ruleForm.cookInfoRequestDTO.splice(parseInt(index)+1,0,item);
           }else if(type == 2){
-            this.ruleForm.MediaWorksDetailRequestDTO.splice(index,1);
-            this.ruleForm.MediaWorksDetailRequestDTO.splice(parseInt(index)+1,0,item);
+            this.ruleForm.mediaWorksDetailRequestDTO.splice(index,1);
+            this.ruleForm.mediaWorksDetailRequestDTO.splice(parseInt(index)+1,0,item);
           }
       },
       //上传视频
