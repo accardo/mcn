@@ -111,6 +111,9 @@
                         <div class="fileBox">
                             <i v-if="item.homePicture==''" class="el-icon-plus"></i>
                             <img v-if="item.homePicture" :src="item.homePicture" class="avatar">
+                            <div class="progress"  v-if="item.picDetailFlag==true" >
+                                <i class="el-icon-loading"></i>
+                            </div>
                         </div>
                         <div class="delete" v-if="item.homePicture!=''" @click="delPic(item)">+</div>
                     </div>

@@ -43,7 +43,6 @@ const edit = {
      * Date: 2018/9/21
      */
     getDetails(getUrl) {
-      console.log(getUrl)
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/${getUrl}/findOne`, {id: this.$route.params.id}).then(({data}) => {
         this.ruleForm = data.data;
       })
@@ -126,7 +125,6 @@ const edit = {
       delete this.ruleForm.putTime;
       delete this.ruleForm.topTime;
       this.$refs[formName].validate((valid) => {
-       
         if (valid) {
           this.$confirm('确认保存?', '确认消息', {
             distinguishCancelAndClose: true,

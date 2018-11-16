@@ -73,7 +73,8 @@ export default {
           }else if(type==2){
             let cope = {
               homePicture:"",
-              workDescribe:""
+              workDescribe:"",
+              picDetailFlag : false
             }
             this.ruleForm.mediaWorksDetailRequestDTO.push(cope);
           }
@@ -160,10 +161,12 @@ export default {
             return false;
         }
         item.homePicture = '';
+        item.picDetailFlag = true;
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
-                item.homePicture = url
+                item.picDetailFlag = false;
+                item.homePicture = url;
             });
         }) 
       },
