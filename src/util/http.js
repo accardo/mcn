@@ -9,10 +9,10 @@ let status = (_url.indexOf('127') > -1 || _url.indexOf('localhost') > -1) ?
     1 : _url.indexOf('mobile-staging') > -1 ?
       2 : 3;
 
-    // status = 1;		//手动干扰
+    // status = 0;		//手动干扰
 
 // web 端地址 http://10.23.116.187:8090 http://192.168.18.53:8090
-export const ajaxUrl  = status == 0 ? 'http://10.23.116.187:8090' : status == 1 ?
+export const ajaxUrl  = status == 0 ? 'http://192.168.18.51:8080' : status == 1 ?
   'https://mcn-kol-t.daydaycook.com.cn' : status == 2 ?
     'https://mcn-kol-s.daydaycook.com.cn' : 'https://mcn-kol.daydaycook.com.cn';
 

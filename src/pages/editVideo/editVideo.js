@@ -38,6 +38,9 @@ export default {
             videoHref: [
               { required: true, message: '请上传视频', trigger: 'blur' },
             ],
+            videoLayout: [
+                { required: true, message: '请选择视频比例', trigger: 'change' }
+            ],
             workDescribe: [
               { required: true, message: '请输入描述', trigger: 'blur' },
               { max: 120, message: '最多可输入120字', trigger: 'blur' }
