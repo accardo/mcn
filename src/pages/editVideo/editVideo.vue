@@ -53,7 +53,7 @@
                 </el-form-item>
                 <el-form-item label="视频比例" prop="videoLayout">
                     <el-radio-group v-model="ruleForm.videoLayout">
-                        <el-radio label="H">横盘</el-radio>
+                        <el-radio label="H">横屏</el-radio>
                         <el-radio label="S">竖屏</el-radio>
                         <el-radio label="F">方屏</el-radio>
                     </el-radio-group>
