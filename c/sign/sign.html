@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="full-screen" content="yes">
+        <title>报名信息</title>
+        <script>
+            (function(){
+                var elm = document.documentElement;
+                elm.style.fontSize = 100 * (elm.clientWidth/320) + 'px';
+            })();
+            // sessionStorage.setItem('sessionId','9a900ae5-0c9a-4adf-8663-b6447e5ba4cd');
+        </script>
+        <script>
+            //growingio埋点
+        !function(e,t,n,g,i){e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},n=t.createElement("script"),tag=t.getElementsByTagName("script")[0],n.async=1,n.src=('https:'==document.location.protocol?'https://':'http://')+g,tag.parentNode.insertBefore(n,tag)}(window,document,"script","assets.growingio.com/2.1/gio.js","gio");
+            gio('init','82bc91ac25611960', {});
+            gio('send');
+        </script>
+        <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+        <link rel="stylesheet" href="./css/ddc.css?v=9">
+        <link rel="stylesheet" href="./css/LArea.css">
+    </head>
+    <body>
+        <!-- 报名 -->
+        <div class="wraper sign">
+            <div class="main ss">
+                <div class="scroll ss">
+                    <h3>报名信息</h3>
+                    <div class="info">
+                        <div class="name empty">
+                           <span>姓名：</span>
+                           <input id="name" type="text" placeholder="请输入姓名">
+                           <em class="delete"></em>
+                        </div>
+                        <div class="gender drop select">
+                            <span>性别：</span>
+                            <p>
+                                <select id="genderId">
+                                  <option value="请选择">请选择</option>
+                                  <option value="男">男</option>
+                                  <option value="女">女</option>
+                                </select>
+                                <b class="mark"></b>
+                            </p>
+                        </div>
+                        <div class="phone drop">
+                            <span>手机：</span>
+                            <input id="phone" type="tel" maxlength="11" placeholder="请填写手机号码">
+                            <em class="delete"></em>
+                        </div>
+                        <div class="area drop">
+                            <span>地区：</span>
+                            <input id="areaId" type="text" readonly="" placeholder="请选择学校所在省、市">
+                            <!-- <p id="areaId">请选择学校所在省、市</p> -->
+                        </div>
+                        <div class="school empty">
+                            <span>学校：</span>
+                            <input id="school" type="text" placeholder="请输入所在学校">
+                            <em class="delete"></em>
+                        </div>
+                        <div class="profession empty">
+                            <span>专业：</span>
+                            <input id="profession" type="text" placeholder="请输入所学专业">
+                            <em class="delete"></em>
+                        </div>
+                        <div class="category drop select">
+                            <span>类别：</span>
+                            <p>
+                                <select id="categoryId">
+                                  <option value="请选择类别">请选择类别</option>
+                                  <option value="美妆">美妆</option>
+                                  <option value="时尚">时尚</option>
+                                  <option value="旅行">旅行</option>
+                                  <option value="美食">美食</option>
+                                  <option value="音乐">音乐</option>
+                                  <option value="舞蹈">舞蹈</option>
+                                  <option value="搞笑">搞笑</option>
+                                  <option value="生活">生活</option>
+                                  <option value="健身">健身</option>
+                                  <option value="动漫">动漫</option>
+                                  <option value="游戏">游戏</option>
+                                  <option value="体育">体育</option>
+                                </select>
+                                <b class="mark"></b>
+                            </p>
+                        </div>
+                        <div class="theme empty">
+                            <span>主题：</span>
+                            <input id="theme" type="text" placeholder="请输入视频主题，字数不超过16个字">
+                            <em class="delete"></em>
+                        </div>
+                        <p class="remark">上传视频：<span>视频限制在200M以内</span></p>
+                        <div id="sendBefore" class="sendBefore">
+                            <div class="icons">
+                                <p>+</p>
+                                <p>上传视频</p>
+                            </div>
+                            <input maxNumberOfFiles="1" id="videoForm" type="file" accept="video/*" multiple="multiple" />
+                        </div>
+                        <div id="videoUrl" class="videoUrl">
+                            <div class="videoUrl v2"></div>
+                            <div class="close"></div>
+                        </div>
+                    </div>
+                    <div class="btn">
+                       <span class="submit">我要报名</span>
+                    </div>
+                </div>
+           </div>
+        </div>
+        <!-- 提示 -->
+        <div class="toast" id="toast">
+            <p class="icon"><img src="" /></p>
+            <p class="text"></p>
+        </div>
+        <!-- 提示 -->
+        <div class="toast" id="toast3">
+            <p class="icon"></p>
+            <p class="text"></p>
+        </div>
+        <script src="./lib/ddc.js?v=1017"></script>
+        <script src="./lib/qiniu.min.js"></script>
+        <!-- <script src="https://unpkg.com/qiniu-js@2.4.0/dist/qiniu.min.js"></script> -->
+        <script src="./lib/LAreaData1.js"></script>
+        <script src="./lib/LAreaData2.js"></script>
+        <script src="./lib/LArea.js"></script>
+        <script src="./js/sign.js?v=3"></script>
+        <script>
+            (function () {
+                if (window.location.href.indexOf('mobile.daydaycook.com') == -1) {
+                    var src = '//cdn.bootcss.com/eruda/1.2.4/eruda.min.js';
+                    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+                    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+                }
+            })();
+        </script>
+    </body>
+</html>
