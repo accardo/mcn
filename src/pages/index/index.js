@@ -44,6 +44,8 @@ export default {
           name = 'editPic'
         } else if (workType == 2) {
           name = 'editVideo'
+        }else if (workType == 6) {
+          name = 'editRecipe'
         }
         this.$router.push({
           name,

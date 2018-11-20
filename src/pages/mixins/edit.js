@@ -10,8 +10,10 @@ const edit = {
         homePicture: '',
         workContext: '',
         videoHref: '',
-        videoTime: 0,
-        remark: ''
+        remark: '',
+        videoTime:0,
+        cookInfoRequestDTO:[],
+        mediaWorksDetailRequestDTO:[],
       },
       session: localStorage.getItem('sessionId'),
       levelFirst: null, // 一级分类
@@ -25,19 +27,23 @@ const edit = {
     }
   },
   mounted() {
-    if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo') {
-      this.getDetails();
+    if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo' && this.$route.name !== 'createRecipe') {
+      if (this.$route.name == 'editRecipe'){
+        this.getDetails('cook');
+      } else {
+        this.getDetails('works');
+      }
     }
     this.getLevel();
   },
   methods: {
     /*
-     * Description: 图文、视频详情信息
+     * Description: 图文、视频、食谱详情信息
      * Author: yanlichen <lichen.yan@daydaycook.com.cn>
      * Date: 2018/9/21
      */
-    getDetails() {
-      this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/findOne`, {id: this.$route.params.id}).then(({data}) => {
+    getDetails(getUrl) {
+      this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/${getUrl}/findOne`, {id: this.$route.params.id}).then(({data}) => {
         this.ruleForm = data.data;
       })
     },
@@ -63,7 +69,7 @@ const edit = {
         } else {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
-        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo') {
+        if (this.$route.name == 'createPic' || this.$route.name == 'createVideo'|| this.$route.name == 'createRecipe') {
           this.ruleForm.cateCode2 = data.data[0].detailCode
         }
         this.levelSecond = data.data;
@@ -117,7 +123,6 @@ const edit = {
       delete this.ruleForm.recommendTime;
       delete this.ruleForm.putTime;
       delete this.ruleForm.topTime;
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('确认保存?', '确认消息', {
@@ -125,7 +130,7 @@ const edit = {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
           }).then(() => {
-            let urlSaveUpdate = ''
+            let urlSaveUpdate = '';
             if (type == 1) {
               this.ruleForm.state = 'A';
               this.saveText = '保存中...'
@@ -140,12 +145,19 @@ const edit = {
             } else if (this.$route.name === 'createVideo') {
               this.ruleForm.workType = 2
               this.ruleForm.publishTask = 1
+            }else if (this.$route.name === 'createRecipe') {
+              this.ruleForm.workType = 6 
+              this.ruleForm.publishTask = 1
             }
             if(this.$route.name === 'createPic' || this.$route.name === 'createVideo') {
               urlSaveUpdate = '/kol/works/save'
-            } else {
+            } else if(this.$route.name === 'editPic' || this.$route.name === 'editVideo' ){
               urlSaveUpdate = '/kol/works/update'
-            }
+            } else if(this.$route.name === 'createRecipe'){
+              urlSaveUpdate = '/kol/cook/save'
+            } else if(this.$route.name === 'editRecipe'){
+              urlSaveUpdate = '/kol/cook/update'
+            }      
             this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(({data}) => {
               if(data.code=='0000'){
                 if (type == 1) {
@@ -164,11 +176,14 @@ const edit = {
                   this.$router.push({
                     name: 'video'
                   })
+                }else if (this.$route.name === 'createRecipe' || this.$route.name === 'editRecipe') {
+                  this.$router.push({
+                    name: 'recipe'
+                  })
                 }
               }else{
-                Message.error(res.data.message);
+                this.$message({type: 'error', message: res.data.message});
               }
-             
             })
           }).catch(action => {
           });
