@@ -1,6 +1,7 @@
 import edit from '@/pages/mixins/edit';
 import util from "../../util/util";
 import * as httpUrl from '../../util/http'
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -80,15 +81,23 @@ export default {
             util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
                 this.videoFlag = false;
                 this.ruleForm.videoHref = url;
-                self.$nextTick(() => {
-                    let videoDom = document.getElementById('video');
-                    videoDom.addEventListener('loadedmetadata',()=> {
-                        console.log(parseInt( videoDom.duration));
-                        this.ruleForm.videoTime = parseInt( videoDom.duration);
-                    })
-                })
+                this.getLong(url);
+                // self.$nextTick(() => {
+                //     let videoDom = document.getElementById('video');
+                //     videoDom.addEventListener('loadedmetadata',()=> {
+                //         console.log(parseInt( videoDom.duration));
+                //         this.ruleForm.videoTime = parseInt( videoDom.duration);
+                //     })
+                // })
             });
          }) 
+      },
+      getLong(url){
+          axios.get(`${url}?avinfo`).then(res => {
+            if(res){
+                this.ruleForm.videoTime = parseInt(res.data.streams[0].duration)
+            }
+          })
       },
       //预览视频
       palyVideo(){

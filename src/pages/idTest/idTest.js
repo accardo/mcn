@@ -22,8 +22,7 @@ export default {
             { required: true, message: '请输入姓名', trigger: 'blur' },
           ],
           idCardNum: [
-            { required: true, message: '请输入身份证号', trigger: 'blur' },
-            { min: 15, max: 18, message: '请输入正确的身份证', trigger: 'blur' }
+            { required: true, message: '请输入身份证号', trigger: 'blur' }
           ],
           idCardPhoto: [
             { required: true, message: '请上传身份证', trigger: 'change' },
