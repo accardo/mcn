@@ -19,6 +19,7 @@ var ddc = {
 	baseUrl:function(){
         // 0 开发环境  1 测试环境  2 staging环境  3生产环境
         var status = _DDC.status;
+        // status = 3;
         var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
         var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
         return {
@@ -90,7 +91,7 @@ var ddc = {
 		var _list = [];
 		var max = 0;
 		list.forEach(function(item){
-			max = accAdd(max,item.maxCmmission)
+			max = _DDC.accAdd(max,item.maxCmmission)
 			var _filter = _list.filter(function(ele){
 				if(ele.itemId == item.itemId){
 					return ele

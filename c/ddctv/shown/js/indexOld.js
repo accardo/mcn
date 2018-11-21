@@ -28,7 +28,7 @@ var ddc = {
     },
 	init:function(){
 		var self = this;
-		axios.post(self.baseUrl().ajaxUrl+'top-content/view',{
+		axios.post(self.baseUrl().ajaxUrl+'top-content/view-h5',{
             contentId:self.data.contentId,
             businessCategoryId:self.data.businessCategoryId,
             sessionId:''
@@ -90,7 +90,7 @@ var ddc = {
 		var _list = [];
 		var max = 0;
 		list.forEach(function(item){
-			max = accAdd(max,item.maxCmmission)
+      max = _DDC.accAdd(max,item.maxCmmission)
 			var _filter = _list.filter(function(ele){
 				if(ele.itemId == item.itemId){
 					return ele
