@@ -2,8 +2,16 @@ import * as Quill from 'quill'    // 引入编辑器
 import edit from '@/pages/mixins/edit';
 import util from "../../util/util";
 import * as httpUrl from '../../util/http'
+import axios from 'axios'
 export default {
     data() {
+        var checkVideoLayout = (rule, value, callback) => {
+          if(this.ruleForm.videoHref != '' && !value){
+            callback(new Error('请选择视频比例'));
+          }else{
+            callback();
+          }
+        };
         return {
           shadow:false, //弹窗遮罩
           videoObj:null,
@@ -25,6 +33,9 @@ export default {
             homePicture: [
                 { required: true, message: '请上传图文封面', trigger: 'blur' },
             ],
+            videoLayout:[
+              { validator: checkVideoLayout, trigger: 'change' }
+            ],
             workDescribe: [
                 { required: true, message: '请输入描述', trigger: 'blur' },
                 { max: 50, message: '最多可输入50字', trigger: 'blur' }
@@ -33,7 +44,7 @@ export default {
         };
     },
     mounted() {
-      //this.getStatus();
+      this.getStatus();
       var imgHandler = async function(state) {//富文本编辑器添加自定义上传图片
         if (state) {
           let fileInput =document.getElementById("uploadPic") //隐藏的file元素
@@ -103,21 +114,21 @@ export default {
       getTokenVideo(file) {
         this.ruleForm.videoHref = '';
         this.videoFlag = true;
-        let self = this;
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
                 this.videoFlag = false;
                 this.ruleForm.videoHref = url;
-                self.$nextTick(() => {
-                  let videoDom = document.getElementById('video');
-                  videoDom.addEventListener('loadedmetadata',()=> {
-                      console.log(parseInt( videoDom.duration));
-                      this.ruleForm.videoTime = parseInt( videoDom.duration);
-                  })
-                })
+                this.getLong(url);
             });
          }) 
+      },
+      getLong(url){
+        axios.get(`${url}?avinfo`).then(res => {
+          if(res){
+              this.ruleForm.videoTime = parseInt(res.data.streams[0].duration)
+          }
+        })
       },
       //预览视频
       palyVideo(){

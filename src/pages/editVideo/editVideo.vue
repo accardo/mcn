@@ -51,6 +51,13 @@
                         </div>
                     </div>
                 </el-form-item>
+                <el-form-item label="视频比例" prop="videoLayout">
+                    <el-radio-group v-model="ruleForm.videoLayout">
+                        <el-radio label="H">横屏</el-radio>
+                        <el-radio label="S">竖屏</el-radio>
+                        <el-radio label="F">方屏</el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="描述" class="block" prop="remark">
                     <el-input
                         style="width: 598px;"

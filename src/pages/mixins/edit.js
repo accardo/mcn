@@ -124,6 +124,15 @@ const edit = {
       delete this.ruleForm.recommendTime;
       delete this.ruleForm.putTime;
       delete this.ruleForm.topTime;
+      if(this.ruleForm.mediaWorksDetailRequestDTO.length>0){
+        let newArr = [];
+        this.ruleForm.mediaWorksDetailRequestDTO.map(item => {
+            let {homePicture,workDescribe} = item;
+            let obj=  {homePicture,workDescribe}
+            newArr.push(obj)
+        })
+        this.ruleForm.mediaWorksDetailRequestDTO = newArr;
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('确认保存?', '确认消息', {
@@ -156,8 +165,10 @@ const edit = {
               urlSaveUpdate = '/kol/works/update'
             } else if(this.$route.name === 'createRecipe'){
               urlSaveUpdate = '/kol/cook/save'
+              if(this.ruleForm.videoHref == ''){delete this.ruleForm.videoLayout;}
             } else if(this.$route.name === 'editRecipe'){
               urlSaveUpdate = '/kol/cook/update'
+              if(this.ruleForm.videoHref == ''){delete this.ruleForm.videoLayout;}
             }      
             this.$http.httpAjax(this.$http.ajaxUrl + urlSaveUpdate, this.ruleForm).then(({data}) => {
               if(data.code=='0000'){
