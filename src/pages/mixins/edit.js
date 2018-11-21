@@ -64,7 +64,6 @@ const edit = {
      */
     getLevelTwo(value) {
       this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getCodeLevel`, {levelCode: value}).then(({data}) => {
-        // console.log(data.data)
         if (this.isLevel) {
           this.isLevel = false
         } else {

@@ -58,7 +58,7 @@
                         <el-radio label="F">方屏</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="描述" class="block" prop="remark">
+                <el-form-item label="描述" class="block" prop="workDescribe">
                     <el-input
                         style="width: 598px;"
                         rows="4"

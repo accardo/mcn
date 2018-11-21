@@ -86,6 +86,7 @@ export function qiniuUpload(token, file, type) {
     })
   })
 }
+
 export default {
   delay,
   httpAjax,
