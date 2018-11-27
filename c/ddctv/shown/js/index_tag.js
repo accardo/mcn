@@ -14,7 +14,7 @@ var ddc = {
   baseUrl:function(){
     // 0 开发环境  1 测试环境  2 staging环境  3生产环境
     var status = _DDC.status;
-    status = 0;
+     status = 0;
     var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
     var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
     return {
@@ -34,7 +34,7 @@ var ddc = {
     }).then(function(xhr) {
       var res = xhr.data;
       if(res && res.code == 0) {
-        console.log(res)
+
         self.data.tagName = res.data.userTag.tagName;
         self.data.contentViewCount = res.data.userTag.contentViewCount;
         self.data.contents = res.data.contents;
@@ -65,8 +65,8 @@ var ddc = {
     if(self.data.contents && self.data.contents.length > 0) {
       var most_new_pic = '';
       self.data.contents.forEach(function(item){
-        console.log(item)
 
+        console.log(item)
         if(item.hashVideoUrl){
           most_new_pic = most_new_pic + '<img src=' + item.coverImage + ' >' +
             '<div class="video_btn" style="display: block;">' +
@@ -82,9 +82,10 @@ var ddc = {
         //标题
         $('.most_new_title').html('<a href="" target="_blank">' + item.title + '</a>');
         //用户头像
-        $('.person_icon').html('<img src=" ' + item.userInfo.header + '"width="16px" height="16px">')
+        $('.person_icon').html('<img src=" ' + item.userRelation.userInfo.header + ' ">')
         //用户名称
-        $('.person_name').html(item.userInfo.nickName);
+        console.log(item.userRelation.userInfo.nickName)
+        $('.person_name').html(item.userRelation.userInfo.nickName);
         //自己是否点赞
 
         //点赞数量
