@@ -40,6 +40,9 @@ export default {
                 { required: true, message: '请输入描述', trigger: 'blur' },
                 { max: 50, message: '最多可输入50字', trigger: 'blur' }
             ],
+            firstPublish: [
+              { required: true, message: '请选择内容性质', trigger: 'change' }
+            ],
           }
         };
     },

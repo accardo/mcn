@@ -30,7 +30,7 @@
        </div>
       <div class="module two" >
         <el-tag :type="item.state==='S'?'success':item.state==='F'?'danger':item.state==='Z'?'info':''">{{item.state | formatState}}</el-tag>
-        <p v-if="item.state==='F' && item.noPassCause != ''" class="remark-font">原因：{{item.noPassCause}}</p>
+        <p v-if="item.state==='F' && item.noPassCause != ''" class="remark-font">原因：{{item.noPassCause +'<br>'+ item.remark}}</p>
       </div>
       <div class="module two">
           <span>{{item.updateTime | formatTimeOne}}</span>

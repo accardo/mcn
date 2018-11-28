@@ -12,6 +12,7 @@ const edit = {
         videoHref: '',
         remark: '',
         videoTime:0,
+        firstPublish:'1',
         cookInfoRequestDTO:[],
         mediaWorksDetailRequestDTO:[],
       },
@@ -123,7 +124,7 @@ const edit = {
       delete this.ruleForm.recommendTime;
       delete this.ruleForm.putTime;
       delete this.ruleForm.topTime;
-      if(this.ruleForm.mediaWorksDetailRequestDTO.length>0){
+      if(this.ruleForm.mediaWorksDetailRequestDTO && this.ruleForm.mediaWorksDetailRequestDTO.length>0){
         let newArr = [];
         this.ruleForm.mediaWorksDetailRequestDTO.map(item => {
             let {homePicture,workDescribe} = item;
@@ -193,7 +194,7 @@ const edit = {
                   })
                 }
               }else{
-                this.$message({type: 'error', message: res.data.message});
+                this.$message({type: 'error', message: res.message});
               }
             })
           }).catch(action => {

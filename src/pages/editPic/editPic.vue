@@ -57,6 +57,12 @@
                   <input type="file" @change="uploadPic" id="uploadPic" style="display:none;">
                 </div>
               </el-form-item>
+              <el-form-item label="内容性质" style="display:block;" prop="firstPublish">
+                    <el-radio-group v-model="ruleForm.firstPublish">
+                        <el-radio label="1">首发</el-radio>
+                        <el-radio label="2">搬运</el-radio>
+                    </el-radio-group>
+                </el-form-item>
               <el-form-item class="block" style="padding-left:100px;">
                 <el-button @click="back()">取消</el-button>
                 <el-button type="primary" @click="saveRelease(1, 'ruleForm')" :loading="isSave">{{saveText}}</el-button>

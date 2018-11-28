@@ -17,7 +17,7 @@ export default {
         tableList
     },
     mounted(){
-    //   this.getStatus();
+      this.getStatus();
         //  初始化数据
       this.$nextTick(function () {
         this.isRefresh = true
