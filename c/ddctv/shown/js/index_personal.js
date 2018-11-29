@@ -10,13 +10,16 @@ $(function(){
     sessionId =_DDC.getQueryString('sessionId'),
     userId =_DDC.getQueryString('userId'),
     header = '',
+    nickName = '',
+    watcherCount = 0,
+    followerCount = 0,
     contents = [],
     totalPage = 0;
   var isbool = true;//触发开关，防止多次调用事件
 
   // 0 开发环境  1 测试环境  2 staging环境  3生产环境
   var status = _DDC.status;
-  status = 1;
+  //status = 1;
   var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
   var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
   var ajaxUrl3  = status==0?'https://mobile-dev.daydaycook.com.cn/':status==1?'https://mobile-test.daydaycook.com.cn/':status==2?'https://mobile-staging.daydaycook.com.cn/':'https://mobile.daydaycook.com.cn/';
@@ -65,24 +68,32 @@ $(function(){
       var res = xhr.data;
 
       if(res && res.code == 0) {
-        header = res.data.userRelation.header;
+        //header = res.data.userRelation.userInfo.header ? res.data.userRelation.userInfo.header : './images/logo.png';
+        header = res.data.userRelation.userInfo.header;
+        nickName = res.data.userRelation.userInfo.nickName;
+        watcherCount = res.data.userRelation.userInfo.watcherCount;
+        followerCount = res.data.userRelation.userInfo.followerCount;
         contents = res.data.contentList;
         totalPage = res.data.page.totalPage;
 
-        //渲染数据
+        //头部个人信息
+        $('.JS_info_img').attr('src', header);
+        $('.JS_nickName').html(nickName);
+        $('.JS_watcherCount').html(watcherCount);
+        $('.JS_followerCount').html(followerCount);
+
+        //渲染列表数据
         if(contents && contents.length > 0) {
           console.log("++++++++++++" + contents.length);
           var most_new_pic = '';
           var _thumb = '';
           var proList = '';
 
+
+          //遍历列表
           contents.forEach(function (item, index, itemArr) {
 
             var itemArrM = itemArr[index];
-
-            $('.JS_nickName').html(itemArrM.userRelation.userInfo.nickName);
-            $('.JS_watcherCount').html(itemArrM.userRelation.userInfo.watcherCount);
-            $('.JS_followerCount').html(itemArrM.userRelation.userInfo.followerCount);
 
             //是否有视频
             if (itemArrM.hashVideoUrl && itemArrM.hashVideoUrl == '否') {
@@ -91,7 +102,7 @@ $(function(){
               most_new_pic = '<img src=' + itemArrM.smallPic + ' width="100%" />' +
                 '<div class="video_btn" style="display: block;">' +
                 '<i class="video_icon"></i>' +
-                '<em>' + itemArrM.videoDuration + '</em>' +
+                '<em>' + formatSeconds(itemArrM.videoDuration) + '</em>' +
                 '</div>';
             }
 
@@ -161,4 +172,30 @@ $(function(){
       console.log(err)
     });
   }
+
+  //秒数转化为分秒格式
+  function formatSeconds(value) {
+    var result = "";
+    var secondTime = parseInt(value); // 秒
+    var minuteTime = 0; // 分
+    if (secondTime < 60) {
+      result = "00:" + convertTimeStr(secondTime);
+    } else {
+      minuteTime = parseInt(secondTime / 60);
+      secondTime = parseInt(secondTime % 60);
+      result = convertTimeStr(minuteTime) + ":" + convertTimeStr(secondTime);
+    }
+    return result;
+  }
+
+  function convertTimeStr(value) {
+    var result = "";
+    if (value < 10) {
+      result = "0" + value;
+    } else if (value >= 10 && value < 60) {
+      result = "" + value;
+    }
+    return result;
+  }
+
 });
