@@ -136,9 +136,9 @@ $(function(){
               '          <a href="' + titlelinkVal + '"><p class="most_new_title">' + itemArrM.title + '</p></a>' +
               '          <div class="most_new_word_flex"> ' +
               '            <i class="person_icon">' +
-              '              <img src=" ' + userHeader + ' " width="16px" height="16px">' +
+              '              <a href=" ' + linkVal + ' "><img src=" ' + userHeader + ' " width="16px" height="16px"></a>' +
               '            </i>' +
-              '            <span class="person_name">' + itemArrM.userRelation.userInfo.nickName + '</span>' + _thumb +
+              '            <a href=" ' + linkVal + ' " class="person_name">' + itemArrM.userRelation.userInfo.nickName + '</a>' + _thumb +
               '          </div>' +
               '        </div>' +
               '      </li>';

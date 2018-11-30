@@ -99,10 +99,11 @@ img{max-width: 100%;}
   background-size: 24px auto;
 }
 .most_new{
-  width: 100%;
+  /*width: 100%;*/
   padding: 14px 5px;
   /*display: flex;*/
   /*flex-direction: row;*/
+  overflow: hidden;
 }
 .most_new_personal{
   padding-top: 0px;
@@ -119,7 +120,7 @@ img{max-width: 100%;}
   /*-moz-column-gap: 11px;*/
   /*-webkit-column-gap: 11px;*/
   /*column-gap: 11px;*/
-  margin-left: -2%;
+  margin-left: -1%;
 }
 .most_new li{
   border-radius: 4px;
@@ -266,6 +267,7 @@ img{max-width: 100%;}
 /*个人信息*/
 .base_info{
   padding: 84px 18px 30px;
+  overflow: hidden;
 }
 .info_img{
   width: 65px;
