@@ -1,9 +1,10 @@
-$(function(){
-  setTimeout(function () {
-    $('.share_meng').hide();
-  },3000);
-
-});
+//延迟3秒 关闭蒙层
+// $(function(){
+//   setTimeout(function () {
+//     $('.share_meng').hide();
+//   },3000);
+//
+// });
 
 function client(){
   return /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)?true:false

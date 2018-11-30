@@ -43,11 +43,18 @@ $(function(){
     }
   }
 
+  //若在日日煮app中，隐藏头部打开按钮
+  if(_DDC.inApp()){
+    $('.download').hide();
+    $('.swiper-container,.video').css('margin','0');
+  }
+
   //跳转
   $('.download').click(function(){
     // var userId = _DDC.getQueryString('userId');
     // if(userId){
-    window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+    // window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+    window.location.href = ajaxUrl3 + 'app2/ddctv/shown/share.html'
     // }else{
     // var _url = location.origin + '/app2/invite/inviteFriends/share.html?userId='+userId+'&inviteCode=YQ_20180904_CZ';
     // window.location.href = _url
@@ -107,7 +114,8 @@ $(function(){
             }
 
             //是否自己点过赞
-            var downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+            //var downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+            var downlink = ajaxUrl3 + 'app2/ddctv/shown/share.html';
             if (itemArrM.isLike == 0) {
               //未点赞
               _thumb = '<a class="thumb" href=" ' + downlink +' " target="_blank"><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
