@@ -17,7 +17,7 @@ $(function(){
 
   // 0 开发环境  1 测试环境  2 staging环境  3生产环境
   var status = _DDC.status;
-  //status = 1;
+  // status = 1;
   var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
   var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
   var ajaxUrl3  = status==0?'https://mobile-dev.daydaycook.com.cn/':status==1?'https://mobile-test.daydaycook.com.cn/':status==2?'https://mobile-staging.daydaycook.com.cn/':'https://mobile.daydaycook.com.cn/';
@@ -144,7 +144,7 @@ $(function(){
               '        <div class="most_new_pic"><a href="' + linkVal + '">' + most_new_pic +
               '        </a></div>' +
               '        <div class="most_new_word">' +
-              '          <p class="most_new_title"><a href="' + titlelinkVal + '">' + itemArrM.title + '</a></p>' +
+              '          <a href="' + titlelinkVal + '"><p class="most_new_title">' + itemArrM.title + '</p></a>' +
               '          <div class="most_new_word_flex"> ' +
               '            <i class="person_icon">' +
               '              <img src=" ' + userHeader + ' " width="16px" height="16px">' +
