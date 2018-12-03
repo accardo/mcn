@@ -29,8 +29,9 @@
           </div>
        </div>
       <div class="module two" >
-        <el-tag :type="item.state==='S'?'success':item.state==='F'?'danger':item.state==='Z'?'info':''">{{item.state | formatState}}</el-tag>
-        <p v-if="item.state==='F' && item.noPassCause != ''" class="remark-font">原因：{{item.noPassCause +'<br>'+ item.remark}}</p>
+        <el-tag :type="item.state==='S'&&item.putDown!='Y'?'success':item.state==='F'&&item.putDown!='Y'?'danger':item.state==='Z'||item.putDown==='Y'?'info':''">{{(item.putDown,item.state)| formatState(item.putDown,item.state)}}</el-tag>
+        <p v-if="item.state==='F' && item.noPassCause != null && item.noPassCause != ''" class="remark-font">原因：{{item.noPassCause }}</p>
+        <p v-if="item.state==='F' && item.remark != null && item.remark != ''" class="remark-font">{{item.remark}}</p>
       </div>
       <div class="module two">
           <span>{{item.updateTime | formatTimeOne}}</span>
@@ -44,24 +45,23 @@
         </div>
         <!-- W审核中 -->
         <div v-if="item.state=='W'">
-          <el-button size="mini" @click="backout(item.id, item.workType)" type="warning">撤销</el-button>
+          <el-button v-if="item.putDown != 'Y'" size="mini" @click="backout(item.id, item.workType)" type="warning">撤销</el-button>
         </div>
         <!-- S已发布 -->
         <div v-if="item.state=='S'">
-          <el-button size="mini"  @click="outLine(item.id, item.workType)" type="danger">下线</el-button>
+            <el-button v-if="item.putDown != 'Y'" size="mini"  @click="outLine(item.id, item.workType)" type="danger">下线</el-button>
         </div>
         <!-- F未过审 -->
         <div v-if="item.state=='F'">
-          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
+          <el-button v-if="item.putDown != 'Y'" size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
         </div>
         <!-- T定时发布 -->
         <div v-if="item.state=='T'">
-          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
+          <el-button v-if="item.putDown != 'Y'" size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
         </div>
         <!-- Z已下线 -->
         <div v-if="item.state=='Z'">
-          <el-button size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
-          <!--<span class="red-btn" @click="del(item.id)">删除</span>-->
+          <el-button v-if="item.putDown != 'Y'" size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
         </div>
       </div>
     </div>
@@ -114,10 +114,11 @@
           }
         })
       },
-      // 发布
+      // 发布  1203 撤销发布下线 三个操作加参数 edit:'0'
       publish(id, workType) {
         let params = {
           id,
+          edit:'0',
           state: 'W'
         }
         this.$confirm('确认发布信息？', '视频发布', {
@@ -145,6 +146,7 @@
       backout(id, workType) {
         let params = {
           id,
+          edit:'0',
           state: 'A'
         }
         this.$confirm('确认撤销发布？', '视频发布', {

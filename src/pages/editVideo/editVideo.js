@@ -77,23 +77,25 @@ export default {
         })
       },
       getTokenVideo(file) {
-        this.videoFlag = true;
-        let self = this;
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
-            this.token =  data.data
-            util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
-                this.videoFlag = false;
-                this.ruleForm.videoHref = url;
-                this.getLong(url);
-                // self.$nextTick(() => {
-                //     let videoDom = document.getElementById('video');
-                //     videoDom.addEventListener('loadedmetadata',()=> {
-                //         console.log(parseInt( videoDom.duration));
-                //         this.ruleForm.videoTime = parseInt( videoDom.duration);
-                //     })
-                // })
-            });
-         }) 
+        if(file.target.files[0]){
+            const isJpg = file.target.files[0].type === 'image/jpeg';
+            const isPng = file.target.files[0].type === 'image/png';
+            const isGif = file.target.files[0].type === 'image/gif';
+            if (isJpg || isPng || isGif) {
+                this.$message.error('上传视频格式不正确');
+                return false;
+            }
+            this.ruleForm.videoHref = '';
+            this.videoFlag = true;
+            this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+                this.token =  data.data
+                util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
+                    this.videoFlag = false;
+                    this.ruleForm.videoHref = url;
+                    this.getLong(url);
+                });
+            }) 
+        }
       },
       getLong(url){
         axios.get(`${url}?avinfo`).then(res => {

@@ -78,6 +78,7 @@ const tableList = {
     outLine(id,type){
       let params = {
         id,
+        edit:'0',
         state: 'Z'
       }
       this.$confirm('下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？', '下线作品', {

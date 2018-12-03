@@ -78,7 +78,7 @@
                         v-model="ruleForm.workDescribe">
                     </el-input>
                 </el-form-item>
-                <el-form-item label="食材" class="block" style="margin-bottom:5px;">
+                <el-form-item label="食材" class="block" style="margin-bottom:5px;display:block;">
                     <el-button type="primary" size="small" plain @click="addList(1)">添加</el-button>
                 </el-form-item>
                 <div class="food-list" v-for="(item,index) in ruleForm.cookInfoRequestDTO">
@@ -98,7 +98,8 @@
                     <el-button type="text" v-if="index!=ruleForm.cookInfoRequestDTO.length-1" @click="downList(index,item,1)">下移</el-button>
                     <el-button type="text" class="del"  @click="ruleForm.cookInfoRequestDTO.splice(index, 1)">删除</el-button>
                 </div>
-                <el-form-item  label="步骤详情" prop="workContext" style="margin-top:20px;margin-bottom:0;">
+                <!-- 11.30 步骤详情符文变编辑框因数据问题 暂时隐藏 -->
+                <!-- <el-form-item  label="步骤详情" prop="workContext" style="margin-top:20px;margin-bottom:0;">
                     <div class="form-item">
                     <quill-editor  style="width:595px;display:inline-block;float:left"
                             v-model="ruleForm.workContext"
@@ -108,7 +109,7 @@
                     </quill-editor>
                     <input type="file" @change="uploadPic" id="uploadPic" style="display:none;">
                     </div>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="步骤" class="block" prop="" style="margin-bottom:5px;">
                     <el-button type="primary" size="small" plain @click="addList(2)">添加</el-button>
                 </el-form-item>

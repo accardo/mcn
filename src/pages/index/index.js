@@ -27,10 +27,12 @@ export default {
           pageSize: 1,
         }
         this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/list`,params).then((res) => {
-          res.data.data.rows.forEach((item) => {
-            item.signs = util.stringSplit(item.signs)
-          })
-          this.recentList = res.data.data.rows;
+          if(res.data.data){
+            res.data.data.rows.forEach((item) => {
+              item.signs = util.stringSplit(item.signs)
+            })
+            this.recentList = res.data.data.rows;
+          }
         })
       },
       /*

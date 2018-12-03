@@ -48,13 +48,13 @@ export default {
     },
     mounted() {
       this.getStatus();
-      var imgHandler = async function(state) {//富文本编辑器添加自定义上传图片
-        if (state) {
-          let fileInput =document.getElementById("uploadPic") //隐藏的file元素
-          fileInput.click();
-        }
-      }
-      this.$refs.myQuillEditor.quill.getModule("toolbar").addHandler("image", imgHandler)
+      // var imgHandler = async function(state) {//富文本编辑器添加自定义上传图片
+      //   if (state) {
+      //     let fileInput =document.getElementById("uploadPic") //隐藏的file元素
+      //     fileInput.click();
+      //   }
+      // }
+      // this.$refs.myQuillEditor.quill.getModule("toolbar").addHandler("image", imgHandler)
     },
     computed: {
       ajaxUrl() {
@@ -115,9 +115,17 @@ export default {
       },
       //上传视频
       getTokenVideo(file) {
-        this.ruleForm.videoHref = '';
-        this.videoFlag = true;
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+         if(file.target.files[0]){
+          const isJpg = file.target.files[0].type === 'image/jpeg';
+          const isPng = file.target.files[0].type === 'image/png';
+          const isGif = file.target.files[0].type === 'image/gif';
+          if (isJpg || isPng || isGif) {
+              this.$message.error('上传视频格式不正确');
+              return false;
+          }
+          this.ruleForm.videoHref = '';
+          this.videoFlag = true;
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
             this.token =  data.data
             util.qiniuUpload(this.token, file.target.files[0], 2).then((url)=> {
                 this.videoFlag = false;
@@ -125,11 +133,13 @@ export default {
                 this.getLong(url);
             });
          }) 
+        }
       },
       getLong(url){
         axios.get(`${url}?avinfo`).then(res => {
           if(res){
-              this.ruleForm.videoTime = parseInt(res.data.streams[0].duration)
+            this.ruleForm.videoTime = parseInt(res.data.streams[0].duration)
+            console.log(this.ruleForm.videoTime)
           }
         })
       },
@@ -146,25 +156,22 @@ export default {
         videoDom.pause();
       },
       //富文本编辑器-图片上传
-      uploadPic(file){
-        const isJpg = file.target.files[0].type === 'image/jpeg';
-        const isPng = file.target.files[0].type === 'image/png';
-        const isGif = file.target.files[0].type === 'image/gif';
-        if (!isJpg && !isPng && !isGif) {
-          this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
-          return false;
-        }
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
-            this.token =  data.data
-            util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
-              this.addImgRange = this.$refs.myQuillEditor.quill.getSelection()
-              this.$refs.myQuillEditor.quill.insertEmbed(this.addImgRange != null?this.addImgRange.index:0, 'image',url, Quill.sources.USER)
-            });
-        }) 
-      },
-      onEditorChange(){//内容改变事件
-        // console.log(this.ruleForm.workContext)
-      },
+      // uploadPic(file){
+      //   const isJpg = file.target.files[0].type === 'image/jpeg';
+      //   const isPng = file.target.files[0].type === 'image/png';
+      //   const isGif = file.target.files[0].type === 'image/gif';
+      //   if (!isJpg && !isPng && !isGif) {
+      //     this.$message.error('上传图片不正确，只能上传 jpg、png、gif格式');
+      //     return false;
+      //   }
+      //   this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/getQiniuToken`, { session: localStorage.getItem('sessionId')}).then(({data}) => {
+      //       this.token =  data.data
+      //       util.qiniuUpload(this.token, file.target.files[0], 1).then((url)=> {
+      //         this.addImgRange = this.$refs.myQuillEditor.quill.getSelection()
+      //         this.$refs.myQuillEditor.quill.insertEmbed(this.addImgRange != null?this.addImgRange.index:0, 'image',url, Quill.sources.USER)
+      //       });
+      //   }) 
+      // },
       //步骤列表添加图片
       getTokenPicList(file,item){
         const isJpg = file.target.files[0].type === 'image/jpeg';
