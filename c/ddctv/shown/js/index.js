@@ -32,7 +32,8 @@ var ddc = {
     axios.post(self.baseUrl().ajaxUrl+'top-content/view-h5',{
       contentId:self.data.contentId,
       businessCategoryId:self.data.businessCategoryId,
-      sessionId:''
+      sessionId:'',
+      showTag: 1
     }).then(function(xhr) {
       var res = xhr.data;
       if(res && res.code == 0){
@@ -154,8 +155,8 @@ var ddc = {
       self.data.contentDetailList.forEach(function(item){
         // var reg = new RegExp('<' + tag + '>' + '(.*?)' + '</' + tag + '>');
         if(item.detail.indexOf('<tag>') > -1){
-          item.detail = item.detail.replace(/<tag>/, "<em>#</em><tag>");
-          item.detail = item.detail.replace(/<\/tag>/, "<\/tag><br\/>");
+          item.detail = item.detail.replace(/<tag>/g, "<em>#</em><tag>");
+          item.detail = item.detail.replace(/<\/tag>/g, "<\/tag>");
         }
         var _img = item.image?'<div class="item img"><img src="'+ item.image +'"></div>':'';
         var _detail = item.detail?'<div class="item word">'+ item.detail +'</div>':'';
@@ -164,6 +165,7 @@ var ddc = {
       if(_list){
         $('.list').html(_list);
       }
+      $('.content').hide();
     }
 
     //食材
@@ -264,6 +266,17 @@ var ddc = {
       //用户头像
       self.data.header = self.data.header ? self.data.header : 'images/logo.png';
       $('.users').html('<img src="'+ self.data.header +'">' + self.data.nickName).show();
+      //标签前加#
+      if(self.data.contentDetailList[0].detail.indexOf('<tag>') > -1){
+        self.data.contentDetailList[0].detail = self.data.contentDetailList[0].detail.replace(/<tag>/g, "<em>#</em><tag>");
+        self.data.contentDetailList[0].detail = self.data.contentDetailList[0].detail.replace(/<\/tag>/g, "<\/tag>");
+        //var tag = '<\/tag>';
+        //var lastTag = tag.substring(self.data.contentDetailList[0].detail.lastIndexOf(tag));
+        // var str = self.data.contentDetailList[0].detail;
+        // var c = str.substring(0,str.lastIndexOf('<\/tag>')); //这样就获取到了前面的字符串。
+        // str = c + '<\/tag><br\/>';   //这样a就变成了 abababababa11111
+        // console.log(str);
+      }
       //后台传过来图文
       $('.contentText').html(self.data.contentDetailList[0].detail);
     }

@@ -360,7 +360,13 @@ img{max-width: 100%;}
 }
 .contentText img{max-width: 100%;margin:10px 0;}
 .contentText video{max-width: 100%;margin:10px 0;}
-
+.contentText em,
+.contentText tag{
+  color: #e25878;
+}
+.contentText em{
+  margin-left: 5px;
+}
 
 
 

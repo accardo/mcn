@@ -127,8 +127,8 @@ img{max-width: 100%;}
   background: #FFFFFF;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.06);
   /*box-sizing: padding-box;*/
-  width: 47%;
-  margin-left: 1%;
+  width: 46%;
+  margin-left: 2%;
   /*margin-right: 1%;*/
   /*justify-content: center;*/
   /*break-inside: avoid;*/
@@ -137,6 +137,16 @@ img{max-width: 100%;}
   float: left;
   margin-bottom: 9px;
   overflow: hidden;
+}
+@media only screen and (device-width: 375px) {
+  /*iphoneX,iphone6,7,8*/
+  .most_new ul{
+    width: 108%;
+    margin-left: -2px;
+  }
+  .most_new li{
+    width: 44%;
+  }
 }
 .most_new_pic{
   display: block;
@@ -241,11 +251,17 @@ img{max-width: 100%;}
   margin-left: 5px;
   position: relative;
   z-index: 2;
+  /*display: flex;*/
+  /*flex: 1;*/
+  /*justify-content: flex-end;*/
+  /*align-items: center;*/
 }
 .thumb em{
   font-size: 12px;
   color: #C4C4C4;
   font-style: normal;
+  /*display: inline-block;*/
+  /*vertical-align: middle;*/
 }
 .zan{
   width: 12px;
