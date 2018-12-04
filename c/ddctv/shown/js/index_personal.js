@@ -10,13 +10,16 @@ $(function(){
     sessionId =_DDC.getQueryString('sessionId'),
     userId =_DDC.getQueryString('userId'),
     header = '',
+    nickName = '',
+    watcherCount = 0,
+    followerCount = 0,
     contents = [],
     totalPage = 0;
   var isbool = true;//触发开关，防止多次调用事件
 
   // 0 开发环境  1 测试环境  2 staging环境  3生产环境
   var status = _DDC.status;
-  status = 1;
+  // status = 1;
   var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
   var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
   var ajaxUrl3  = status==0?'https://mobile-dev.daydaycook.com.cn/':status==1?'https://mobile-test.daydaycook.com.cn/':status==2?'https://mobile-staging.daydaycook.com.cn/':'https://mobile.daydaycook.com.cn/';
@@ -40,11 +43,18 @@ $(function(){
     }
   }
 
+  //若在日日煮app中，隐藏头部打开按钮
+  if(_DDC.inApp()){
+    $('.download').hide();
+    $('.swiper-container,.video').css('margin','0');
+  }
+
   //跳转
   $('.download').click(function(){
     // var userId = _DDC.getQueryString('userId');
     // if(userId){
-    window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+    // window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+    window.location.href = ajaxUrl3 + 'app2/ddctv/shown/share.html'
     // }else{
     // var _url = location.origin + '/app2/invite/inviteFriends/share.html?userId='+userId+'&inviteCode=YQ_20180904_CZ';
     // window.location.href = _url
@@ -65,24 +75,32 @@ $(function(){
       var res = xhr.data;
 
       if(res && res.code == 0) {
-        header = res.data.userRelation.header;
+        //header = res.data.userRelation.userInfo.header ? res.data.userRelation.userInfo.header : './images/logo.png';
+        header = res.data.userRelation.userInfo.header;
+        nickName = res.data.userRelation.userInfo.nickName;
+        watcherCount = res.data.userRelation.userInfo.watcherCount;
+        followerCount = res.data.userRelation.userInfo.followerCount;
         contents = res.data.contentList;
         totalPage = res.data.page.totalPage;
 
-        //渲染数据
+        //头部个人信息
+        $('.JS_info_img').attr('src', header);
+        $('.JS_nickName').html(nickName);
+        $('.JS_watcherCount').html(watcherCount);
+        $('.JS_followerCount').html(followerCount);
+
+        //渲染列表数据
         if(contents && contents.length > 0) {
           console.log("++++++++++++" + contents.length);
           var most_new_pic = '';
           var _thumb = '';
           var proList = '';
 
+
+          //遍历列表
           contents.forEach(function (item, index, itemArr) {
 
             var itemArrM = itemArr[index];
-
-            $('.JS_nickName').html(itemArrM.userRelation.userInfo.nickName);
-            $('.JS_watcherCount').html(itemArrM.userRelation.userInfo.watcherCount);
-            $('.JS_followerCount').html(itemArrM.userRelation.userInfo.followerCount);
 
             //是否有视频
             if (itemArrM.hashVideoUrl && itemArrM.hashVideoUrl == '否') {
@@ -91,12 +109,13 @@ $(function(){
               most_new_pic = '<img src=' + itemArrM.smallPic + ' width="100%" />' +
                 '<div class="video_btn" style="display: block;">' +
                 '<i class="video_icon"></i>' +
-                '<em>' + itemArrM.videoDuration + '</em>' +
+                '<em>' + formatSeconds(itemArrM.videoDuration) + '</em>' +
                 '</div>';
             }
 
             //是否自己点过赞
-            var downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+            //var downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+            var downlink = ajaxUrl3 + 'app2/ddctv/shown/share.html';
             if (itemArrM.isLike == 0) {
               //未点赞
               _thumb = '<a class="thumb" href=" ' + downlink +' " target="_blank"><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
@@ -105,7 +124,7 @@ $(function(){
             }
 
             //用户头像是否存在
-            var userHeader = itemArrM.userRelation.userInfo.header ? itemArrM.userRelation.userInfo.header : './images/logo.png';
+            var userHeader = itemArrM.header ? itemArrM.header : './images/logo.png';
 
             var linkVal = ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId=' + itemArrM.businessCategoryId + '&contentId=' + itemArrM.id + '&userId=' + itemArrM.userId;
             var titlelinkVal = itemArrM.title ? ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId=' + itemArrM.businessCategoryId + '&contentId=' + itemArrM.id + '&userId=' + itemArrM.userId : 'javascript:;';
@@ -114,12 +133,12 @@ $(function(){
               '        <div class="most_new_pic"><a href="' + linkVal + '">' + most_new_pic +
               '        </a></div>' +
               '        <div class="most_new_word">' +
-              '          <p class="most_new_title"><a href="' + titlelinkVal + '">' + itemArrM.title + '</a></p>' +
+              '          <a href="' + titlelinkVal + '"><p class="most_new_title">' + itemArrM.title + '</p></a>' +
               '          <div class="most_new_word_flex"> ' +
               '            <i class="person_icon">' +
-              '              <img src=" ' + userHeader + ' " width="16px" height="16px">' +
+              '              <a href=" ' + linkVal + ' "><img src=" ' + userHeader + ' " width="16px" height="16px"></a>' +
               '            </i>' +
-              '            <span class="person_name">' + itemArrM.userRelation.userInfo.nickName + '</span>' + _thumb +
+              '            <a href=" ' + linkVal + ' " class="person_name">' + itemArrM.userRelation.userInfo.nickName + '</a>' + _thumb +
               '          </div>' +
               '        </div>' +
               '      </li>';
@@ -161,4 +180,30 @@ $(function(){
       console.log(err)
     });
   }
+
+  //秒数转化为分秒格式
+  function formatSeconds(value) {
+    var result = "";
+    var secondTime = parseInt(value); // 秒
+    var minuteTime = 0; // 分
+    if (secondTime < 60) {
+      result = "00:" + convertTimeStr(secondTime);
+    } else {
+      minuteTime = parseInt(secondTime / 60);
+      secondTime = parseInt(secondTime % 60);
+      result = convertTimeStr(minuteTime) + ":" + convertTimeStr(secondTime);
+    }
+    return result;
+  }
+
+  function convertTimeStr(value) {
+    var result = "";
+    if (value < 10) {
+      result = "0" + value;
+    } else if (value >= 10 && value < 60) {
+      result = "" + value;
+    }
+    return result;
+  }
+
 });
