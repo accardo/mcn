@@ -39,14 +39,16 @@ const tableList = {
     getTableData() {
       this.loading = true;
       this.$http.httpAjax(this.$http.ajaxUrl + this.url, this.searchData).then((res) => {
-        if (res.data.data.rows.length > 0) {
-          res.data.data.rows.forEach((item) => {
-            item.signs = util.stringSplit(item.signs)
-          })
+        if(res.data.data){
+          if (res.data.data.rows.length > 0) {
+            res.data.data.rows.forEach((item) => {
+              item.signs = util.stringSplit(item.signs)
+            })
+          }
+          this.amount = res.data.data.total;
+          this.tableData = res.data.data.rows;
         }
-        this.amount = res.data.data.total;
         this.internalPageSize = this.searchData.pageSize;
-        this.tableData = res.data.data.rows;
         this.loading = false;
       })
     },
@@ -69,13 +71,14 @@ const tableList = {
       this.getTableData();
     },
     /*
-	 * Description: 视频下线
+	 * Description: 下线
 	 * Author: yanlichen <lichen.yan@daydaycook.com.cn>
 	 * Date: 2018/9/27
 	 */
-    outLine(id){
+    outLine(id,type){
       let params = {
         id,
+        edit:'0',
         state: 'Z'
       }
       this.$confirm('下线后，作品将不会显示在APP上，粉丝也看不到了，真的要将作品下线吗？', '下线作品', {
@@ -83,10 +86,18 @@ const tableList = {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
-          this.$message({type: 'success', message: '下线成功'});
-          this.getTableData();
-        })
+        if(type == 6){//食谱类型 下线
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/cook/update`, params).then(() => {
+            this.$message({type: 'success', message: '下线成功'});
+            this.getTableData();
+          })
+        }else{//视频 图文下线
+          this.$http.httpAjax(`${this.$http.ajaxUrl}/kol/works/update`, params).then(() => {
+            this.$message({type: 'success', message: '下线成功'});
+            this.getTableData();
+          })
+        }
+        
       }).catch(action => {
 
       });

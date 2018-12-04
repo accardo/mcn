@@ -26,7 +26,8 @@ export const httpAjax = function (url, data) {
   const sessionid = localStorage.getItem('sessionId');
   let params = Object.assign({session: sessionid || ''}, data)
   return new Promise((resolve, reject) => {
-    axios.post(url, querystring.stringify(params)).then((res)=> {
+    axios.post(url, params).then((res)=> {
+      // axios.post(url, querystring.stringify(params)).then((res)=> {
         resolve(res)
         if (res.data.code == '1097' || res.data.code == '1098' || res.data.code == '1099') {
           localStorage.removeItem('sessionId');

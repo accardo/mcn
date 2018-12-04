@@ -25,7 +25,7 @@
           <i class="iconfont icon-share fl"></i><em class="fl">{{item.shareNum}}</em>
         </p>
       </div>
-      <el-button class="fr" size="mini" @click="outLine(item.id)" type="danger">下线</el-button>
+      <el-button v-if="item.putDown != 'Y'" class="fr" size="mini" @click="outLine(item.id, item.workType)" type="danger">下线</el-button>
     </div>
      <div v-if="tableData.length == 0" style="text-align:center;line-height:60px;">
       <i class="iconfont icon-wushuju"></i>暂无数据

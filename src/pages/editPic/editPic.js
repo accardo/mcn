@@ -33,6 +33,9 @@ export default {
             workContext: [
               { required: true, message: '请输入正文内容', trigger: 'blur' },
             ],
+            firstPublish: [
+              { required: true, message: '请选择内容性质', trigger: 'change' }
+            ],
           }
         };
     },

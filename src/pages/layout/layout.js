@@ -8,7 +8,6 @@ export default {
     },
     components:{
         navList,
-
     },
     created() {
         if(this.$route.query.name == 1){
