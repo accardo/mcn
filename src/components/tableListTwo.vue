@@ -51,9 +51,9 @@
         <div v-if="item.state=='S'">
             <el-button v-if="item.putDown != 'Y'" size="mini"  @click="outLine(item.id, item.workType)" type="danger">下线</el-button>
         </div>
-        <!-- F未过审 -->
+        <!-- F未过审 12.11新增：未过审不可编辑-->
         <div v-if="item.state=='F'">
-          <el-button v-if="item.putDown != 'Y'" size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button>
+          <!-- <el-button v-if="item.putDown != 'Y'" size="mini" @click="edit(item.id, item.workType)" type="primary">编辑</el-button> -->
         </div>
         <!-- T定时发布 -->
         <div v-if="item.state=='T'">
