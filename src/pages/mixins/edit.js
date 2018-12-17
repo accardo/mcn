@@ -28,6 +28,7 @@ const edit = {
     }
   },
   mounted() {
+    // 根据路由判断当前页面是否需要获取内容详情 接口分为cook和works两个域名
     if (this.$route.name !== 'createPic' && this.$route.name !== 'createVideo' && this.$route.name !== 'createRecipe') {
       if (this.$route.name == 'editRecipe'){
         this.getDetails('cook');
@@ -105,6 +106,7 @@ const edit = {
        * Date: 2018/9/26
        */
     saveRelease(type, formName){
+      // 因为后台接口会返回很多不必要的数据，重新编辑提交以后删除这些数据
       delete this.ruleForm.createTime;
       delete this.ruleForm.publishTime;
       delete this.ruleForm.timeFrom1;
@@ -124,6 +126,7 @@ const edit = {
       delete this.ruleForm.recommendTime;
       delete this.ruleForm.putTime;
       delete this.ruleForm.topTime;
+      // 食谱详情步骤删掉不需要的数据
       if(this.ruleForm.mediaWorksDetailRequestDTO && this.ruleForm.mediaWorksDetailRequestDTO.length>0){
         let newArr = [];
         this.ruleForm.mediaWorksDetailRequestDTO.map(item => {
@@ -149,6 +152,7 @@ const edit = {
               this.saveReleaseText = '保存并发布中...'
             }
             this.isSave = true;
+            // 根据路由判断上传内容的类型 图文、食谱、食谱
             if (this.$route.name === 'createPic') {
               this.ruleForm.workType = 1
               this.ruleForm.publishTask = 1
@@ -159,6 +163,7 @@ const edit = {
               this.ruleForm.workType = 6 
               this.ruleForm.publishTask = 1
             }
+            // 根据路由判断 接口的域名
             if(this.$route.name === 'createPic' || this.$route.name === 'createVideo') {
               urlSaveUpdate = '/kol/works/save'
             } else if(this.$route.name === 'editPic' || this.$route.name === 'editVideo' ){
@@ -180,6 +185,7 @@ const edit = {
                   this.$message({type: 'success', message: '保存并发布成功'});
                 }
                 this.isSave = false;
+                // 根据路由来源跳转
                 if (this.$route.name === 'createPic' || this.$route.name === 'editPic') {
                   this.$router.push({
                     name: 'pic'

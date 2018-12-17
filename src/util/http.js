@@ -21,7 +21,7 @@ export const ajaxUrl1 = status == 0 ? 'https://uc-api-d.daydaycook.com.cn' : sta
   'https://uc-api-t.daydaycook.com.cn' : status== 2 ?
     'https://uc-api-s.daydaycook.com.cn' : 'https://uc-api.daydaycook.com.cn';
 
-// web端请求封装 querystring.stringify 序列化 from data 形式
+// web端请求封装 querystring.stringify 序列化 from data 形式 现在改为json格式
 export const httpAjax = function (url, data) {
   const sessionid = localStorage.getItem('sessionId');
   let params = Object.assign({session: sessionid || ''}, data)
