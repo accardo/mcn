@@ -37,8 +37,8 @@ var ddc = {
     }).then(function(xhr) {
       var res = xhr.data;
       if(res && res.code == 0){
-        //顶部图片
-        document.title = res.data.title;
+        //顶部title标题
+        //document.title = res.data.title;
         //页面显示样式  1非轮播   2轮播图  4视频
         self.data.contentSource = res.data.contentSource;
         //缩略图
