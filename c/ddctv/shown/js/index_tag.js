@@ -10,6 +10,7 @@ $(function(){
     sessionId =_DDC.getQueryString('sessionId'),
     tagName = _DDC.getQueryString('tagName'),
     contentViewCount = 0,
+    contentCount = 0,
     contents = '',
     page = 0,
     totalPage = 0;
@@ -69,16 +70,36 @@ $(function(){
     $('.swiper-container,.video').css('margin','0');
   }
 
+  //若在微信中，显示蒙层
+  if(_DDC.isWeiXin()){
+    $('.share_meng').show();
+  }else{
+    $('.share_meng').hide();
+  }
+
+  //关闭蒙层
+  $('.share_meng').on('click', function () {
+    $('.share_meng').hide();
+  });
+
   //跳转
   $('.download').on('click',function(e){
     // var userId = _DDC.getQueryString('userId');
     // if(userId){
     // window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
-    window.location.href = ajaxUrl3 + 'app2/ddctv/shown/share.html'
+    // window.location.href = ajaxUrl3 + 'app2/ddctv/shown/share.html'
     // }else{
     // var _url = location.origin + '/app2/invite/inviteFriends/share.html?userId='+userId+'&inviteCode=YQ_20180904_CZ';
     // window.location.href = _url
     // }
+
+    //若在微信中，显示蒙层
+    if(_DDC.isWeiXin()){
+      $('.share_meng').show();
+    }else{
+      $('.share_meng').hide();
+      window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+    }
   });
 
   //公共调用
@@ -97,12 +118,14 @@ $(function(){
       if(res && res.code == 0) {
         tagName = res.data.userTag.tagName;
         contentViewCount = res.data.userTag.contentViewCount;
+        contentCount = res.data.userTag.contentCount;
         contents = res.data.contents;
         page = res.data.page;
         pageIndex = res.data.page.pageIndex;
         totalPage = res.data.page.totalPage;
 
         $('.JS_tagName').html(tagName);
+        $('.JS_contentCount').html(contentCount);
         $('.JS_contentViewCount').html(contentViewCount);
 
         //渲染数据
@@ -134,11 +157,21 @@ $(function(){
             //是否自己点过赞
             //var downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
             var downlink = ajaxUrl3 + 'app2/ddctv/shown/share.html';
+
+            //若在微信中，显示蒙层
+            if(_DDC.isWeiXin()){
+              downlink = 'javascript:;';
+              $('.share_meng').show();
+            }else{
+              $('.share_meng').hide();
+              downlink = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+            }
+
             if (itemArrM.isLike == 0) {
               //未点赞
-              _thumb = '<a class="thumb" href=" ' + downlink +' " target="_blank"><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
+              _thumb = '<a class="thumb" href=" ' + downlink +' "><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
             } else {
-              _thumb = '<a class="thumb thumbH" href=" ' + downlink +' " target="_blank"><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
+              _thumb = '<a class="thumb thumbH" href=" ' + downlink +' "><i class="zan"></i><em>' + itemArrM.likeCount + '</em></a>';
             }
 
             //用户头像是否存在
@@ -180,6 +213,18 @@ $(function(){
         }
 
         isbool = true;
+
+        //若在微信中，点赞显示蒙层
+        if(_DDC.isWeiXin()){
+          $('.JS_most_new .thumb').on('click', function (e) {
+            $('.share_meng').show();
+            e.stopPropagation();
+          })
+        }else{
+          $('.JS_most_new .thumb').on('click', function () {
+            window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+          })
+        }
 
       }else if(res.code == '-1'){
         // $('.index_personal').hide();

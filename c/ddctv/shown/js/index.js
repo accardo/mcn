@@ -6,6 +6,7 @@ var ddc = {
     contentId:_DDC.getQueryString('contentId'),
     businessCategoryId:_DDC.getQueryString('businessCategoryId'),
     smallPic:'',
+    coverImage: '',
     title:'',
     tagList:'',
     summary:'',
@@ -13,6 +14,8 @@ var ddc = {
     contentDetailList:'',
     contentFoodList:'',
     video:'',
+    screenMode: 1,     //屏幕模式，1横屏，2方屏，3竖屏
+    imageStyle: 1,     //屏幕模式  1:1比1,2：4比3,3:3比4
     contentSource:0,		//0 待定  1非轮播图    2顶部是轮播图  4用户上传视频
     shareInfo:{},			//分分享信息
   },
@@ -22,13 +25,24 @@ var ddc = {
     // status = 1;
     var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
     var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
+    var ajaxUrl3  = status==0?'ddc://mobile-dev.daydaycook.com.cn/':status==1?'ddc://mobile-test.daydaycook.com.cn/':status==2?'ddc://mobile-staging.daydaycook.com.cn/':'ddc://mobile.daydaycook.com.cn/';
+
     return {
       ajaxUrl:ajaxUrl,
-      ajaxUrl2:ajaxUrl2
+      ajaxUrl2:ajaxUrl2,
+      ajaxUrl3:ajaxUrl3
     }
   },
   init:function(){
     var self = this;
+
+    //若在微信中，显示蒙层
+    if(_DDC.isWeiXin()){
+      $('.share_meng').show();
+    }else{
+      $('.share_meng').hide();
+    }
+
     axios.post(self.baseUrl().ajaxUrl+'top-content/view-h5',{
       contentId:self.data.contentId,
       businessCategoryId:self.data.businessCategoryId,
@@ -43,6 +57,8 @@ var ddc = {
         self.data.contentSource = res.data.contentSource;
         //缩略图
         self.data.smallPic = res.data.smallPic;
+        //封面图片
+        self.data.coverImage = res.data.coverImage;
         //页面标题
         self.data.title = res.data.title;
         //tags标签
@@ -55,6 +71,10 @@ var ddc = {
         self.data.type = res.data.type;
         //视频地址
         self.data.video = res.data.video;
+        //屏幕模式，1横屏，2方屏，3竖屏
+        self.data.screenMode = res.data.screenMode;
+        //屏幕模式  1:1比1,2：4比3,3:3比4
+        self.data.imageStyle = res.data.imageStyle;
         self.data.contentText = res.data.contentText;
         if(res.data.skuList) self.data.skuList = self.changeSkuList(res.data.skuList);
         if(res.data.contentFoodList) self.data.contentFoodList = res.data.contentFoodList;
@@ -73,6 +93,19 @@ var ddc = {
         self.render();
         //埋点
         gio('page.set', {'h5_contentid': self.data.contentId, 'h5_contentname': res.data.title});
+
+        //判断是IOS还是android, true IOS,false 安卓
+        if(_DDC.client()){
+          //如果是IOS 不操作
+        }else{
+          //重定向
+          setTimeout(function () {
+            var redirectionHref = self.baseUrl().ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId='+ self.data.businessCategoryId +'&contentId='+ self.data.contentId;
+            var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+            window.location.href = redirectionHref ? redirectionHref : downloadHref;
+          },500)
+        }
+
       }else if(res.code == '-1'){
         $('.index').hide();
         document.title = '你查看的页面已经被删除了哦';
@@ -227,23 +260,29 @@ var ddc = {
   renderHeader:function(){
     //专门针对头部渲染
     var self = this;
+
     if(self.data.contentSource == 1){
-      //非轮播图
-      if(self.data.smallPic && !self.data.play){
+      //非轮播图(图文菜品)
+      if(self.data.coverImage && !self.data.play){
         var _icon = self.data.video?'<div class="icon"></div>':'';
-        $video.html('<img src="'+ self.data.smallPic +'">'+_icon);
+        $video.html('<img src="'+ self.data.coverImage +'">'+_icon);
+        self.changeHeightSource1();
       }
+
       if(self.data.play && $video.find('video').length == 0){
         $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls">您的浏览器不支持视频播放</video>');
+        self.changeHeightSource1();
       }
     }else if(self.data.contentSource == 4){
       //视频
       if(self.data.smallPic && !self.data.play){
         var _icon = self.data.video?'<div class="icon"></div>':'';
         $video.html('<img src="'+ self.data.smallPic +'">'+_icon);
+        self.changeHeightSource();
       }
       if(self.data.play && $video.find('video').length == 0){
         $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls">您的浏览器不支持视频播放</video>');
+        self.changeHeightSource();
       }
       //用户头像
       self.data.header = self.data.header ? self.data.header : 'images/logo.png';
@@ -263,6 +302,7 @@ var ddc = {
           el: '.swiper-pagination',
         },
       });
+      self.changeHeightSource();
       //用户头像
       self.data.header = self.data.header ? self.data.header : 'images/logo.png';
       $('.users').html('<img src="'+ self.data.header +'">' + self.data.nickName).show();
@@ -301,15 +341,28 @@ var ddc = {
       })
       window.location.href = location.origin + '/shop/#/productdetail?productId='+ productId +'&shareCode='+ shareCode +'&skuId='+skuId;
     })
+    //关闭蒙层
+    $('.share_meng').on('click', function () {
+      $('.share_meng').hide();
+    });
     //跳转
     $('.download').on('click',function(){
       // var userId = _DDC.getQueryString('userId');
       // if(userId){
-      window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+      // window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
       // }else{
       // var _url = location.origin + '/app2/invite/inviteFriends/share.html?userId='+userId+'&inviteCode=YQ_20180904_CZ';
       // window.location.href = _url
       // }
+
+      //若在微信中，显示蒙层
+      if(_DDC.isWeiXin()){
+        $('.share_meng').show();
+      }else{
+        $('.share_meng').hide();
+        window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook'
+      }
+
     })
   },
   //微信分享给朋友或朋友圈
@@ -367,6 +420,49 @@ var ddc = {
         console.log('分享接口出错')
       }
     });
+  },
+  changeHeightSource1: function () {
+    var self = this;
+    //获取屏幕宽度
+    var mobileWidth = document.body.clientWidth || document.documentElement.clientWidth;
+
+    //判断是否为视频
+    if(self.data.video){
+      if(self.data.screenMode == 1){
+        $('.video, .swiper-container').css({'height': (9/16)*mobileWidth });
+      }else if(self.data.screenMode == 2){
+        $('.video, .swiper-container').css({'height': mobileWidth });
+      }else{
+        $('.video, .swiper-container').css({'height': (4/3)*mobileWidth });
+      }
+    }else{
+      $('.video, .swiper-container').css({'height':'4.3rem'});
+    }
+  },
+  changeHeightSource: function () {
+    var self = this;
+    //获取屏幕宽度
+    var mobileWidth = document.body.clientWidth || document.documentElement.clientWidth;
+
+    //判断是否为视频
+    if(self.data.video){
+      if(self.data.screenMode == 1){
+        $('.video, .swiper-container').css({'height': (9/16)*mobileWidth });
+      }else if(self.data.screenMode == 2){
+        $('.video, .swiper-container').css({'height': mobileWidth });
+      }else{
+        $('.video, .swiper-container').css({'height': (4/3)*mobileWidth });
+      }
+    }else{
+      //imageStyle 1:1比1,2：4比3,3:3比4
+      if(self.data.imageStyle == 1){
+        $('.video, .swiper-container').css({'height': mobileWidth });
+      }else if(self.data.imageStyle == 2){
+        $('.video, .swiper-container').css({'height': (3/4)*mobileWidth });
+      }else{
+        $('.video, .swiper-container').css({'height': (4/3)*mobileWidth });
+      }
+    }
   }
 }
 ddc.init();

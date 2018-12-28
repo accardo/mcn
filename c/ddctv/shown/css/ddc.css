@@ -116,6 +116,8 @@ img{max-width: 100%;}
 	position: relative;
 	margin-top: 60px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 .video img{
 	width: 100%;
