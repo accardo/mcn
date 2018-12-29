@@ -434,6 +434,9 @@ var ddc = {
         $('.video, .swiper-container').css({'height': mobileWidth });
       }else{
         $('.video, .swiper-container').css({'height': (4/3)*mobileWidth });
+        $('.video video').css({'height': 'auto'});
+        $('.video video').attr('height', 'auto');
+        $('.video').css({'align-items': 'flex-end'});
       }
     }else{
       $('.video, .swiper-container').css({'height':'4.3rem'});
@@ -452,6 +455,9 @@ var ddc = {
         $('.video, .swiper-container').css({'height': mobileWidth });
       }else{
         $('.video, .swiper-container').css({'height': (4/3)*mobileWidth });
+        $('.video video').css({'height': 'auto'});
+        $('.video video').attr('height', 'auto');
+        $('.video').css({'align-items': 'flex-end'});
       }
     }else{
       //imageStyle 1:1比1,2：4比3,3:3比4
