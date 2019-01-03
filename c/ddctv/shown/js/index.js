@@ -52,7 +52,7 @@ var ddc = {
       var res = xhr.data;
       if(res && res.code == 0){
         //顶部title标题
-        //document.title = res.data.title;
+        document.title = res.data.title;
         //页面显示样式  1非轮播   2轮播图  4视频
         self.data.contentSource = res.data.contentSource;
         //缩略图
@@ -170,7 +170,7 @@ var ddc = {
     }
 
     //普通图文
-    if(self.data.contentDetailList && self.data.contentDetailList.length > 1 && self.data.type==1 && self.data.contentSource == 1){
+    if(self.data.contentDetailList && self.data.contentDetailList.length > 0 && self.data.type==1 && self.data.contentSource == 1){
       var _list = '';
       self.data.contentDetailList.forEach(function(item){
         var _img = item.image?'<div class="item img"><img src="'+ item.image +'"></div>':'';

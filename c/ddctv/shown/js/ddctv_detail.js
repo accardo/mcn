@@ -14,11 +14,11 @@ $(function () {
 
   // 0 开发环境  1 测试环境  2 staging环境  3生产环境
   var status = _DDC.status;
-   status = 1;
+  // status = 1;
   var ajaxUrl  = status==0?'https://mcn-app-d.daydaycook.com.cn/':status==1?'https://mcn-app-t.daydaycook.com.cn/':status==2?'https://mcn-app-s.daydaycook.com.cn/':'https://mcn-app.daydaycook.com.cn/';
 
   //读取详情接口
-  axios.post( ajaxUrl + '/mcn/H5/1.0.0/findTvDetail',{
+  axios.post( ajaxUrl + 'mcn/H5/1.0.0/findTvDetail',{
     id: userId
   }).then(function(xhr){
     var res = xhr.data;
@@ -85,7 +85,7 @@ $(function () {
   });
 
   //读取分类栏目详情列表接口
-  axios.post( ajaxUrl + '/mcn/H5/1.0.0/findTvListByType',{
+  axios.post( ajaxUrl + 'mcn/H5/1.0.0/findTvListByType',{
     id: userId
   }).then(function(xhr){
     var res = xhr.data;
