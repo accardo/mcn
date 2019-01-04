@@ -9,11 +9,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title></title>
   <link rel="stylesheet" href="https://mobile.daydaycook.com.cn/lib/reset.css">
-  <link rel="stylesheet" href="css/ddc_tag.css?v=1123">
+  <link rel="stylesheet" href="css/ddctv_detail.css">
 </head>
-
 <body>
-<div class="wraper index_personal">
+<div class="wraper ddctv_detail">
   <div class="download">
     <img src="images/logo.png" class="left">
     <div class="left">
@@ -24,26 +23,36 @@
       <span>打开</span>
     </div>
   </div>
+  <!--头图-->
+  <div class="banner"></div>
 
-  <!--个人信息-->
-  <div class="base_info clearfix">
-    <img class="info_img JS_info_img" src="images/logo.png" />
-    <div class="info_detail">
-      <p class="JS_nickName"></p>
-      <div class="num_group">
-        <em class="JS_watcherCount"></em><span>关注</span>
-        <em class="JS_followerCount"></em><span>粉丝</span>
-      </div>
+  <!--标题内容-->
+  <div class="top_content">
+    <div class="title"></div>
+    <p class="top_sub"></p>
+    <div class="zan">
+      <i class="zan_icon"></i>
+      <span class="zan_num"></span>
     </div>
   </div>
 
-  <!--产品列表-->
-  <div class="most_new most_new_personal">
-    <ul class="clearfix JS_most_new"></ul>
-    <!--<div class="JS_show_more">加载更多</div>-->
+  <!--简介-->
+  <div class="profile clearfix">
+    <!--<span class="profile_btn">简介<i class="top_arrow"></i></span>-->
+    <img class="header_img" src="images/logo.png" />
+    <div class="profile_con">
+      <div class="profile_title"></div>
+      <!--<div class="profile_info">食谱类 · 月更</div>-->
+    </div>
   </div>
 
+  <!--栏目选集-->
+  <div class="list">
+    <div class="list_title">栏目选集</div>
+    <div class="list_item_wrap"></div>
+  </div>
 </div>
+
 <div class="share_meng">
   <i class="share_guide"></i>
 </div>
@@ -52,10 +61,6 @@
 <script src="https://mobile.daydaycook.com.cn/lib/jquery.2.1.1.js"></script>
 <script src="https://mobile.daydaycook.com.cn/lib/axios.min.js"></script>
 <script src="https://mobile.daydaycook.com.cn/lib/ddc.js"></script>
-<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
-<script src="js/jquery.masonry.min.js"></script>
-<!--<script src="js/jquery.waterfall.js"></script>-->
-<script src="js/index_personal.js"></script>
+<script src="js/ddctv_detail.js"></script>
 </body>
 </html>
