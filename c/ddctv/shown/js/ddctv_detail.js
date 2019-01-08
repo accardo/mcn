@@ -16,6 +16,19 @@ $(function () {
   var status = _DDC.status;
   // status = 1;
   var ajaxUrl  = status==0?'https://mcn-app-d.daydaycook.com.cn/':status==1?'https://mcn-app-t.daydaycook.com.cn/':status==2?'https://mcn-app-s.daydaycook.com.cn/':'https://mcn-app.daydaycook.com.cn/';
+  var ajaxUrl2  = status==0?'ddc://mobile-dev.daydaycook.com.cn/':status==1?'ddc://mobile-test.daydaycook.com.cn/':status==2?'ddc://mobile-staging.daydaycook.com.cn/':'ddc://mobile.daydaycook.com.cn/';
+
+  //判断是IOS还是android, true IOS,false 安卓
+  if(_DDC.client()){
+    //如果是IOS 不操作
+  }else{
+    //重定向
+    setTimeout(function () {
+      var redirectionHref = ajaxUrl2 + 'app2/ddctv/shown/ddctv_detail.html?userId='+ userId;
+      var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+      window.location.href = redirectionHref ? redirectionHref : downloadHref;
+    },500)
+  }
 
   //读取详情接口
   axios.post( ajaxUrl + 'mcn/H5/1.0.0/findTvDetail',{
@@ -33,10 +46,12 @@ $(function () {
 
       //顶部视频
       if(play){
-        $('.banner').html('<video autoplay="autoplay" src="'+ videoUrl +'" controls="controls">您的浏览器不支持视频播放</video>');
+        $('.video_inner').html('<video autoplay="autoplay" id="thisVideo" src="'+ videoUrl +'" poster="'+ coverUrl +'" x5-video-player-type="h5" x5-video-player-fullscreen="true" controls="controls"><source src="'+ videoUrl +'" type="video/mp4"></source></video>').show();
+        $('.video_img').hide();
       }else{
         var _icon = videoUrl ? '<div class="icon"></div>' : '';
-        $('.banner').html('<img src="' + coverUrl + '" />' + _icon);
+        $('.video_img').html('<img src="' + coverUrl + '" />' + _icon).show();
+        $('.video_inner').hide();
       }
 
       //标题
@@ -65,10 +80,12 @@ $(function () {
       });
 
       //点击视频播放
-      $('.banner').on('click',function(){
+      $('.video_img').on('click',function(){
         if(videoUrl){
           play = true;
-          $('.banner').html('<video autoplay="autoplay" src="'+ videoUrl +'" controls="controls">您的浏览器不支持视频播放</video>');
+          $('.video_inner').html('<video autoplay="autoplay" id="thisVideo" src="'+ videoUrl +'" poster="'+ coverUrl +'" x5-video-player-type="h5" x5-video-player-fullscreen="true" controls="controls"><source src="'+ videoUrl +'" type="video/mp4"></source></video>').show();
+          $('.video_img').hide();
+          document.getElementById('thisVideo').play();
         }
       })
 
