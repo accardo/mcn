@@ -100,12 +100,16 @@ var ddc = {
         if(_DDC.client()){
           //如果是IOS 不操作
         }else{
-          //重定向
-          setTimeout(function () {
-            var redirectionHref = self.baseUrl().ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId='+ self.data.businessCategoryId +'&contentId='+ self.data.contentId;
-            var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
-            window.location.href = redirectionHref ? redirectionHref : downloadHref;
-          },500)
+          if(_DDC.inApp()){
+            //如果在app内部 不操作
+          }else{
+            //重定向
+            setTimeout(function () {
+              var redirectionHref = self.baseUrl().ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId='+ self.data.businessCategoryId +'&contentId='+ self.data.contentId;
+              var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+              window.location.href = redirectionHref ? redirectionHref : downloadHref;
+            },500)
+          }
         }
 
       }else if(res.code == '-1'){
