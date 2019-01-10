@@ -1,5 +1,7 @@
 // _DDC.status = 1;
 var $video = $('.video');
+var $videoBtn = $('.video_btn');
+var $videoInner = $('.video_inner');
 var ddc = {
   data:{
     play:false,				//是否播放视频
@@ -98,12 +100,16 @@ var ddc = {
         if(_DDC.client()){
           //如果是IOS 不操作
         }else{
-          //重定向
-          setTimeout(function () {
-            var redirectionHref = self.baseUrl().ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId='+ self.data.businessCategoryId +'&contentId='+ self.data.contentId;
-            var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
-            window.location.href = redirectionHref ? redirectionHref : downloadHref;
-          },500)
+          if(_DDC.inApp()){
+            //如果在app内部 不操作
+          }else{
+            //重定向
+            setTimeout(function () {
+              var redirectionHref = self.baseUrl().ajaxUrl3 + 'app2/ddctv/shown/index.html?businessCategoryId='+ self.data.businessCategoryId +'&contentId='+ self.data.contentId;
+              var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+              window.location.href = redirectionHref ? redirectionHref : downloadHref;
+            },500)
+          }
         }
 
       }else if(res.code == '-1'){
@@ -265,25 +271,33 @@ var ddc = {
       //非轮播图(图文菜品)
       if(self.data.coverImage && !self.data.play){
         var _icon = self.data.video?'<div class="icon"></div>':'';
-        $video.html('<img src="'+ self.data.coverImage +'">'+_icon);
+        $videoBtn.html('<img src="'+ self.data.coverImage +'">'+_icon).show();
+        $videoInner.hide();
         self.changeHeightSource1();
       }
 
-      if(self.data.play && $video.find('video').length == 0){
-        $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls">您的浏览器不支持视频播放</video>');
+      if(self.data.play && $video.find('video').length == '0'){
+        $videoInner.html('<video autoplay="autoplay" id="thisVideo" src="'+ self.data.video +'" poster="'+ self.data.coverImage +'" x5-video-player-type="h5"  x5-video-player-fullscreen="true" controls="controls"><source src="'+ self.data.video +'" type="video/mp4"></source></video>').show();
+        $videoBtn.hide();
         self.changeHeightSource1();
       }
+      // $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls" poster="'+ self.data.smallPic +'" style="width: 100%; position: absolute; bottom: 0;">您的浏览器不支持视频播放</video>');
+      // self.changeHeightSource();
     }else if(self.data.contentSource == 4){
       //视频
       if(self.data.smallPic && !self.data.play){
         var _icon = self.data.video?'<div class="icon"></div>':'';
-        $video.html('<img src="'+ self.data.smallPic +'">'+_icon);
+        $videoBtn.html('<img src="'+ self.data.smallPic +'">'+_icon).show();
+        $videoInner.hide();
         self.changeHeightSource();
       }
-      if(self.data.play && $video.find('video').length == 0){
-        $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls">您的浏览器不支持视频播放</video>');
+      if(self.data.play && $video.find('video').length == '0'){
+        $videoInner.html('<video autoplay="autoplay" id="thisVideo" src="'+ self.data.video +'" poster="'+ self.data.smallPic +'" x5-video-player-type="h5"  x5-video-player-fullscreen="true" controls="controls"><source src="'+ self.data.video +'" type="video/mp4"></source></video>').show();
+        $videoBtn.hide();
         self.changeHeightSource();
       }
+      // $video.html('<video autoplay="autoplay" src="'+ self.data.video +'" controls="controls" poster="'+ self.data.smallPic +'" style="width: 100%; position: absolute; bottom: 0;">您的浏览器不支持视频播放</video>');
+      // self.changeHeightSource();
       //用户头像
       self.data.header = self.data.header ? self.data.header : 'images/logo.png';
       $('.users').html('<img src="'+ self.data.header +'">' + self.data.nickName).show();
@@ -324,10 +338,12 @@ var ddc = {
   handle:function(){
     //相关操作方法绑定
     var self = this;
-    $video.on('click',function(){
+    $videoBtn.on('click',function(){
       if(self.data.video){
         self.data.play = true;
         self.renderHeader();
+        console.log($videoInner.find('#thisVideo'))
+        document.getElementById('thisVideo').play();
       }
     })
     $('.products .item').on('click',function(){
