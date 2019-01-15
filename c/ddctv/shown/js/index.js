@@ -193,7 +193,7 @@ var ddc = {
       var _list = '';
       self.data.contentDetailList.forEach(function(item){
         // var reg = new RegExp('<' + tag + '>' + '(.*?)' + '</' + tag + '>');
-        if(item.detail.indexOf('<tag>') > -1){
+        if(item.detail && item.detail.indexOf('<tag>') > -1){
           item.detail = item.detail.replace(/<tag>/g, "<em>#</em><tag>");
           item.detail = item.detail.replace(/<\/tag>/g, "<\/tag>");
         }
@@ -321,7 +321,7 @@ var ddc = {
       self.data.header = self.data.header ? self.data.header : 'images/logo.png';
       $('.users').html('<img src="'+ self.data.header +'">' + self.data.nickName).show();
       //标签前加#
-      if(self.data.contentDetailList[0].detail.indexOf('<tag>') > -1){
+      if(self.data.contentDetailList[0].detail && self.data.contentDetailList[0].detail.indexOf('<tag>') > -1){
         self.data.contentDetailList[0].detail = self.data.contentDetailList[0].detail.replace(/<tag>/g, "<em>#</em><tag>");
         self.data.contentDetailList[0].detail = self.data.contentDetailList[0].detail.replace(/<\/tag>/g, "<\/tag>");
         //var tag = '<\/tag>';
