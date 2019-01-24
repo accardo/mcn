@@ -23,6 +23,7 @@ $(function(){
   var ajaxUrl  = status==0?'https://tv-d.daydaycook.com.cn/':status==1?'https://tv-t.daydaycook.com.cn/':status==2?'https://tv-s.daydaycook.com.cn/':'https://tv.daydaycook.com.cn/';
   var ajaxUrl2  = status==0?'https://uc-api-d.daydaycook.com.cn/':status==1?'https://uc-api-t.daydaycook.com.cn/':status==2?'https://uc-api-s.daydaycook.com.cn/':'https://uc-api.daydaycook.com.cn/';
   var ajaxUrl3  = status==0?'https://mobile-dev.daydaycook.com.cn/':status==1?'https://mobile-test.daydaycook.com.cn/':status==2?'https://mobile-staging.daydaycook.com.cn/':'https://mobile.daydaycook.com.cn/';
+  var ajaxUrl4  = status==0?'ddc://mobile-dev.daydaycook.com.cn/':status==1?'ddc://mobile-test.daydaycook.com.cn/':status==2?'ddc://mobile-staging.daydaycook.com.cn/':'ddc://mobile.daydaycook.com.cn/';
 
   //初始化页面
   commonAjax('user-content/user-page', 1);
@@ -46,7 +47,7 @@ $(function(){
   //若在日日煮app中，隐藏头部打开按钮
   if(_DDC.inApp()){
     $('.download').hide();
-    $('.swiper-container,.video').css('margin','0');
+    $('.base_info').css('padding-top','24px');
   }
 
   //若在微信中，显示蒙层

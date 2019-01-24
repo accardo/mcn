@@ -45,6 +45,12 @@ var ddc = {
       $('.share_meng').hide();
     }
 
+    //若在日日煮app中，隐藏头部打开按钮
+    if(_DDC.inApp()){
+      $('.download').hide();
+      $('.swiper-container,.video').css('margin','0');
+    }
+
     axios.post(self.baseUrl().ajaxUrl+'top-content/view-h5',{
       contentId:self.data.contentId,
       businessCategoryId:self.data.businessCategoryId,
@@ -255,11 +261,6 @@ var ddc = {
     self.wxShare(self.data.shareInfo.title,self.data.shareInfo.desc,self.data.shareInfo.img,self.data.shareInfo.link); // 调用微信分享
     //后台传过来图文
     $('.contentText').html(self.data.contentText);
-    //若在日日煮app中，隐藏头部打开按钮
-    if(_DDC.inApp()){
-      $('.download').hide();
-      $('.swiper-container,.video').css('margin','0');
-    }
     //操作
     self.handle();
   },
