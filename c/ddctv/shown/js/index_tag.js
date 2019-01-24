@@ -24,6 +24,21 @@ $(function(){
   var ajaxUrl3  = status==0?'https://mobile-dev.daydaycook.com.cn/':status==1?'https://mobile-test.daydaycook.com.cn/':status==2?'https://mobile-staging.daydaycook.com.cn/':'https://mobile.daydaycook.com.cn/';
   var ajaxUrl4  = status==0?'ddc://mobile-dev.daydaycook.com.cn/':status==1?'ddc://mobile-test.daydaycook.com.cn/':status==2?'ddc://mobile-staging.daydaycook.com.cn/':'ddc://mobile.daydaycook.com.cn/';
 
+  //判断是IOS还是android, true IOS,false 安卓
+  if(_DDC.client()){
+    //如果是IOS 不操作
+  }else{
+    if(_DDC.inApp()){
+      //如果在app内部 不操作
+    }else{
+      //重定向
+      setTimeout(function () {
+        var redirectionHref = ajaxUrl4 + 'app2/ddctv/shown/index_tag.html?sessionId='+ sessionId +'&tagName='+ tagName;
+        var downloadHref = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.gfeng.daydaycook';
+        window.location.href = redirectionHref ? redirectionHref : downloadHref;
+      },500)
+    }
+  }
 
   //初始化页面
   commonAjax('/user-tag/list-tag-hottest', 1);
