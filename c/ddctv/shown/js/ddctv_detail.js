@@ -34,6 +34,12 @@ $(function () {
     }
   }
 
+  //若在日日煮app中，隐藏头部打开按钮
+  if(_DDC.inApp()){
+    $('.download').hide();
+    $('.banner').css('margin-top','0');
+  }
+
   //读取详情接口
   axios.post( ajaxUrl + 'mcn/H5/1.0.0/findTvDetail',{
     id: userId
